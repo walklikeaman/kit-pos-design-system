@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KIT POS — App UI Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #f4f7fb;
+      color: #1d3557;
+    }
+    :root {
+      --blue:    #1d3557;
+      --slate:   #5f6b7a;
+      --mist:    #f4f7fb;
+      --border:  #e4e9f0;
+      --white:   #ffffff;
+      --green:   #16a34a;
+      --green-bg:#f0fdf4;
+      --amber:   #d97706;
+      --amber-bg:#fffbeb;
+      --red:     #dc2626;
+      --red-bg:  #fef2f2;
+      --sky:     #0ea5e9;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    input, select { font-family: inherit; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+
+    /* App shell */
+    .app-shell {
+      display: flex; height: 100vh; overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px; flex-shrink: 0;
+      background: var(--blue);
+      display: flex; flex-direction: column;
+      padding: 0;
+    }
+    .sidebar-logo {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-logo img { height: 28px; filter: brightness(0) invert(1); }
+    .sidebar-nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 10px; border: none;
+      background: transparent; color: rgba(255,255,255,0.6);
+      font-size: 13px; font-weight: 500; text-align: left; width: 100%;
+      transition: all 150ms; cursor: pointer;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+    .nav-item.active { background: rgba(255,255,255,0.14); color: #fff; font-weight: 600; }
+    .nav-item svg { opacity: 0.7; flex-shrink: 0; }
+    .nav-item.active svg { opacity: 1; }
+    .nav-section-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.3); padding: 10px 12px 4px;
+    }
+    .sidebar-footer {
+      padding: 12px 10px 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .clerk-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: 10px;
+    }
+    .clerk-avatar {
+      width: 30px; height: 30px; border-radius: '50%';
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff;
+      border-radius: 50%;
+    }
+    .clerk-name { font-size: 12px; font-weight: 600; color: #fff; }
+    .clerk-role { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+    /* Main area */
+    .main-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+    /* Top bar */
+    .topbar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 0 20px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .topbar-title { font-size: 15px; font-weight: 700; color: var(--blue); letter-spacing: -0.01em; }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; }
+    .topbar-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 9999px; border: 1.5px solid var(--border);
+      background: transparent; color: var(--slate); font-size: 12px; font-weight: 600;
+      transition: all 150ms;
+    }
+    .topbar-btn:hover { background: var(--mist); color: var(--blue); }
+    .topbar-badge {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;
+    }
+
+    /* POS Screen */
+    .pos-layout { display: flex; flex: 1; overflow: hidden; }
+    .product-panel { flex: 1; overflow-y: auto; padding: 16px; }
+    .cart-panel { width: 300px; flex-shrink: 0; background: var(--white); border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+
+    /* Product grid */
+    .cat-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .cat-pill {
+      padding: 5px 14px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+      border: 1.5px solid var(--border); background: var(--white); color: var(--slate);
+      transition: all 150ms; cursor: pointer;
+    }
+    .cat-pill.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .cat-pill:hover:not(.active) { background: var(--mist); color: var(--blue); }
+
+    .prod-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .prod-card {
+      background: var(--white); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 12px; cursor: pointer; transition: all 150ms; text-align: left;
+    }
+    .prod-card:hover { border-color: var(--blue); box-shadow: 0 4px 12px rgba(29,53,87,0.1); }
+    .prod-card:active { transform: scale(0.97); }
+    .prod-emoji { font-size: 24px; margin-bottom: 6px; }
+    .prod-name { font-size: 12px; font-weight: 600; color: var(--blue); line-height: 1.3; }
+    .prod-price { font-size: 13px; font-weight: 700; color: var(--blue); margin-top: 4px; }
+    .prod-sku { font-size: 10px; color: var(--slate); margin-top: 1px; }
+
+    /* Cart */
+    .cart-header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 700; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 10px; }
+    .cart-item { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 10px; margin-bottom: 4px; }
+    .cart-item:hover { background: var(--mist); }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name { font-size: 12px; font-weight: 600; color: var(--blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-price { font-size: 11px; color: var(--slate); margin-top: 1px; }
+    .qty-btn { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--white); color: var(--blue); font-size: 14px; display: flex; align-items: center; justify-content: center; padding: 0; }
+    .qty-num { font-size: 12px; font-weight: 700; color: var(--blue); min-width: 18px; text-align: center; }
+    .cart-item-total { font-size: 12px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+
+    /* Cart totals */
+    .cart-totals { padding: 12px 16px; border-top: 1px solid var(--border); }
+    .total-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; }
+    .total-label { font-size: 12px; color: var(--slate); }
+    .total-val { font-size: 12px; font-weight: 600; color: var(--blue); }
+    .total-row.grand { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 9px; }
+    .total-row.grand .total-label { font-size: 14px; font-weight: 700; color: var(--blue); }
+    .total-row.grand .total-val { font-size: 16px; font-weight: 800; color: var(--blue); }
+
+    /* Pay buttons */
+    .pay-btns { padding: 12px; display: flex; flex-direction: column; gap: 7px; }
+    .pay-btn {
+      width: 100%; padding: 11px; border-radius: 12px; border: none;
+      font-size: 13px; font-weight: 700; transition: all 150ms;
+    }
+    .pay-btn-primary { background: var(--blue); color: #fff; }
+    .pay-btn-primary:hover { opacity: 0.9; }
+    .pay-btn-secondary { background: var(--mist); color: var(--blue); border: 1.5px solid var(--border); }
+    .pay-btn-secondary:hover { background: var(--border); }
+
+    /* Stock screen */
+    .stock-layout { flex: 1; overflow-y: auto; padding: 20px; }
+    .search-bar { display: flex; gap: 10px; margin-bottom: 16px; }
+    .search-input {
+      flex: 1; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 13px; font-family: inherit; background: var(--white); color: var(--blue); outline: none;
+    }
+    .search-input:focus { border-color: var(--blue); }
+    .stock-table { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .stock-table-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 0; padding: 10px 16px; background: var(--mist); border-bottom: 1px solid var(--border); }
+    .th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); }
+    .stock-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; padding: 11px 16px; border-bottom: 1px solid var(--border); align-items: center; transition: background 100ms; }
+    .stock-row:last-child { border-bottom: none; }
+    .stock-row:hover { background: var(--mist); }
+    .td { font-size: 13px; color: var(--blue); }
+    .td-secondary { font-size: 12px; color: var(--slate); }
+    .stock-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 9999px; font-size: 11px; font-weight: 700; }
+    .badge-ok  { background: var(--green-bg); color: var(--green); }
+    .badge-low { background: var(--amber-bg); color: var(--amber); }
+    .badge-out { background: var(--red-bg);   color: var(--red); }
+
+    /* Merchant / Reports screen */
+    .merchant-layout { flex: 1; overflow-y: auto; padding: 20px; }
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; }
+    .stat-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); margin-bottom: 6px; }
+    .stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; color: var(--blue); line-height: 1; }
+    .stat-sub { font-size: 12px; color: var(--slate); margin-top: 4px; }
+    .stat-up { color: var(--green); font-weight: 600; }
+    .reports-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
+    .report-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 18px; }
+    .report-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 14px; }
+    .chart-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .chart-label { font-size: 12px; color: var(--slate); width: 80px; flex-shrink: 0; }
+    .chart-track { flex: 1; height: 8px; background: var(--mist); border-radius: 9999px; overflow: hidden; }
+    .chart-fill { height: 100%; border-radius: 9999px; background: var(--blue); }
+    .chart-value { font-size: 12px; font-weight: 700; color: var(--blue); width: 48px; text-align: right; }
+    .txn-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .txn-row:last-child { border-bottom: none; }
+    .txn-name { font-size: 13px; font-weight: 600; color: var(--blue); }
+    .txn-time { font-size: 11px; color: var(--slate); margin-top: 1px; }
+    .txn-amount { font-size: 13px; font-weight: 700; color: var(--blue); }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useCallback } = React;
+
+// ── Icons ──────────────────────────────────────────────────
+const Icon = ({ d, size=16, stroke=2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+const icons = {
+  pos:      "M3 5h18M3 10h18M3 15h10M3 20h7",
+  stock:    "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM16 3l-4 4-4-4",
+  merchant: "M18 20V10M12 20V4M6 20v-6",
+  settings: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z",
+  logout:   "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9",
+  plus:     "M12 5v14M5 12h14",
+  trash:    "M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6",
+  search:   "M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z",
+  filter:   "M22 3H2l8 9.46V19l4 2v-8.54L22 3z",
+  alert:    "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01",
+  receipt:  "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 1 1 4 0 2 2 0 0 1-4 0",
+};
+
+// ── Products data ──────────────────────────────────────────
+const PRODUCTS = [
+  { id:1, name:'White Bread', price:2.99, cat:'Grocery', emoji:'🍞', sku:'GR-001' },
+  { id:2, name:'Whole Milk 1gal', price:4.49, cat:'Grocery', emoji:'🥛', sku:'GR-002' },
+  { id:3, name:'Eggs 12pk', price:3.79, cat:'Grocery', emoji:'🥚', sku:'GR-003' },
+  { id:4, name:'Orange Juice', price:3.99, cat:'Grocery', emoji:'🍊', sku:'GR-004' },
+  { id:5, name:'Potato Chips', price:2.49, cat:'Snacks', emoji:'🥔', sku:'SN-001' },
+  { id:6, name:'Sparkling Water', price:1.79, cat:'Drinks', emoji:'💧', sku:'DK-001' },
+  { id:7, name:'Energy Drink', price:2.99, cat:'Drinks', emoji:'⚡', sku:'DK-002' },
+  { id:8, name:'Gum 5pk', price:1.29, cat:'Snacks', emoji:'🟦', sku:'SN-002' },
+  { id:9, name:'Marlboro Red', price:11.99, cat:'Tobacco', emoji:'📦', sku:'TB-001' },
+  { id:10, name:'Swisher Sweets', price:3.49, cat:'Tobacco', emoji:'📦', sku:'TB-002' },
+  { id:11, name:'Lighters 3pk', price:4.99, cat:'Tobacco', emoji:'🔥', sku:'TB-003' },
+  { id:12, name:'Phone Charger', price:9.99, cat:'General', emoji:'🔌', sku:'GN-001' },
+];
+
+const CATS = ['All', 'Grocery', 'Drinks', 'Snacks', 'Tobacco', 'General'];
+
+const STOCK_ITEMS = [
+  { name:'White Bread', sku:'GR-001', cat:'Grocery', qty:48, reorder:20, status:'ok' },
+  { name:'Whole Milk 1gal', sku:'GR-002', cat:'Grocery', qty:12, reorder:15, status:'low' },
+  { name:'Eggs 12pk', sku:'GR-003', cat:'Grocery', qty:36, reorder:12, status:'ok' },
+  { name:'Marlboro Red', sku:'TB-001', cat:'Tobacco', qty:3, reorder:10, status:'low' },
+  { name:'Swisher Sweets', sku:'TB-002', cat:'Tobacco', qty:0, reorder:20, status:'out' },
+  { name:'Energy Drink', sku:'DK-002', cat:'Drinks', qty:24, reorder:12, status:'ok' },
+  { name:'Potato Chips', sku:'SN-001', cat:'Snacks', qty:8, reorder:15, status:'low' },
+  { name:'Phone Charger', sku:'GN-001', cat:'General', qty:5, reorder:5, status:'ok' },
+];
+
+const TRANSACTIONS = [
+  { name:'Basket #1042', time:'2:41 PM', amount:'$18.73', type:'card' },
+  { name:'Basket #1041', time:'2:28 PM', amount:'$7.49', type:'cash' },
+  { name:'Basket #1040', time:'2:15 PM', amount:'$24.11', type:'ebt' },
+  { name:'Basket #1039', time:'1:58 PM', amount:'$5.29', type:'card' },
+  { name:'Basket #1038', time:'1:44 PM', amount:'$31.67', type:'card' },
+];
+
+// ── POS Screen ─────────────────────────────────────────────
+function POSScreen() {
+  const [cat, setCat] = useState('All');
+  const [cart, setCart] = useState([]);
+  const [paid, setPaid] = useState(false);
+
+  const filtered = cat === 'All' ? PRODUCTS : PRODUCTS.filter(p => p.cat === cat);
+
+  const addToCart = (prod) => {
+    setCart(c => {
+      const ex = c.find(i => i.id === prod.id);
+      if (ex) return c.map(i => i.id === prod.id ? {...i, qty: i.qty+1} : i);
+      return [...c, {...prod, qty:1}];
+    });
+  };
+
+  const changeQty = (id, delta) => {
+    setCart(c => c.map(i => i.id === id ? {...i, qty: i.qty+delta} : i).filter(i => i.qty > 0));
+  };
+
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const tax = subtotal * 0.0875;
+  const total = subtotal + tax;
+
+  if (paid) return (
+    <div className="pos-layout" style={{ alignItems:'center', justifyContent:'center', flexDirection:'column', gap:16 }}>
+      <div style={{ width:64, height:64, borderRadius:'50%', background:'#f0fdf4', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <svg width="28" height="28" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <p style={{ fontSize:20, fontWeight:700, color:'var(--blue)' }}>Payment accepted</p>
+      <p style={{ fontSize:14, color:'var(--slate)' }}>Total: <strong>${total.toFixed(2)}</strong></p>
+      <button className="pay-btn pay-btn-primary" style={{ width:160 }} onClick={() => { setCart([]); setPaid(false); }}>New sale</button>
+    </div>
+  );
+
+  return (
+    <div className="pos-layout">
+      {/* Products */}
+      <div className="product-panel">
+        <div className="cat-pills">
+          {CATS.map(c => (
+            <button key={c} className={`cat-pill ${cat===c?'active':''}`} onClick={() => setCat(c)}>{c}</button>
+          ))}
+        </div>
+        <div className="prod-grid">
+          {filtered.map(p => (
+            <button key={p.id} className="prod-card" onClick={() => addToCart(p)}>
+              <div className="prod-emoji">{p.emoji}</div>
+              <div className="prod-name">{p.name}</div>
+              <div className="prod-price">${p.price.toFixed(2)}</div>
+              <div className="prod-sku">{p.sku}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Cart */}
+      <div className="cart-panel">
+        <div className="cart-header">
+          <span>Current sale</span>
+          {cart.length > 0 && (
+            <button style={{ background:'none', border:'none', color:'var(--slate)', fontSize:12, cursor:'pointer' }}
+              onClick={() => setCart([])}>Clear</button>
+          )}
+        </div>
+        <div className="cart-items">
+          {cart.length === 0 && (
+            <div style={{ textAlign:'center', padding:'40px 16px', color:'var(--slate)', fontSize:13 }}>
+              Tap a product to add it to the sale
+            </div>
+          )}
+          {cart.map(item => (
+            <div key={item.id} className="cart-item">
+              <div className="cart-item-info">
+                <div className="cart-item-name">{item.name}</div>
+                <div className="cart-item-price">${item.price.toFixed(2)} each</div>
+              </div>
+              <button className="qty-btn" onClick={() => changeQty(item.id, -1)}>−</button>
+              <span className="qty-num">{item.qty}</span>
+              <button className="qty-btn" onClick={() => changeQty(item.id, 1)}>+</button>
+              <span className="cart-item-total">${(item.price*item.qty).toFixed(2)}</span>
+            </div>
+          ))}
+        </div>
+        <div className="cart-totals">
+          <div className="total-row"><span className="total-label">Subtotal</span><span className="total-val">${subtotal.toFixed(2)}</span></div>
+          <div className="total-row"><span className="total-label">Tax (8.75%)</span><span className="total-val">${tax.toFixed(2)}</span></div>
+          <div className="total-row grand"><span className="total-label">Total</span><span className="total-val">${total.toFixed(2)}</span></div>
+        </div>
+        <div className="pay-btns">
+          <button className="pay-btn pay-btn-primary" onClick={() => cart.length && setPaid(true)}>
+            Charge ${total.toFixed(2)}
+          </button>
+          <div style={{ display:'flex', gap:7 }}>
+            <button className="pay-btn pay-btn-secondary" style={{ flex:1 }} onClick={() => cart.length && setPaid(true)}>Cash</button>
+            <button className="pay-btn pay-btn-secondary" style={{ flex:1 }} onClick={() => cart.length && setPaid(true)}>EBT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── KIT Stock Screen ────────────────────────────────────────
+function StockScreen() {
+  const [query, setQuery] = useState('');
+  const filtered = STOCK_ITEMS.filter(i => i.name.toLowerCase().includes(query.toLowerCase()) || i.sku.toLowerCase().includes(query.toLowerCase()));
+  const lowCount = STOCK_ITEMS.filter(i => i.status !== 'ok').length;
+
+  return (
+    <div className="stock-layout">
+      {lowCount > 0 && (
+        <div style={{ background:'#fffbeb', border:'1.5px solid #fde68a', borderRadius:12, padding:'10px 16px', marginBottom:16, display:'flex', alignItems:'center', gap:10, color:'#92400e', fontSize:13, fontWeight:600 }}>
+          <Icon d={icons.alert} size={16} />
+          {lowCount} item{lowCount>1?'s':''} need attention — low stock or out of stock
+        </div>
+      )}
+      <div className="search-bar">
+        <div style={{ position:'relative', flex:1 }}>
+          <div style={{ position:'absolute', left:12, top:'50%', transform:'translateY(-50%)', color:'var(--slate)', pointerEvents:'none' }}>
+            <Icon d={icons.search} size={15} />
+          </div>
+          <input className="search-input" style={{ paddingLeft:36 }} placeholder="Search items or SKU…" value={query} onChange={e => setQuery(e.target.value)} />
+        </div>
+        <button className="topbar-btn">
+          <Icon d={icons.filter} size={13} /> Filter
+        </button>
+        <button style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 16px', borderRadius:9999, border:'none', background:'var(--blue)', color:'#fff', fontSize:12, fontWeight:700, cursor:'pointer' }}>
+          <Icon d={icons.plus} size={13} /> Add item
+        </button>
+      </div>
+      <div className="stock-table">
+        <div className="stock-table-header">
+          <span className="th">Item</span>
+          <span className="th">SKU</span>
+          <span className="th">In stock</span>
+          <span className="th">Reorder at</span>
+          <span className="th">Status</span>
+        </div>
+        {filtered.map(item => (
+          <div key={item.sku} className="stock-row">
+            <div>
+              <div className="td" style={{ fontWeight:600 }}>{item.name}</div>
+              <div className="td-secondary">{item.cat}</div>
+            </div>
+            <span className="td-secondary">{item.sku}</span>
+            <span className="td" style={{ fontWeight:700 }}>{item.qty}</span>
+            <span className="td-secondary">{item.reorder}</span>
+            <span className={`stock-badge ${item.status==='ok'?'badge-ok':item.status==='low'?'badge-low':'badge-out'}`}>
+              {item.status==='ok' ? 'In stock' : item.status==='low' ? 'Low stock' : 'Out of stock'}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── KIT Merchant Screen ─────────────────────────────────────
+function MerchantScreen() {
+  const [tab, setTab] = useState('overview');
+  const tabs = ['overview', 'batches', 'clerks'];
+  const salesByType = [
+    { label:'Card', pct:62, val:'$1,423' },
+    { label:'Cash', pct:24, val:'$551' },
+    { label:'EBT', pct:10, val:'$229' },
+    { label:'Other', pct:4, val:'$92' },
+  ];
+
+  return (
+    <div className="merchant-layout">
+      {/* Tab pills */}
+      <div style={{ display:'flex', gap:6, marginBottom:20 }}>
+        {tabs.map(t => (
+          <button key={t} onClick={() => setTab(t)} style={{
+            padding:'6px 16px', borderRadius:9999, border:'1.5px solid var(--border)',
+            background: tab===t ? 'var(--blue)' : 'var(--white)',
+            color: tab===t ? '#fff' : 'var(--slate)',
+            fontSize:13, fontWeight:600, textTransform:'capitalize', transition:'all 150ms', cursor:'pointer',
+          }}>{t}</button>
+        ))}
+      </div>
+
+      {tab === 'overview' && (
+        <>
+          <div className="stats-row">
+            {[
+              { label:'Today\'s sales', value:'$2,295', sub:'+12% vs yesterday', up:true },
+              { label:'Transactions', value:'84', sub:'Avg $27.32', up:false },
+              { label:'Cash drawer', value:'$412', sub:'Last counted 1:00 PM', up:false },
+              { label:'Low stock alerts', value:'3', sub:'Items need reorder', up:false },
+            ].map(s => (
+              <div key={s.label} className="stat-card">
+                <div className="stat-label">{s.label}</div>
+                <div className="stat-value">{s.value}</div>
+                <div className="stat-sub">{s.up ? <span className="stat-up">{s.sub}</span> : s.sub}</div>
+              </div>
+            ))}
+          </div>
+          <div className="reports-grid">
+            <div className="report-card">
+              <div className="report-title">Sales by payment type — Today</div>
+              {salesByType.map(r => (
+                <div key={r.label} className="chart-bar-row">
+                  <span className="chart-label">{r.label}</span>
+                  <div className="chart-track"><div className="chart-fill" style={{ width:`${r.pct}%` }} /></div>
+                  <span className="chart-value">{r.val}</span>
+                </div>
+              ))}
+            </div>
+            <div className="report-card">
+              <div className="report-title">Recent transactions</div>
+              {TRANSACTIONS.map(t => (
+                <div key={t.name} className="txn-row">
+                  <div>
+                    <div className="txn-name">{t.name}</div>
+                    <div className="txn-time">{t.time} · {t.type.toUpperCase()}</div>
+                  </div>
+                  <div className="txn-amount">{t.amount}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {tab === 'batches' && (
+        <div className="report-card">
+          <div className="report-title">Batch history</div>
+          {[
+            { date:'Apr 22, 2026', total:'$2,183', txns:79, status:'Closed' },
+            { date:'Apr 21, 2026', total:'$1,947', txns:71, status:'Closed' },
+            { date:'Apr 20, 2026', total:'$2,401', txns:88, status:'Closed' },
+          ].map(b => (
+            <div key={b.date} className="txn-row">
+              <div>
+                <div className="txn-name">{b.date}</div>
+                <div className="txn-time">{b.txns} transactions</div>
+              </div>
+              <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                <span className="stock-badge badge-ok">{b.status}</span>
+                <div className="txn-amount">{b.total}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === 'clerks' && (
+        <div className="report-card">
+          <div className="report-title">Clerk activity — Today</div>
+          {[
+            { name:'Maria S.', role:'Senior cashier', sales:'$1,102', txns:41 },
+            { name:'James R.', role:'Cashier', sales:'$892', txns:32 },
+            { name:'Aisha M.', role:'Cashier', sales:'$301', txns:11 },
+          ].map(c => (
+            <div key={c.name} className="txn-row">
+              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <div style={{ width:32, height:32, borderRadius:'50%', background:'var(--mist)', border:'1.5px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:700, color:'var(--blue)' }}>
+                  {c.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="txn-name">{c.name}</div>
+                  <div className="txn-time">{c.role} · {c.txns} transactions</div>
+                </div>
+              </div>
+              <div className="txn-amount">{c.sales}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── App Shell ──────────────────────────────────────────────
+function App() {
+  const [screen, setScreen] = useState(() => {
+    try { return localStorage.getItem('kit-pos-app-screen') || 'pos'; } catch { return 'pos'; }
+  });
+
+  const go = (s) => {
+    setScreen(s);
+    try { localStorage.setItem('kit-pos-app-screen', s); } catch {}
+  };
+
+  const navItems = [
+    { id:'pos', label:'KIT POS', icon:icons.pos },
+    { id:'stock', label:'KIT Stock', icon:icons.stock },
+    { id:'merchant', label:'KIT Merchant', icon:icons.merchant },
+  ];
+
+  const topbarLabels = { pos:'KIT POS — Checkout', stock:'KIT Stock — Inventory', merchant:'KIT Merchant — Reports' };
+  const topbarBadges = { pos:null, stock:{ text:'3 alerts', cls:'badge-low' }, merchant:null };
+
+  return (
+    <div className="app-shell">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="sidebar-logo">
+          <img src="../../assets/kit-pos-header-logo.png" alt="KIT POS" />
+        </div>
+        <div className="sidebar-nav">
+          <div className="nav-section-label">Applications</div>
+          {navItems.map(n => (
+            <button key={n.id} className={`nav-item ${screen===n.id?'active':''}`} onClick={() => go(n.id)}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d={n.icon} />
+              </svg>
+              {n.label}
+            </button>
+          ))}
+          <div className="nav-section-label" style={{ marginTop:8 }}>Store</div>
+          <button className="nav-item" onClick={() => {}}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={icons.settings}/></svg>
+            Settings
+          </button>
+        </div>
+        <div className="sidebar-footer">
+          <div className="clerk-row">
+            <div className="clerk-avatar">A</div>
+            <div>
+              <div className="clerk-name">Ahmad H.</div>
+              <div className="clerk-role">Owner · Shift open</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main */}
+      <div className="main-area">
+        <div className="topbar">
+          <span className="topbar-title">{topbarLabels[screen]}</span>
+          <div className="topbar-actions">
+            {topbarBadges[screen] && (
+              <span className={`topbar-badge ${topbarBadges[screen].cls}`} style={{ fontSize:12, fontWeight:700, padding:'4px 12px', borderRadius:9999, background:'#fffbeb', color:'#92400e' }}>
+                {topbarBadges[screen].text}
+              </span>
+            )}
+            {screen === 'pos' && (
+              <>
+                <button className="topbar-btn"><Icon d={icons.receipt} size={13} /> Receipt</button>
+                <button className="topbar-btn"><Icon d={icons.trash} size={13} /> Void</button>
+              </>
+            )}
+            {screen === 'merchant' && (
+              <button className="topbar-btn">Export CSV</button>
+            )}
+          </div>
+        </div>
+
+        {screen === 'pos'      && <POSScreen />}
+        {screen === 'stock'    && <StockScreen />}
+        {screen === 'merchant' && <MerchantScreen />}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

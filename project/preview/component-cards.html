@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 16px; font-family: var(--font-sans); background: #f4f7fb; }
+  .row { display: flex; gap: 12px; }
+  /* Standard card */
+  .card { background: #fff; border: 1px solid #e4e9f0; border-radius: 28px; padding: 20px; box-shadow: 0 8px 30px rgba(29,53,87,0.08); flex: 1; }
+  /* Mist card */
+  .card-mist { background: rgba(244,247,251,0.6); border: 1px solid #e4e9f0; border-radius: 24px; padding: 18px; flex: 1; }
+  .card-title { font-size: 14px; font-weight: 600; color: #1d3557; }
+  .card-body { font-size: 12px; line-height: 1.6; color: #5f6b7a; margin-top: 6px; }
+  .eyebrow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #5f6b7a; margin-bottom: 6px; }
+  blockquote { font-size: 13px; line-height: 1.6; color: #1d3557; margin: 8px 0 0; }
+  .author { font-size: 12px; font-weight: 500; color: #1d3557; margin-top: 10px; }
+</style></head><body>
+<div class="row">
+  <div class="card">
+    <div class="eyebrow">Grocery store</div>
+    <div class="card-title">Favorite Mart</div>
+    <blockquote>"Our team finally had one system for checkout, stock awareness, and everyday cashier work."</blockquote>
+    <div class="author">Ahmad H., Owner</div>
+  </div>
+  <div class="card-mist">
+    <div class="card-title">Onboarding</div>
+    <div class="card-body">Configuration guidance tailored to each merchant footprint and device mix.</div>
+  </div>
+  <div class="card-mist">
+    <div class="card-title">Support</div>
+    <div class="card-body">Fast responses when operators need adjustments, replacements, or process changes.</div>
+  </div>
+</div>
+</body></html>

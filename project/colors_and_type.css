@@ -1,0 +1,312 @@
+/* ============================================================
+   KIT POS Design System — CSS Custom Properties
+   Source: walklikeaman/KIT-POS-Website (Tailwind config + globals.css)
+   ============================================================ */
+
+/* Google Fonts — Plus Jakarta Sans (KIT POS brand font) */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+/* ─── Base Color Palette ─────────────────────────────────── */
+:root {
+  /* Brand */
+  --kit-blue:      #1d3557;   /* Primary text, buttons, anchor color */
+  --kit-slate:     #5f6b7a;   /* Secondary text, captions, eyebrows */
+  --kit-mist:      #f4f7fb;   /* Section backgrounds, hover fills */
+  --kit-border:    #e4e9f0;   /* All borders and dividers */
+  --kit-white:     #ffffff;   /* Page background, card surfaces */
+
+  /* Extended tints */
+  --kit-blue-90:   #1d355799; /* kit-blue at 60% opacity */
+  --kit-blue-10:   #1d35570d; /* kit-blue at 5% — subtle tint */
+  --kit-mist-50:   #f4f7fb80; /* mist at 50% — alternate section bg */
+
+  /* Dark mode anchors (used when html.dark) */
+  --kit-dark-bg:      #020617; /* slate-950 */
+  --kit-dark-surface: #0f172a; /* slate-900 */
+  --kit-dark-border:  #1e293b; /* slate-800 */
+  --kit-dark-subtle:  #334155; /* slate-700 */
+  --kit-dark-text1:   #f1f5f9; /* slate-100 */
+  --kit-dark-text2:   #cbd5e1; /* slate-300 */
+  --kit-dark-text3:   #94a3b8; /* slate-400 */
+  --kit-sky:          #0ea5e9; /* sky-500 — dark mode CTA */
+  --kit-sky-dark:     #0369a1; /* sky-700 — sky hover */
+
+  /* Semantic aliases */
+  --color-bg:          var(--kit-white);
+  --color-surface:     var(--kit-white);
+  --color-surface-alt: var(--kit-mist);
+  --color-border:      var(--kit-border);
+  --color-text-primary:   var(--kit-blue);
+  --color-text-secondary: var(--kit-slate);
+  --color-text-muted:     #94a3b8;
+  --color-cta:         var(--kit-blue);
+  --color-cta-text:    var(--kit-white);
+  --color-focus-ring:  var(--kit-blue);
+}
+
+html.dark {
+  --color-bg:          var(--kit-dark-bg);
+  --color-surface:     var(--kit-dark-surface);
+  --color-surface-alt: #0f1629;
+  --color-border:      var(--kit-dark-border);
+  --color-text-primary:   var(--kit-dark-text1);
+  --color-text-secondary: var(--kit-dark-text2);
+  --color-text-muted:     var(--kit-dark-text3);
+  --color-cta:         var(--kit-sky);
+  --color-cta-text:    var(--kit-dark-bg);
+  --color-focus-ring:  var(--kit-sky);
+}
+
+/* ─── Typography ─────────────────────────────────────────── */
+:root {
+  /* Font stacks */
+  --font-sans:  'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:  ui-monospace, 'SF Mono', 'Fira Code', monospace;
+
+  /* Font feature settings for Inter */
+  --font-features-display: 'cv02', 'cv03', 'cv04', 'cv09'; /* nicer number/letter forms */
+
+  /* Type scale (rem) */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  1.875rem;   /* 30px */
+  --text-4xl:  2.25rem;    /* 36px */
+  --text-5xl:  3rem;       /* 48px */
+  --text-6xl:  3.75rem;    /* 60px */
+  --text-7xl:  4.5rem;     /* 72px — modern hero scale */
+  --text-8xl:  6rem;       /* 96px — editorial display */
+
+  /* Line heights */
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose:   2;
+
+  /* Letter spacing */
+  --tracking-tight:    -0.025em;  /* headings */
+  --tracking-normal:    0;
+  --tracking-wide:      0.025em;
+  --tracking-eyebrow:   0.14em;   /* ALL CAPS eyebrows */
+  --tracking-button:    0.01em;
+
+  /* Font weights */
+  --weight-regular:    400;
+  --weight-medium:     500;
+  --weight-semibold:   600;
+  --weight-bold:       700;
+}
+
+/* ─── Semantic Type Styles ───────────────────────────────── */
+
+/* Display / Hero */
+.type-display {
+  font-family: var(--font-sans);
+  font-size: var(--text-7xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+  font-feature-settings: var(--font-features-display);
+}
+
+/* H1 — Page hero titles */
+.type-h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(var(--text-4xl), 5vw, var(--text-6xl));
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+/* H2 — Section headings */
+.type-h2 {
+  font-family: var(--font-sans);
+  font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+/* H3 — Card titles */
+.type-h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+/* Eyebrow — above section titles */
+.type-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* Body — standard paragraph text */
+.type-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* Body large */
+.type-body-lg {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+/* Caption / metadata */
+.type-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+/* Label — button, badge, nav text */
+.type-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-button);
+}
+
+/* Code */
+.type-code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+/* ─── Spacing System ─────────────────────────────────────── */
+:root {
+  --space-1:   0.25rem;   /*  4px */
+  --space-2:   0.5rem;    /*  8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-14:  3.5rem;    /* 56px */
+  --space-16:  4rem;      /* 64px */
+  --space-20:  5rem;      /* 80px */
+  --space-24:  6rem;      /* 96px */
+
+  /* Layout */
+  --container-max: 72rem;  /* 1152px — max-w-6xl */
+  --section-py:    var(--space-20); /* section-padding default */
+}
+
+/* ─── Border Radius ──────────────────────────────────────── */
+:root {
+  --radius-sm:    0.375rem;  /*  6px — small inner elements */
+  --radius-md:    0.75rem;   /* 12px — rounded-xl, dropdown items */
+  --radius-lg:    1rem;      /* 16px — rounded-2xl */
+  --radius-xl:    1.25rem;   /* 20px — rounded-[1.25rem], standard cards */
+  --radius-2xl:   1.5rem;    /* 24px — rounded-[1.5rem], feature cards */
+  --radius-3xl:   1.75rem;   /* 28px — large feature sections */
+  --radius-4xl:   2rem;      /* 32px — hero/promo blocks */
+  --radius-full:  9999px;    /* pills — buttons, nav items, tags */
+}
+
+/* ─── Shadow System ──────────────────────────────────────── */
+:root {
+  --shadow-soft:   0 8px 30px rgba(29, 53, 87, 0.08);  /* standard card shadow */
+  --shadow-md:     0 4px 16px rgba(29, 53, 87, 0.10);  /* slightly stronger */
+  --shadow-lg:     0 16px 48px rgba(29, 53, 87, 0.12); /* modal/overlay */
+  --shadow-none:   none;
+}
+
+/* ─── Animation Tokens ───────────────────────────────────── */
+:root {
+  --ease-smooth:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:        cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:       cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.2, 0.64, 1); /* subtle spring — not bouncy */
+
+  --duration-fast:    150ms;
+  --duration-base:    200ms;
+  --duration-slow:    300ms;
+  --duration-slower:  500ms;
+
+  --transition-colors: color var(--duration-base) var(--ease-smooth),
+                       background-color var(--duration-base) var(--ease-smooth),
+                       border-color var(--duration-base) var(--ease-smooth);
+  --transition-all:    all var(--duration-base) var(--ease-smooth);
+}
+
+/* ─── Keyframes ──────────────────────────────────────────── */
+@keyframes kit-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%       { transform: translate3d(0, -14px, 0); }
+}
+@keyframes kit-pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 0.85; transform: scale(1.08); }
+}
+@keyframes kit-grid-drift {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(36px, 36px, 0); }
+}
+@keyframes kit-shimmer {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+@keyframes kit-bob {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%       { transform: translate3d(12px, -8px, 0); }
+}
+@keyframes kit-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes kit-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Focus Ring ─────────────────────────────────────────── */
+:root {
+  --focus-ring: 0 0 0 2px var(--kit-white), 0 0 0 4px var(--color-focus-ring);
+}
+
+/* ─── Z-Index Scale ──────────────────────────────────────── */
+:root {
+  --z-base:    0;
+  --z-raised:  10;
+  --z-overlay: 20;
+  --z-sticky:  30;   /* site header */
+  --z-modal:   40;
+  --z-toast:   50;
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
