@@ -14,6 +14,7 @@ project/
 ├── colors_and_type.css   ← Master token file: all colors, typography, spacing
 ├── preview/              ← HTML visual previews for every token and component
 ├── assets/               ← Brand logos, hardware photos, software screenshots
+├── apps/                 ← App layer for Kitchen, Monitor, Label, Invoice, Waiter (mark, icons, cards)
 └── ui_kits/
     ├── website/          ← React/JSX components for the marketing site
     └── pos-app/          ← HTML prototype of the POS cashier app

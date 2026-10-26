@@ -1,0 +1,86 @@
+/* KIT app layer (Kitchen, Monitor, Label, Invoice, Waiter).
+   Sits on top of ../colors_and_type.css. Decisions: kitpos wiki
+   concepts/design-review-2026-10.md, approved by Nikita 2026-10-25/26.
+   Every effect runs once on a real screen; prefers-reduced-motion keeps
+   only the colour change. */
+
+:root {
+  /* Status colours: unchanged from the shipping apps. */
+  --kit-app-new:       #B03434;
+  --kit-app-preparing: #E2B714;
+  --kit-app-ready:     #34B36B;  /* Kitchen, Monitor dark */
+  --kit-app-ready-light: #177245; /* Monitor light */
+  --kit-app-age-ok:    #34B36B;
+  --kit-app-age-warn:  #D9A21B;
+  --kit-app-age-late:  #C2413F;
+
+  /* Corners. PENDING: Nikita picks S1 / S2 / S3 (2026-10-26). Until then the
+     shape stays the plain rounding the apps ship with, so nothing moves.
+     S1 superellipse(1.5) x1.35 · S2 superellipse(1.5) x1.6 · S3 squircle x2. */
+  --kit-app-corner-shape: round;
+  --kit-app-radius-card: 16px;   /* Monitor card; Kitchen ticket is 10px */
+  --kit-app-radius-stub: 8px;
+
+  --kit-app-ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+}
+
+/* ── Monitor order card with a tear-off stub ─────────────────────────────
+   Left: where the order goes (TABLE T1 / TO GO + icon). A dashed tear line.
+   Right: the customer's name, then the order number, then the status word. */
+.kit-order {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 16px;
+  height: 96px; padding: 0 22px; box-sizing: border-box; white-space: nowrap;
+  border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-corner-shape);
+  background: var(--kit-surface, #fff); color: var(--kit-text, #1D3557);
+}
+.kit-order__stub {
+  display: grid; justify-items: center; flex: none;
+  padding-right: 16px; border-right: 2px dashed currentColor;
+  border-image: none; font: 800 12px/1.1 var(--font-sans); letter-spacing: .06em;
+}
+.kit-order__stub b { font: 800 26px/1 var(--font-sans); }
+.kit-order__stub { border-right-color: color-mix(in srgb, currentColor 40%, transparent); }
+.kit-order__name { font: 800 52px/1 var(--font-sans); }
+.kit-order__no { font: 500 22px/1 var(--font-sans); opacity: .85; }
+.kit-order__status { margin-left: auto; font: 800 24px/1 var(--font-sans); }
+.kit-order.is-ready { background: var(--kit-app-ready-light); color: #fff; }
+@media (prefers-color-scheme: dark) { .kit-order.is-ready { background: var(--kit-app-ready); color: #0b1520; } }
+
+/* "Order ready" = R1 + O1 medium. Add .just-ready for one run, then remove it.
+   R1: the card flips to the ready colour. O1: a medium crescent ribbon
+   (5 px at the middle, fading to nothing at the ends) catches one pass of
+   light. The ribbon is .kit-order__o1 (markup in preview/app-monitor-card.html). */
+.kit-order__o1 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
+.kit-order.just-ready { animation: kit-r1 1.4s ease-out 1 both; }
+.kit-order.just-ready .kit-order__o1 { animation: kit-o1-show 2.2s .3s ease-out 1 both; }
+.kit-order.just-ready .kit-order__o1 .kit-o1-light { animation: kit-o1-run 1.9s .35s ease-in-out 1 both; }
+@keyframes kit-r1 { 0% { filter: brightness(1.35); } 100% { filter: none; } }
+@keyframes kit-o1-show { 0%, 100% { opacity: 0; } 10%, 85% { opacity: 1; } }
+@keyframes kit-o1-run { from { transform: translateX(-180px); } to { transform: translateX(820px); } }
+
+/* ── Kitchen order number: flap tiles (KD-2, receipt ticket) ──────────── */
+.kit-flap { display: inline-flex; gap: 4px; }
+.kit-flap i {
+  font-style: normal; position: relative; width: 38px; height: 56px;
+  display: grid; place-items: center; font: 800 42px/1 var(--font-sans);
+  background: #2a323c; color: #fff; border-radius: 7px; corner-shape: var(--kit-app-corner-shape);
+}
+.kit-flap i::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--kit-surface, #1B2129); }
+.kit-flap.flip i { animation: kit-flap .5s calc(var(--i, 0) * 60ms) ease-in 1 both; transform-origin: 50% 50%; }
+@keyframes kit-flap { 0% { transform: rotateX(0); } 50% { transform: rotateX(-90deg); } 100% { transform: rotateX(0); } }
+
+/* ── Kitchen tabs T1: a sliding pill with one sheen ───────────────────── */
+.kit-tabs { position: relative; display: flex; gap: 2px; }
+.kit-tabs__pill {
+  position: absolute; top: 0; left: 0; height: 100%; width: var(--w, 92px);
+  transform: translateX(var(--x, 0)); transition: transform .45s var(--kit-app-ease-spring), width .3s;
+  background: #232b35; border-radius: 12px; corner-shape: var(--kit-app-corner-shape); overflow: hidden;
+}
+.kit-tabs__pill::after { content: ""; position: absolute; inset: 0 auto 0 -40px; width: 40px; background: linear-gradient(100deg, #fff0, #ffffff40, #fff0); }
+.kit-tabs.moved .kit-tabs__pill::after { animation: kit-pill-sheen .7s .2s ease-out 1; }
+@keyframes kit-pill-sheen { to { transform: translateX(160px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .kit-order, .kit-order *, .kit-flap i, .kit-tabs__pill, .kit-tabs__pill::after { animation: none !important; transition: none !important; }
+}

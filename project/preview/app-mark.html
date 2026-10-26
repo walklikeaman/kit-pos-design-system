@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css"><link rel="stylesheet" href="../apps/kit-apps.css">
+<style>body{margin:0;padding:20px 24px;font-family:var(--font-sans);background:#F0F2F5;color:#1D3557} .lbl{font:600 12px/1.4 var(--font-sans);color:#5f6b7a;margin:18px 0 8px} .row{display:flex;gap:28px;align-items:center;flex-wrap:wrap}.dark{background:#12161C;padding:16px;border-radius:16px}</style></head><body>
+<div class="lbl">The app atom, unchanged, with sheens along its orbits (kitMark)</div>
+<div class="row" id="m"></div><div class="lbl">Dark</div><div class="row dark" id="d"></div>
+<div class="lbl">Once (label printed, invoice page read)</div><div class="row" id="o"></div>
+<script src="../apps/kit-mark.js"></script><script>
+var S='../apps/kit-atom.png';
+document.getElementById('m').innerHTML='<img src="'+S+'" height="160" alt="">'+kitMark({src:S,size:160})+kitMark({src:S,size:72})+kitMark({src:S,size:30});
+document.getElementById('d').innerHTML=kitMark({src:S,size:160})+kitMark({src:S,size:30});
+document.getElementById('o').innerHTML=kitMark({src:S,size:110,sheen:'once'})+kitMark({src:S,size:110,sheen:'none'});
+</script></body></html>
