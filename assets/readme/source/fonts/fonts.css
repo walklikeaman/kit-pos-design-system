@@ -1,0 +1,8 @@
+/* Local Plus Jakarta Sans (latin, variable) so README boards render deterministically offline. */
+@font-face{
+  font-family:'Plus Jakarta Sans';
+  font-style:normal;
+  font-weight:200 800;
+  font-display:block;
+  src:url('fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+}
