@@ -103,7 +103,8 @@ its parts in `kit-apps.css`. Preview: `../preview/app-login.html?app=label&auto=
   row. The camera opens a full-screen scanner; a code it reads logs in by itself,
   with no tap on "Log in". A device with its own scanner (the V3 Plus side keys)
   also logs in straight from a scan while the login screen is open. A device with
-  no camera and no scanner shows the field alone.
+  no camera and no scanner shows the field alone. Monitor and Kitchen never get
+  the scan button: they are typed in once on the wall (Nikita 2026-10-26).
 - **Waiting.** The field dims. The button shows a 30 px atom and the waiting word ("Checking…" or "Logging in…").
   Both atoms get one sheen pass along the orbits every 1.3 s until the server
   answers. This is the only motion that repeats, and it ends with the wait.

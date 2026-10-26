@@ -45,7 +45,7 @@
     </form>
   </div>
 </main>
-<div class="ctl"><button data-run="ok">▶ Log in</button><button data-run="scan">⌗ Scan</button><button data-run="err">✕ Wrong code</button></div>
+<div class="ctl"><button data-run="ok">▶ Log in</button><button data-run="scan" id="scanrun">⌗ Scan</button><button data-run="err">✕ Wrong code</button></div>
 <script src="../apps/kit-mark.js"></script>
 <script>
 const q = new URLSearchParams(location.search);
@@ -64,7 +64,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 50
 $('#name').textContent = NAMES[app];
 document.querySelector('.kit-login__title').textContent = WORDS.title;
 next.style.backgroundImage = `url(img/app-next/${app}.jpg)`;
-if (q.get('camera') === '0') $('#scan').remove();
+// Monitor and Kitchen are typed in once on the wall: no scan button (Nikita 2026-10-26).
+if (q.get('camera') === '0' || WALL) $('#scan').remove();
 const mark = (sheen) => { $('#mark').innerHTML = kitMark({ src: SRC, size: 132, sheen, dur: 1.2 }); };
 
 function reset() {
@@ -127,8 +128,9 @@ async function go(k) { if (running) return; running = true; try { await run(k); 
 document.querySelector('.ctl').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) go(b.dataset.run); });
 $('#form').addEventListener('submit', (e) => { e.preventDefault(); go($('#code').value.trim() === 'demo' ? 'ok' : 'err'); });
 $('#scan')?.addEventListener('click', () => go('scan'));
+if (WALL) $('#scanrun').remove();
 reset();
-if (q.get('auto')) (async () => { for (;;) { await go('ok'); await sleep(2200); await go('scan'); await sleep(2200); await go('err'); await sleep(2600); } })();
+if (q.get('auto')) (async () => { for (;;) { await go('ok'); await sleep(2200); if (!WALL) { await go('scan'); await sleep(2200); } await go('err'); await sleep(2600); } })();
 </script>
 </body>
 </html>
