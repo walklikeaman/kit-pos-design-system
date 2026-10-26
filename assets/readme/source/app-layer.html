@@ -1,0 +1,64 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="../../../project/colors_and_type.css">
+<link rel="stylesheet" href="../../../project/apps/kit-apps.css">
+<style>
+  html,body{margin:0}
+  .stage{width:1200px;box-sizing:border-box;padding:48px 56px 52px;font-family:var(--font-sans);
+    background:#f4f7fb;color:#1d3557}
+  .eyebrow{font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#5f6b7a;margin:0 0 6px}
+  h2{font-weight:700;font-size:30px;letter-spacing:-.02em;margin:0 0 30px}
+  .icons{display:flex;gap:34px;margin-bottom:40px}
+  .icons figure{margin:0;text-align:center}
+  .icons img{width:124px;height:124px;border-radius:30px;box-shadow:0 10px 30px -10px rgba(29,53,87,.45)}
+  .icons figcaption{font-weight:600;font-size:14px;color:#5f6b7a;margin-top:12px}
+  .lower{display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:center}
+  .board{display:grid;gap:14px}
+  .colh{font-weight:800;font-size:13px;letter-spacing:.06em;color:#5f6b7a;margin-bottom:2px}
+  .kit-order{box-shadow:0 10px 30px -14px rgba(29,53,87,.5)}
+  .kit-order__name{font-size:40px}
+  .notes .eyebrow{margin-bottom:14px}
+  .dot{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;color:#1d3557;margin-bottom:12px}
+  .dot b{width:16px;height:16px;border-radius:50%;display:inline-block}
+  .corner{margin-top:18px;padding:16px 18px;background:#fff;border:1px solid #e4e9f0;border-radius:18px;corner-shape:squircle;
+    font-size:14px;color:#5f6b7a;line-height:1.5}
+  .corner b{color:#1d3557}
+</style></head>
+<body><div class="stage">
+  <p class="eyebrow">App layer</p>
+  <h2>One family for the counter &amp; kitchen</h2>
+
+  <div class="icons">
+    <figure><img src="../../../project/apps/icons/kit-monitor.png" alt="KIT Monitor"><figcaption>Monitor</figcaption></figure>
+    <figure><img src="../../../project/apps/icons/kit-kitchen.png" alt="KIT Kitchen"><figcaption>Kitchen</figcaption></figure>
+    <figure><img src="../../../project/apps/icons/kit-label.png" alt="KIT Label"><figcaption>Label</figcaption></figure>
+    <figure><img src="../../../project/apps/icons/kit-invoice.png" alt="KIT Invoice"><figcaption>Invoice</figcaption></figure>
+  </div>
+
+  <div class="lower">
+    <div>
+      <div class="colh">MONITOR ORDER CARD — tear-off stub, squircle corners</div>
+      <div class="board">
+        <div class="kit-order">
+          <span class="kit-order__stub">TABLE<b>T1</b></span>
+          <span class="kit-order__name">DAVID</span>
+          <span class="kit-order__no">1041</span>
+          <span class="kit-order__status">Pickup</span>
+        </div>
+        <div class="kit-order is-ready">
+          <span class="kit-order__stub">TO GO<b>↑</b></span>
+          <span class="kit-order__name">MAYA</span>
+          <span class="kit-order__no">1040</span>
+          <span class="kit-order__status">READY</span>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <p class="eyebrow">Status &amp; corners</p>
+      <div class="dot"><b style="background:#B03434"></b> New order</div>
+      <div class="dot"><b style="background:#E2B714"></b> Preparing</div>
+      <div class="dot"><b style="background:#34B36B"></b> Ready</div>
+      <div class="corner"><b>Squircle corners.</b> Monitor card radius 28, Kitchen <code>superellipse(1.5)</code> — sharper than plain rounding at the same radius.</div>
+    </div>
+  </div>
+</div></body></html>
