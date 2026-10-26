@@ -93,16 +93,18 @@ its parts in `kit-apps.css`. Preview: `../preview/app-login.html?app=label&auto=
 - **Layout.** One centred column, 440 px at most, no card: the KIT atom (132 px),
   the app name as a small eyebrow, the title "Log in", one line of lead, then the form.
   On a phone the same column fills the width with a 16 px gutter.
-- **Copy.** Title "Log in", field label "Login code", button "Log in", lead
-  "Scan your clerk's KIT POS login code, or type it." A wrong code says
-  "That code didn't match a clerk. Check it in KIT Merchant → Clerks." The demo
-  hint stays where the app has a demo store.
+- **Copy.** Each app keeps the words it already ships; only layout and motion
+  are shared. The wall screens (Monitor, Kitchen) are connected once, like an
+  appliance: title "Connect this screen", button "Connect", "Checking…" while
+  waiting. The handheld apps (Label, Invoice) say "Log in". Everywhere the field
+  is "Login code" and the clerk's code is found in "KIT Merchant → Clerks", never
+  "KIT Dashboard". The demo hint stays where the app has a demo store.
 - **Scanning, as in KIT Label.** The field and a square camera button share one
   row. The camera opens a full-screen scanner; a code it reads logs in by itself,
   with no tap on "Log in". A device with its own scanner (the V3 Plus side keys)
   also logs in straight from a scan while the login screen is open. A device with
   no camera and no scanner shows the field alone.
-- **Waiting.** The field dims. The button shows a 30 px atom and "Logging in…".
+- **Waiting.** The field dims. The button shows a 30 px atom and the waiting word ("Checking…" or "Logging in…").
   Both atoms get one sheen pass along the orbits every 1.3 s until the server
   answers. This is the only motion that repeats, and it ends with the wait.
 - **Wrong code.** The field border turns the app's error colour (Monitor has none,

@@ -51,6 +51,9 @@
 const q = new URLSearchParams(location.search);
 const app = q.get('app') || 'monitor';
 const NAMES = { monitor: 'KIT Monitor', kitchen: 'KIT Kitchen', label: 'KIT Label', invoice: 'KIT Invoice' };
+// Each app keeps its own words: the wall screens are connected once, the handhelds log in.
+const WALL = app === 'monitor' || app === 'kitchen';
+const WORDS = WALL ? { title: 'Connect this screen', go: 'Connect', wait: 'Checking…' } : { title: 'Log in', go: 'Log in', wait: 'Logging in…' };
 const SRC = '../apps/kit-atom.png';
 const R = document.documentElement;
 R.className = (q.get('scheme') === 'dark' ? 'kit-dark ' : '') + 'kit-app-' + app;
@@ -59,6 +62,7 @@ const login = $('#login'), next = $('#next');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const sleep = (ms) => new Promise((r) => setTimeout(r, reduced ? Math.min(ms, 50) : ms));
 $('#name').textContent = NAMES[app];
+document.querySelector('.kit-login__title').textContent = WORDS.title;
 next.style.backgroundImage = `url(img/app-next/${app}.jpg)`;
 if (q.get('camera') === '0') $('#scan').remove();
 const mark = (sheen) => { $('#mark').innerHTML = kitMark({ src: SRC, size: 132, sheen, dur: 1.2 }); };
@@ -67,7 +71,7 @@ function reset() {
   document.getAnimations().forEach((a) => a.cancel());
   login.className = 'kit-login'; login.style.visibility = '';
   next.style.opacity = 0; $('#code').value = ''; $('#err').textContent = '';
-  $('#batom').innerHTML = ''; $('#blabel').textContent = 'Log in';
+  $('#batom').innerHTML = ''; $('#blabel').textContent = WORDS.go;
   mark('none');
 }
 
@@ -80,7 +84,7 @@ function busy(on) {
   if (!on) return;
   const put = () => { mark('once'); $('#batom').innerHTML = kitMark({ src: SRC, size: 30, sheen: 'once', dur: 1.2 }); };
   put(); wait = setInterval(put, 1300);
-  $('#blabel').textContent = 'Logging in…';
+  $('#blabel').textContent = WORDS.wait;
 }
 
 async function type(code) { for (const ch of code) { await sleep(160); $('#code').value += ch; } }
@@ -102,7 +106,7 @@ async function run(kind) {
   await sleep(1500);
   busy(false);
   if (kind === 'err') {
-    login.classList.add('is-error'); $('#batom').innerHTML = ''; $('#blabel').textContent = 'Log in';
+    login.classList.add('is-error'); $('#batom').innerHTML = ''; $('#blabel').textContent = WORDS.go;
     $('#err').textContent = 'That code didn’t match a clerk. Check it in KIT Merchant → Clerks.';
     if (!reduced) $('.kit-login__field').animate([{ transform: 'none' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(-4px)' }, { transform: 'none' }], { duration: 360, easing: 'ease-out' });
     mark('none');
