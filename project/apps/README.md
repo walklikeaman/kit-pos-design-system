@@ -13,6 +13,7 @@ and 2026-10-26.
 | File | What it is |
 | --- | --- |
 | `kit-apps.css` | Tokens and components: status colours, corners, Monitor order card, Kitchen flap number, Kitchen tabs |
+| `kit-ready.js` | `kitReadyMove()` moves a Monitor card from PREPARING to READY (R2), then runs O1 |
 | `kit-mark.js` | `kitMark()` draws the KIT atom with sheens running along its orbits |
 | `kit-atom.png` | The clean app atom, the same file the apps already use. Never redraw it. |
 | `icons/` | Launcher icons, 1024 px: full (`kit-<app>.png`) and adaptive foreground (`kit-<app>-foreground.png`), with SVG sources |
@@ -55,32 +56,30 @@ Launcher icons are static. Only the Android 12+ splash screen can animate.
 
 The left side is a stub showing where the order goes (TABLE T1, or TO GO with a
 bag icon). A dashed tear line separates it from the customer's name, the order
-number and the status. When an order turns ready, add `.just-ready` once:
+number and the status. When an order turns ready, call
+`kitReadyMove(card, readyColumn)`:
 
-- the card flips to the ready colour (R1);
-- one pass of light runs along a medium crescent ribbon, 5 px at its middle (O1).
+- R2: the card travels from PREPARING into READY and turns green when it arrives;
+- O1: one pass of light then runs along a medium crescent ribbon, 5 px at its middle.
 
-With reduced motion, only the colour change happens.
+With reduced motion, the card simply appears in READY in green, with no ribbon.
 
 ## Kitchen
 
 - **KD-2**: the order number is shown as flap tiles on a receipt-style ticket. The tiles flip when the ticket changes.
 - **T1**: the tabs use a sliding pill, and one sheen passes over it when it moves.
 
-## Corners: pending
+## Corners
 
-On 2026-10-26 Nikita turned down a full squircle at radius 28 because it looks
-less round than today's cards. A squircle at the same radius cuts away less of
-the corner, so the radius has to grow to look just as round. The options, as
-multiples of today's radii (Monitor card 16, Kitchen ticket 10):
+A squircle at the same radius cuts away less of the corner than plain rounding,
+so it looks sharper. To keep the look as round as today's, the radii grow.
+Nikita picked these on 2026-10-26:
 
-| Option | `corner-shape` | Radius |
+| App | `corner-shape` | Radii |
 | --- | --- | --- |
-| S1 | `superellipse(1.5)` | ×1.35, as round as today but smoother |
-| S2 (recommended) | `superellipse(1.5)` | ×1.6, slightly rounder |
-| S3 | `squircle` | ×2 |
+| Monitor | `squircle` | card 28 (was 16), stub 16 |
+| Kitchen | `superellipse(1.5)` | ticket 16, buttons 13, chips and bands 10, flap tiles 8, tab pill 19 (today's radii ×1.6) |
 
-Until he picks one, `--kit-app-corner-shape` stays `round` and the radii stay as
-they are today. `corner-shape` needs Chrome 139 or newer; older WebViews fall back
-to plain rounding. In Flutter the equivalent is `RoundedSuperellipseBorder`
-(Flutter 3.32+).
+`corner-shape` needs Chrome 139 or newer. Older WebViews fall back to plain
+rounding at the same radius, which comes out a little rounder. In Flutter the
+equivalent is `RoundedSuperellipseBorder` (Flutter 3.32+).
