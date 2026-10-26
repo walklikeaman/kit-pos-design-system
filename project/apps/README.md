@@ -18,7 +18,8 @@ and 2026-10-26.
 | `kit-atom.png` | The clean app atom, the same file the apps already use. Never redraw it. |
 | `icons/` | Launcher icons, 1024 px: full (`kit-<app>.png`) and adaptive foreground (`kit-<app>-foreground.png`), with SVG sources |
 
-Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html`, `app-icons.html`.
+Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html`, `app-icons.html`,
+`app-login.html` (L1, with a looping demo at `?auto=1`) and `app-shell.html` (header, menu, settings).
 
 ## The mark
 
@@ -83,3 +84,51 @@ Nikita picked these on 2026-10-26:
 `corner-shape` needs Chrome 139 or newer. Older WebViews fall back to plain
 rounding at the same radius, which comes out a little rounder. In Flutter the
 equivalent is `RoundedSuperellipseBorder` (Flutter 3.32+).
+
+## Login (L1, Nikita 2026-10-26)
+
+Every app logs in the same way, from the same screen. Classes: `.kit-login` and
+its parts in `kit-apps.css`. Preview: `../preview/app-login.html?app=label&auto=1`.
+
+- **Layout.** One centred column, 440 px at most, no card: the KIT atom (132 px),
+  the app name as a small eyebrow, the title "Log in", one line of lead, then the form.
+  On a phone the same column fills the width with a 16 px gutter.
+- **Copy.** Title "Log in", field label "Login code", button "Log in", lead
+  "Scan your clerk's KIT POS login code, or type it." A wrong code says
+  "That code didn't match a clerk. Check it in KIT Merchant → Clerks." The demo
+  hint stays where the app has a demo store.
+- **Scanning, as in KIT Label.** The field and a square camera button share one
+  row. The camera opens a full-screen scanner; a code it reads logs in by itself,
+  with no tap on "Log in". A device with its own scanner (the V3 Plus side keys)
+  also logs in straight from a scan while the login screen is open. A device with
+  no camera and no scanner shows the field alone.
+- **Waiting.** The field dims. The button shows a 30 px atom and "Logging in…".
+  Both atoms get one sheen pass along the orbits every 1.3 s until the server
+  answers. This is the only motion that repeats, and it ends with the wait.
+- **Wrong code.** The field border turns the app's error colour (Monitor has none,
+  so it uses its text colour), the field shakes once (360 ms) and the error line
+  appears under it. Focus stays in the field.
+- **Success.** The button turns green with a check and "Connected" (450 ms). Then
+  the words drop away (300 ms), the atom swells to ×9 and fades (800 ms), and the
+  app comes up behind it. In Angular put `animate.leave` on the login's host
+  element, the one the `@if` removes; inside the component it never plays.
+- **Reduced motion.** No shake, no swell, no sheen: the states change in place.
+- **Storage.** The code or token lives only in the Keystore or Keychain (rule of 2026-10-21).
+
+## Header, menu and settings (S-B, Nikita 2026-10-26)
+
+Preview: `../preview/app-shell.html?app=kitchen&screen=settings` (`screen=menu`, `scheme=dark`).
+
+- **Header** (`.kit-header`, 68 px, 60 px on a phone): the atom (34 px) on the
+  left, then the app name with the store under it, then the app's own tabs. On
+  the wall screens (Monitor, Kitchen) the clock and LIVE sit on the right, and the
+  atom's sheen is the connection indicator. A ⋮ button closes the row.
+- **⋮ menu** (`.kit-menu`): a store card on top (app icon, store name, app and
+  version) above a dashed tear, then Settings, Store and clerk, Help, and Log out
+  in the error colour. On a phone it spans the width under the header.
+- **Settings S-B** (`.kit-settings`): a ticket. The stub on the left holds the app
+  icon and name, the sections, and Log out at the foot. A dashed tear separates it
+  from the rows. The body has the section title and a Done button. Controls are
+  switches, segmented choices and steppers in the app's corners. Under 700 px the
+  ticket fills the screen, the sections become chips in a strip on top, the tear
+  runs across, and Log out stays in the ⋮ menu.
