@@ -36,14 +36,15 @@ and adds no colour of its own. The website keeps its slate dark palette from
 | Text | `#1D3557` | `#E6EAF0` |
 | Second text | `#5F6B7A` | `#9AA6B4` |
 | Main button | `#1D3557` | `#0EA5E9` |
-| Error | `#9B2C2C` | `#E57373` |
+| Error | `#DC2626` | `#E57373` |
 | Ready | `#177245` | `#34B36B` |
 | Preparing | `#E3B505` | `#E3B505` |
 
 Sky `#0EA5E9` is the accent and the focus ring in light, the main button in
 dark. White text never sits on plain sky (2.77:1); in light a filled button is
-navy. Error is KIT Label's brand red, the family's canonical theme. Error red
-is for mistakes only; a late order keeps its own status red.
+navy. Error red `#DC2626` in light is Nikita's pick (2026-10-27): 4.83:1 on white,
+4.31:1 on the grey background, so error text there is bold. It is for
+mistakes only; a late order keeps its own status red.
 
 ## The mark
 

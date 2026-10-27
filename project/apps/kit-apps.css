@@ -102,7 +102,7 @@
   --kit-app-bg: #F0F2F5;  --kit-app-surface: #FFFFFF; --kit-app-raised: #F4F7FB;
   --kit-app-line: #E4E9F0; --kit-app-text: #1D3557;  --kit-app-muted: #5F6B7A;
   --kit-app-primary: #1D3557; --kit-app-on-primary: #FFFFFF;
-  --kit-app-focus: #0EA5E9; --kit-app-error: #9B2C2C; --kit-app-ok: #177245;
+  --kit-app-focus: #0EA5E9; --kit-app-error: #DC2626; --kit-app-ok: #177245;
   /* Corners follow the app: Monitor, Label, Invoice squircle; Kitchen superellipse(1.5). */
   --kit-app-shape: squircle; --kit-app-radius-card: 28px; --kit-app-radius-field: 16px;
 }
