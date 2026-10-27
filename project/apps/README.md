@@ -21,6 +21,30 @@ and 2026-10-26.
 Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html`, `app-icons.html`,
 `app-login.html` (L1, with a looping demo at `?auto=1`) and `app-shell.html` (header, menu, settings).
 
+## One palette (Nikita 2026-10-27)
+
+Every app uses the same surface and status colours, light and dark. They are
+the `--kit-app-*` tokens in `kit-apps.css`; an app maps its theme onto them
+and adds no colour of its own. The website keeps its slate dark palette from
+`colors_and_type.css`; the apps don't use it.
+
+| Role | Light | Dark |
+| --- | --- | --- |
+| Background | `#F0F2F5` | `#12161C` |
+| Card | `#FFFFFF` | `#1B2129` |
+| Line | `#E4E9F0` | `#2C3540` |
+| Text | `#1D3557` | `#E6EAF0` |
+| Second text | `#5F6B7A` | `#9AA6B4` |
+| Main button | `#1D3557` | `#0EA5E9` |
+| Error | `#9B2C2C` | `#E57373` |
+| Ready | `#177245` | `#34B36B` |
+| Preparing | `#E3B505` | `#E3B505` |
+
+Sky `#0EA5E9` is the accent and the focus ring in light, the main button in
+dark. White text never sits on plain sky (2.77:1); in light a filled button is
+navy. Error is KIT Label's brand red, the family's canonical theme. Error red
+is for mistakes only; a late order keeps its own status red.
+
 ## The mark
 
 The atom is never changed: not its shape, not its colours, not the weave. The
