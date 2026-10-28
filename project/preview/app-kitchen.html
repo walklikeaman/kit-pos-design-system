@@ -1,0 +1,10 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css"><link rel="stylesheet" href="../apps/kit-apps.css">
+<style>body{margin:0;padding:20px 24px;font-family:var(--font-sans);background:#12161C;color:#1D3557} .lbl{font:600 12px/1.4 var(--font-sans);color:#5f6b7a;margin:18px 0 8px} body{color:#E6EAF0}.kit-tabs{height:40px}.kit-tabs span{position:relative;z-index:1;width:92px;display:grid;place-items:center;font:700 15px/1 var(--font-sans)}</style></head><body>
+<div class="lbl">Order number as flap tiles (KD-2)</div>
+<span class="kit-flap" id="f"><i style="--i:0">1</i><i style="--i:1">0</i><i style="--i:2">4</i><i style="--i:3">2</i></span>
+<div class="lbl">Tabs T1: sliding pill with one sheen</div>
+<div class="kit-tabs" id="t"><i class="kit-tabs__pill"></i><span>Active</span><span>Done</span><span>All day</span></div>
+<script>var t=document.getElementById('t'),f=document.getElementById('f'),on=0;setInterval(function(){on=1-on;t.style.setProperty('--x',on?'94px':'0px');t.classList.remove('moved');void t.offsetWidth;t.classList.add('moved');f.classList.remove('flip');void f.offsetWidth;f.classList.add('flip');},2500);</script>
+</body></html>

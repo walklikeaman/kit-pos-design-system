@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIT header and settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../apps/kit-apps.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body { background: var(--kit-app-bg); color: var(--kit-app-text); font-family: var(--font-sans); }
+  .app { position: fixed; inset: 0; display: flex; flex-direction: column; }
+  .content { flex: 1; background: var(--kit-app-bg) center top / cover no-repeat; }
+  .scrim { position: fixed; inset: 0; background: #1d355740; }
+  .kit-dark .scrim { background: #0009; }
+  .kit-menu { position: fixed; top: 64px; right: 14px; }
+  .kit-menu svg, .kit-settings__section svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .kit-menu__item svg { color: var(--kit-app-muted); }
+  .kit-menu__item--danger svg { color: inherit; }
+  .kit-menu__item small { margin-left: auto; color: var(--kit-app-muted); font-size: 13px; font-weight: 600; }
+  .kit-menu__store b { display: block; font-size: 17px; }
+  .kit-menu__store span { font-size: 13px; color: var(--kit-app-muted); font-weight: 600; }
+  .kit-settings { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .appid { display: flex; align-items: center; gap: 10px; margin: 0 8px 18px; }
+  .appid img { width: 40px; height: 40px; border-radius: 11px; corner-shape: squircle; }
+  .bh { display: flex; align-items: center; margin-bottom: 8px; }
+  .bh h2 { margin: 0; flex: 1; font-size: 28px; font-weight: 800; }
+  .done { height: 46px; padding: 0 20px; display: grid; place-items: center; border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); background: var(--kit-app-primary); color: var(--kit-app-on-primary); font-weight: 800; }
+  .gt { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--kit-app-muted); margin: 18px 4px 8px; }
+  .row { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
+  .group .row:first-child { border-top: 0; }
+  .row .l { flex: 1; min-width: 0; }
+  .row .l b { display: block; font-size: 17px; font-weight: 700; }
+  .row .l span { display: block; font-size: 14px; color: var(--kit-app-muted); line-height: 1.4; margin-top: 2px; }
+  .row .v { font-size: 16px; font-weight: 700; text-align: right; max-width: 62%; }
+  .seg { display: inline-flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px; padding: 4px; background: var(--kit-app-raised); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+  .seg span { height: 38px; padding: 0 13px; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: var(--kit-app-muted); white-space: nowrap; border-radius: calc(var(--kit-app-radius-field) - 4px); corner-shape: var(--kit-app-shape); }
+  .seg span.on { background: var(--kit-app-surface); color: var(--kit-app-text); box-shadow: 0 1px 3px #0002; }
+  .kit-dark .seg span.on { background: #0EA5E9; color: #06121C; }
+  .sw { width: 54px; height: 32px; border-radius: 99px; background: var(--kit-app-line); position: relative; flex: none; }
+  .sw::after { content: ''; position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px #0003; }
+  .sw.on { background: var(--kit-app-focus); }
+  .sw.on::after { left: 25px; }
+  .step { display: inline-flex; align-items: center; gap: 4px; padding: 4px; background: var(--kit-app-raised); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+  .step span { width: 38px; height: 38px; display: grid; place-items: center; font-weight: 800; font-size: 20px; background: var(--kit-app-surface); border-radius: calc(var(--kit-app-radius-field) - 4px); corner-shape: var(--kit-app-shape); }
+  .step b { min-width: 64px; text-align: center; font-size: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+  .chips span { padding: 4px 10px; border-radius: 99px; background: var(--kit-app-raised); font-size: 13px; font-weight: 700; }
+  .chev { color: var(--kit-app-muted); font-size: 22px; }
+  .pdot { width: 10px; height: 10px; border-radius: 50%; background: #22C55E; flex: none; }
+  .tabs { display: flex; gap: 4px; margin-left: 18px; }
+  .tabs span { height: 46px; padding: 0 18px; display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 800; color: var(--kit-app-muted); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+  .tabs span.on { background: var(--kit-app-raised); color: var(--kit-app-text); }
+  .tabs i { font-style: normal; min-width: 24px; padding: 1px 7px; border-radius: 99px; background: var(--kit-app-line); font-size: 13px; text-align: center; }
+  .tabs .on i { background: var(--kit-app-focus); color: #fff; }
+  .clock { font-size: 26px; font-weight: 800; }
+  .live { display: flex; align-items: center; gap: 7px; font-size: 16px; font-weight: 800; color: #0EA5E9; }
+  @media (max-width: 700px) {
+    .kit-header { height: 60px; padding: 0 8px 0 14px; }
+    .clock, .tabs { display: none; }
+    .kit-menu { left: 10px; right: 10px; width: auto; top: 58px; }
+    .kit-settings { left: 0; top: 0; transform: none; }
+    .appid { width: 100%; margin: 0 4px 6px; }
+    .row .seg { width: 100%; }
+    .row .seg span { flex: 1; }
+  }
+</style>
+</head>
+<body>
+<!--
+  Header, ⋮ menu and settings S-B (Nikita 2026-10-26). Params:
+  app=monitor|kitchen|label|invoice, screen=board|menu|settings, scheme=dark.
+-->
+<div class="app" id="app"></div>
+<script src="../apps/kit-mark.js"></script>
+<script>
+const q = new URLSearchParams(location.search);
+const app = q.get('app') || 'monitor', screen = q.get('screen') || 'settings';
+document.documentElement.className = (q.get('scheme') === 'dark' ? 'kit-dark ' : '') + 'kit-app-' + app;
+const ic = {
+  gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  store: '<svg viewBox="0 0 24 24"><path d="M4 10h16v10H4z"/><path d="M3 10l2-5h14l2 5"/><path d="M10 20v-5h4v5"/></svg>',
+  out: '<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>',
+  help: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/></svg>',
+  eye: '<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  text: '<svg viewBox="0 0 24 24"><path d="M4 7V5h16v2M9 19h6M12 5v14"/></svg>',
+  sound: '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>',
+  globe: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+  print: '<svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>',
+  tag: '<svg viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
+  data: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>',
+};
+const seg = (opts, on) => `<span class="seg">${opts.map((o) => `<span class="${o === on ? 'on' : ''}">${o}</span>`).join('')}</span>`;
+const row = (b, s, ctl) => `<div class="row"><div class="l"><b>${b}</b>${s ? `<span>${s}</span>` : ''}</div>${ctl}</div>`;
+const sw = (on) => `<span class="sw ${on ? 'on' : ''}"></span>`;
+const APPS = {
+  monitor: { name: 'KIT Monitor', store: 'Demo Market', tabs: null, title: 'Display',
+    secs: [['Display', ic.eye], ['Text', ic.text], ['Store', ic.store]],
+    body: `<div class="gt">On the board</div><div class="group">
+      ${row('Show time estimates', 'Off for shops that would rather not publish how long food takes.', sw(false))}
+      ${row('Show item progress', 'A count such as 3 of 5. Never item names.', sw(true))}
+      ${row('Collected orders stay up for', 'Nothing else removes them.', seg(['1 min', '2 min', '3 min', '5 min', '10 min'], '3 min'))}
+      ${row('Orders per column', 'Auto fits as many as the screen holds.', seg(['Auto', '4', '5', '6', '8'], 'Auto'))}
+    </div><div class="gt">Look</div><div class="group">
+      ${row('Text size', 'Standard reads from about one metre.', seg(['Smaller', 'Standard', 'Larger', 'Largest'], 'Standard'))}
+      ${row('Theme', '', seg(['Light', 'Dark'], 'Light'))}
+    </div>` },
+  kitchen: { name: 'KIT Kitchen', store: 'Demo Market · All stations', tabs: [['Active', 6], ['Done', 0], ['All day']], title: 'Board',
+    secs: [['Board', ic.eye], ['Sound', ic.sound], ['Language', ic.globe], ['Store', ic.store]],
+    body: `<div class="gt">Board</div><div class="group">
+      ${row('Station', 'Which tickets this screen shows.', seg(['All', 'Kitchen', 'Barista'], 'All'))}
+      ${row('Clear ready tickets after', 'A served ticket leaves the Ready column.', '<span class="step"><span>−</span><b>5 min</b><span>+</span></span>')}
+      ${row('Theme', '', seg(['Dark', 'Light'], 'Dark'))}
+    </div><div class="gt">Sound and language</div><div class="group">
+      ${row('New ticket chime', 'Rings once per new ticket.', sw(true))}
+      ${row('Language', '', seg(['English', 'Español', 'العربية'], 'English'))}
+    </div>` },
+  invoice: { name: 'KIT Invoice', store: 'Demo Market', tabs: null, title: 'Store',
+    secs: [['Store', ic.store], ['Data', ic.data], ['Help', ic.help]],
+    body: `<div class="gt">Store</div><div class="group">
+      ${row('Name', '', '<span class="v">Demo Market</span>')}
+      ${row('Address', '', '<span class="v">100 Market St, San Francisco, CA</span>')}
+      ${row('Signed in as', '', '<span class="v">Demo Owner · can edit</span>')}
+      ${row('Cash discount', '', '<span class="v">4%</span>')}
+      ${row('Taxes', '', '<span class="chips"><span>No Tax 0%</span><span>Standard 8.625%</span><span>Produce 0%</span><span>Food 0%</span></span>')}
+    </div><div class="gt">Data</div><div class="group">
+      ${row('Demo store', 'Test data. Nothing you change here reaches a real store.', '')}
+    </div>` },
+  label: { name: 'KIT Label', store: 'Demo Market', tabs: [['Printed'], ['Electronic']], title: 'Printers',
+    secs: [['Printers', ic.print], ['Label paper', ic.tag], ['Store', ic.store], ['Help', ic.help]],
+    body: `<div class="gt">This device</div><div class="group">
+      ${row('Sunmi built-in printer', 'Built-in', '<span class="chev">›</span>')}
+    </div><div class="gt">External printers</div><div class="group">
+      ${row('Label printer NT320', 'Bluetooth · in use', '<span class="pdot"></span><span class="chev">›</span>')}
+      ${row('Add printer', 'Opens Bluetooth settings. Pair the printer there.', '<span class="chev">+</span>')}
+    </div><div class="gt">Label paper</div><div class="group">
+      ${row('Default label size', '2.17″ × 1.18″ (55 × 30 mm)', seg(['55×30', '50×70'], '55×30'))}
+    </div>` },
+};
+const A = APPS[app];
+const icon = `../apps/icons/kit-${app}.png`;
+const wall = app === 'monitor' || app === 'kitchen';
+const head = `<header class="kit-header">
+  <span style="line-height:0">${kitMark({ src: '../apps/kit-atom.png', size: 34, sheen: wall ? 'loop' : 'none' })}</span>
+  <div class="kit-header__who"><b>${A.name}</b><span>${A.store}</span></div>
+  ${A.tabs ? `<div class="tabs">${A.tabs.map((t, i) => `<span class="${i === 0 ? 'on' : ''}">${t[0]}${t[1] !== undefined ? `<i>${t[1]}</i>` : ''}</span>`).join('')}</div>` : ''}
+  <span class="kit-header__spacer"></span>
+  ${wall ? '<span class="clock">19:25</span><span class="live">LIVE</span>' : ''}
+  <span class="kit-header__more" aria-expanded="${screen === 'menu'}"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></span>
+</header>`;
+const crop = { monitor: 72, kitchen: 68, invoice: 140, label: 80 }[app];
+const content = `<div class="content" style="background-image:url(img/app-next/${app}.jpg);background-position:center -${crop}px"></div>`;
+const menu = `<div class="scrim" style="background:transparent"></div><nav class="kit-menu">
+  <div class="kit-menu__store"><img src="${icon}" alt=""><div><b>${A.store.split(' · ')[0]}</b><span>${A.name} · v0.11</span></div></div>
+  <div class="kit-menu__item">${ic.gear}Settings</div>
+  <div class="kit-menu__item">${ic.store}Store and clerk<small>Demo Owner</small></div>
+  <div class="kit-menu__item">${ic.help}Help</div>
+  <div class="kit-menu__item kit-menu__item--danger">${ic.out}Log out</div>
+</nav>`;
+const settings = `<div class="scrim"></div><section class="kit-settings"><nav class="kit-settings__stub">
+  <div class="appid"><img src="${icon}" alt=""><b>${A.name}</b></div>
+  ${A.secs.map((s, i) => `<div class="kit-settings__section" aria-selected="${i === 0}">${s[1]}${s[0]}</div>`).join('')}
+  <div class="kit-settings__section kit-settings__logout">${ic.out}Log out</div></nav>
+  <div class="kit-settings__body"><div class="bh"><h2>${A.title}</h2><span class="done">Done</span></div>${A.body.replace(/<div class="gt">[^<]*<\/div>/, '')}</div></section>`;
+document.getElementById('app').innerHTML = head + content + (screen === 'menu' ? menu : screen === 'settings' ? settings : '');
+</script>
+</body>
+</html>

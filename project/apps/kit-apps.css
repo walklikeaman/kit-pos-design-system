@@ -1,0 +1,201 @@
+/* KIT app layer (Kitchen, Monitor, Label, Invoice, Waiter).
+   Sits on top of ../colors_and_type.css. Decisions: kitpos wiki
+   concepts/design-review-2026-10.md, approved by Nikita 2026-10-25/26.
+   Every effect runs once on a real screen; prefers-reduced-motion keeps
+   only the colour change. */
+
+:root {
+  /* Status colours: unchanged from the shipping apps. */
+  --kit-app-new:       #B03434;
+  --kit-app-preparing: #E3B505;
+  --kit-app-ready:     #34B36B;  /* Kitchen, Monitor dark */
+  --kit-app-ready-light: #177245; /* Monitor light */
+  --kit-app-age-ok:    #34B36B;
+  --kit-app-age-warn:  #D9A21B;
+  --kit-app-age-late:  #C2413F;
+
+  /* Corners, picked by Nikita 2026-10-26. A squircle at the same radius looks
+     sharper than plain rounding, so the radii grow. Old WebViews without
+     corner-shape fall back to plain rounding at the same radius.
+     Monitor: full squircle, card 28 (was 16 round). */
+  --kit-monitor-corner-shape: squircle;
+  --kit-monitor-radius-card: 28px;
+  --kit-monitor-radius-stub: 16px;
+  /* Kitchen: S2, superellipse(1.5), today's radii x1.6. */
+  --kit-kitchen-corner-shape: superellipse(1.5);
+  --kit-kitchen-radius-ticket: 16px; /* was 10 */
+  --kit-kitchen-radius-button: 13px; /* was 8 */
+  --kit-kitchen-radius-chip: 10px;   /* mode chips, column bands (was 6) */
+  --kit-kitchen-radius-flap: 8px;    /* flap tiles (was 5) */
+  --kit-kitchen-radius-tab: 19px;    /* tab pill (was 12) */
+
+  --kit-app-ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+}
+
+/* ── Monitor order card with a tear-off stub ─────────────────────────────
+   Left: where the order goes (TABLE T1 / TO GO + icon). A dashed tear line.
+   Right: the customer's name, then the order number, then the status word. */
+.kit-order {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 16px;
+  height: 96px; padding: 0 22px; box-sizing: border-box; white-space: nowrap;
+  border-radius: var(--kit-monitor-radius-card); corner-shape: var(--kit-monitor-corner-shape);
+  background: var(--kit-surface, #fff); color: var(--kit-text, #1D3557);
+}
+.kit-order__stub {
+  display: grid; justify-items: center; flex: none;
+  padding-right: 16px; border-right: 2px dashed currentColor; font: 800 12px/1.1 var(--font-sans); letter-spacing: .06em;
+}
+.kit-order__stub b { font: 800 26px/1 var(--font-sans); }
+.kit-order__stub { border-right-color: color-mix(in srgb, currentColor 40%, transparent); }
+.kit-order__name { font: 800 52px/1 var(--font-sans); }
+.kit-order__no { font: 500 22px/1 var(--font-sans); opacity: .85; }
+.kit-order__status { margin-left: auto; font: 800 24px/1 var(--font-sans); }
+.kit-order.is-ready { background: var(--kit-app-ready-light); color: #fff; }
+@media (prefers-color-scheme: dark) { .kit-order.is-ready { background: var(--kit-app-ready); color: #0b1520; } }
+
+/* "Order ready" = R2 + O1 medium (Nikita 2026-10-26).
+   R2: the card itself travels from PREPARING to READY and turns green on
+   arrival; kitReadyMove() in kit-ready.js does the move (FLIP).
+   O1: then a medium crescent ribbon (5 px at the middle, fading to nothing at
+   the ends) catches one pass of light. kitReadyMove adds .just-ready for it.
+   Ribbon markup: .kit-order__o1 in preview/app-monitor-card.html. */
+.kit-order__o1 { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
+.kit-order { transition: background-color .45s ease, color .45s ease; }
+.kit-order.just-ready .kit-order__o1 { animation: kit-o1-show 2.2s .3s ease-out 1 both; }
+.kit-order.just-ready .kit-order__o1 .kit-o1-light { animation: kit-o1-run 1.9s .35s ease-in-out 1 both; }
+@keyframes kit-o1-show { 0%, 100% { opacity: 0; } 10%, 85% { opacity: 1; } }
+@keyframes kit-o1-run { from { transform: translateX(-180px); } to { transform: translateX(820px); } }
+
+/* ── Kitchen ticket and controls: corner tokens only ─────────────────── */
+.kit-ticket { border-radius: var(--kit-kitchen-radius-ticket) var(--kit-kitchen-radius-ticket) 0 0; corner-shape: var(--kit-kitchen-corner-shape); }
+.kit-button { border-radius: var(--kit-kitchen-radius-button); corner-shape: var(--kit-kitchen-corner-shape); }
+.kit-chip, .kit-band { border-radius: var(--kit-kitchen-radius-chip); corner-shape: var(--kit-kitchen-corner-shape); }
+
+/* ── Kitchen order number: flap tiles (KD-2, receipt ticket) ──────────── */
+.kit-flap { display: inline-flex; gap: 4px; }
+.kit-flap i {
+  font-style: normal; position: relative; width: 38px; height: 56px;
+  display: grid; place-items: center; font: 800 42px/1 var(--font-sans);
+  background: #2a323c; color: #fff; border-radius: var(--kit-kitchen-radius-flap); corner-shape: var(--kit-kitchen-corner-shape);
+}
+.kit-flap i::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--kit-surface, #1B2129); }
+.kit-flap.flip i { animation: kit-flap .5s calc(var(--i, 0) * 60ms) ease-in 1 both; transform-origin: 50% 50%; }
+@keyframes kit-flap { 0% { transform: rotateX(0); } 50% { transform: rotateX(-90deg); } 100% { transform: rotateX(0); } }
+
+/* ── Kitchen tabs T1: a sliding pill with one sheen ───────────────────── */
+.kit-tabs { position: relative; display: flex; gap: 2px; }
+.kit-tabs__pill {
+  position: absolute; top: 0; left: 0; height: 100%; width: var(--w, 92px);
+  transform: translateX(var(--x, 0)); transition: transform .45s var(--kit-app-ease-spring), width .3s;
+  background: #232b35; border-radius: var(--kit-kitchen-radius-tab); corner-shape: var(--kit-kitchen-corner-shape); overflow: hidden;
+}
+.kit-tabs__pill::after { content: ""; position: absolute; inset: 0 auto 0 -40px; width: 40px; background: linear-gradient(100deg, #fff0, #ffffff40, #fff0); }
+.kit-tabs.moved .kit-tabs__pill::after { animation: kit-pill-sheen .7s .2s ease-out 1; }
+@keyframes kit-pill-sheen { to { transform: translateX(160px); } }
+
+/* ── Screen surfaces for login, header, menu and settings ───────────────
+   One palette for every app (Nikita 2026-10-27): the values Monitor, Kitchen
+   and Label already ship. Dark is graphite #12161C, never the website's
+   slate #020617. */
+:root {
+  --kit-app-bg: #F0F2F5;  --kit-app-surface: #FFFFFF; --kit-app-raised: #F4F7FB;
+  --kit-app-line: #E4E9F0; --kit-app-text: #1D3557;  --kit-app-muted: #5F6B7A;
+  --kit-app-primary: #1D3557; --kit-app-on-primary: #FFFFFF;
+  --kit-app-focus: #0EA5E9; --kit-app-error: #DC2626; --kit-app-ok: #177245;
+  /* Corners follow the app: Monitor, Label, Invoice squircle; Kitchen superellipse(1.5). */
+  --kit-app-shape: squircle; --kit-app-radius-card: 28px; --kit-app-radius-field: 16px;
+}
+.kit-dark {
+  --kit-app-bg: #12161C;  --kit-app-surface: #1B2129; --kit-app-raised: #232B35;
+  --kit-app-line: #2C3540; --kit-app-text: #E6EAF0;  --kit-app-muted: #9AA6B4;
+  --kit-app-primary: #0EA5E9; --kit-app-on-primary: #06121C;
+  --kit-app-error: #E57373; --kit-app-ok: #34B36B;
+}
+.kit-app-kitchen { --kit-app-shape: superellipse(1.5); --kit-app-radius-card: 26px; --kit-app-radius-field: 13px; }
+
+/* ── Login L1: the atom in the middle (Nikita 2026-10-26) ────────────────
+   One centred column, no card. Field and camera button share a row, as in
+   KIT Label; a hardware scanner (V3 Plus side keys) logs in on its own.
+   States on .kit-login: .is-busy, .is-error, .is-ok, .is-leaving. */
+.kit-login { min-height: 100%; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: 24px 16px; background: var(--kit-app-bg); color: var(--kit-app-text); font-family: var(--font-sans); }
+.kit-login__col { width: min(440px, 100%); text-align: center; }
+.kit-login__mark { display: inline-block; line-height: 0; margin-bottom: 14px; }
+.kit-login__eyebrow { font: 800 13px/1.2 var(--font-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--kit-app-muted); }
+.kit-login__title { margin: 6px 0 8px; font: 800 34px/1.1 var(--font-sans); letter-spacing: -.01em; }
+.kit-login__lead { margin: 0 0 22px; font-size: 17px; line-height: 1.45; color: var(--kit-app-muted); }
+.kit-login__form { text-align: left; }
+.kit-login__label { display: block; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.kit-login__row { display: flex; gap: 10px; }
+.kit-login__field { flex: 1; min-width: 0; width: 100%; height: 60px; padding: 0 18px; border: 2px solid var(--kit-app-line); background: var(--kit-app-raised); color: inherit;
+  border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); font: 700 24px/1 var(--font-sans); letter-spacing: .2em; transition: border-color .2s, opacity .2s; }
+.kit-login__field:focus { outline: none; border-color: var(--kit-app-focus); }
+.kit-login__scan { flex: none; width: 60px; height: 60px; display: grid; place-items: center; border: 2px solid var(--kit-app-line); background: var(--kit-app-surface); color: var(--kit-app-text);
+  border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-login__scan svg { width: 26px; height: 26px; }
+.kit-login__error { min-height: 0; margin-top: 8px; color: var(--kit-app-error); font-size: 15px; font-weight: 600; line-height: 1.4; }
+.kit-login__button { width: 100%; margin-top: 14px; height: 60px; border: 0; display: flex; align-items: center; justify-content: center; gap: 12px;
+  background: var(--kit-app-primary); color: var(--kit-app-on-primary); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape);
+  font: 800 20px/1 var(--font-sans); transition: background-color .25s, transform .12s; }
+.kit-login__button:active { transform: scale(.97); }
+.kit-login__hint { margin-top: 16px; text-align: center; font-size: 15px; color: var(--kit-app-muted); }
+.kit-login__hint b { color: var(--kit-app-text); }
+.kit-login.is-busy .kit-login__field, .kit-login.is-busy .kit-login__scan { opacity: .55; }
+.kit-login.is-error .kit-login__field { border-color: var(--kit-app-error); }
+.kit-login.is-ok .kit-login__button { background: var(--kit-app-ok); color: #fff; }
+/* Success: words drop away, the atom swells through the viewer, the app comes up behind it. */
+.kit-login.is-leaving { position: fixed; inset: 0; z-index: 50; animation: kit-login-out 900ms ease-in both; }
+.kit-login.is-leaving .kit-login__mark { animation: kit-login-through 800ms 250ms cubic-bezier(.6, 0, .4, 1) both; }
+.kit-login.is-leaving .kit-login__col > :not(.kit-login__mark) { animation: kit-login-down 300ms ease-in both; }
+@keyframes kit-login-out { 0%, 40% { background-color: var(--kit-app-bg); } 100% { background-color: transparent; } }
+@keyframes kit-login-through { to { transform: scale(9); opacity: 0; } }
+@keyframes kit-login-down { to { transform: translateY(12px); opacity: 0; } }
+
+/* ── Header: atom, app name and store, tabs, clock + LIVE, ⋮ ───────────── */
+.kit-header { height: 68px; display: flex; align-items: center; gap: 14px; padding: 0 16px 0 20px; background: var(--kit-app-surface); border-bottom: 1px solid var(--kit-app-line); color: var(--kit-app-text); font-family: var(--font-sans); }
+.kit-header__who { display: flex; flex-direction: column; line-height: 1.15; }
+.kit-header__who b { font-size: 19px; font-weight: 800; }
+.kit-header__who span { font-size: 13px; font-weight: 600; color: var(--kit-app-muted); }
+.kit-header__spacer { flex: 1; }
+.kit-header__more { width: 48px; height: 48px; display: grid; place-items: center; color: var(--kit-app-muted); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-header__more[aria-expanded="true"] { background: var(--kit-app-raised); color: var(--kit-app-text); }
+
+/* ── ⋮ menu: store card on top, then Settings, Store and clerk, Help, Log out */
+.kit-menu { width: 300px; padding: 8px; background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); box-shadow: 0 24px 60px #0003;
+  border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-shape); color: var(--kit-app-text); font-family: var(--font-sans); }
+.kit-menu__store { display: flex; align-items: center; gap: 12px; padding: 12px 12px 14px; margin-bottom: 6px; border-bottom: 2px dashed var(--kit-app-line); }
+.kit-menu__store img { width: 44px; height: 44px; border-radius: 12px; corner-shape: squircle; }
+.kit-menu__item { display: flex; align-items: center; gap: 14px; height: 54px; padding: 0 12px; font-size: 17px; font-weight: 700; border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-menu__item:hover, .kit-menu__item:focus-visible { background: var(--kit-app-raised); }
+.kit-menu__item--danger { color: var(--kit-app-error); }
+
+/* ── Settings S-B: a ticket with a section stub (Nikita 2026-10-26) ────────
+   Sections on the stub, a dashed tear, rows on the right, Log out at the
+   foot of the stub. Under 700 px the stub becomes a strip of chips on top
+   and the tear runs across. */
+.kit-settings { display: flex; width: min(1000px, calc(100vw - 48px)); height: min(640px, calc(100vh - 48px)); overflow: hidden;
+  background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); box-shadow: 0 30px 80px #0004; color: var(--kit-app-text); font-family: var(--font-sans);
+  border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-shape); }
+.kit-settings__stub { flex: none; width: 250px; padding: 26px 18px; display: flex; flex-direction: column; gap: 4px; position: relative; }
+.kit-settings__stub::after { content: ""; position: absolute; top: 22px; bottom: 22px; right: 0; border-right: 2px dashed var(--kit-app-muted); opacity: .6; }
+.kit-settings__section { height: 50px; display: flex; align-items: center; gap: 12px; padding: 0 12px; font-size: 16px; font-weight: 700; color: var(--kit-app-muted);
+  border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-settings__section[aria-selected="true"] { background: var(--kit-app-raised); color: var(--kit-app-text); }
+.kit-settings__logout { margin-top: auto; color: var(--kit-app-error); }
+.kit-settings__body { flex: 1; padding: 26px 30px; overflow: auto; }
+.kit-settings__row { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
+.kit-settings__row:first-child { border-top: 0; }
+@media (max-width: 700px) {
+  .kit-settings { width: 100%; height: 100%; flex-direction: column; border: 0; border-radius: 0; }
+  .kit-settings__stub { width: auto; flex-direction: row; flex-wrap: wrap; gap: 6px; padding: 14px 14px 12px; }
+  .kit-settings__stub::after { top: auto; bottom: 0; left: 14px; right: 14px; border-right: 0; border-bottom: 2px dashed var(--kit-app-muted); }
+  .kit-settings__section { height: 40px; font-size: 14px; }
+  .kit-settings__section svg, .kit-settings__logout { display: none; }
+  .kit-settings__body { padding: 16px; }
+  .kit-settings__row { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kit-order, .kit-order *, .kit-flap i, .kit-order.is-moving, .kit-tabs__pill, .kit-tabs__pill::after,
+  .kit-login.is-leaving, .kit-login.is-leaving * { animation: none !important; transition: none !important; }
+}
