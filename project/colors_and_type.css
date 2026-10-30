@@ -1,6 +1,8 @@
 /* ============================================================
    KIT POS Design System — CSS Custom Properties
-   Source: walklikeaman/KIT-POS-Website (Tailwind config + globals.css)
+   One palette for every KIT product, light and dark: the apps,
+   the website and anything new (Nikita 2026-10-27/30). The app
+   layer (apps/kit-apps.css) reads the same values.
    ============================================================ */
 
 /* Google Fonts — Plus Jakarta Sans (KIT POS brand font) */
@@ -20,16 +22,28 @@
   --kit-blue-10:   #1d35570d; /* kit-blue at 5% — subtle tint */
   --kit-mist-50:   #f4f7fb80; /* mist at 50% — alternate section bg */
 
-  /* Dark mode anchors (used when html.dark) */
-  --kit-dark-bg:      #020617; /* slate-950 */
-  --kit-dark-surface: #0f172a; /* slate-900 */
-  --kit-dark-border:  #1e293b; /* slate-800 */
-  --kit-dark-subtle:  #334155; /* slate-700 */
-  --kit-dark-text1:   #f1f5f9; /* slate-100 */
-  --kit-dark-text2:   #cbd5e1; /* slate-300 */
-  --kit-dark-text3:   #94a3b8; /* slate-400 */
-  --kit-sky:          #0ea5e9; /* sky-500 — dark mode CTA */
-  --kit-sky-dark:     #0369a1; /* sky-700 — sky hover */
+  /* The app canvas: a board of white cards on a white page has no edges. */
+  --kit-canvas:    #f0f2f5;
+
+  /* Dark mode anchors (used when html.dark): graphite, the KIT apps' dark
+     since 2026-10-27. The old slate set (#020617 / #0f172a) is retired. */
+  --kit-dark-bg:      #12161c; /* page, board */
+  --kit-dark-surface: #1b2129; /* cards, bars, sheets */
+  --kit-dark-surface-alt: #161b22; /* a step below the card */
+  --kit-dark-border:  #2c3540; /* borders, dividers */
+  --kit-dark-subtle:  #3a4552; /* strong borders */
+  --kit-dark-text1:   #e6eaf0; /* primary text */
+  --kit-dark-text2:   #c9d2dc; /* secondary text */
+  --kit-dark-text3:   #9aa6b4; /* muted text */
+  --kit-sky:          #0ea5e9; /* accent; the main button in dark */
+  --kit-sky-dark:     #0369a1; /* sky hover */
+
+  /* State colours, the same in every product */
+  --kit-error:        #dc2626; /* a mistake: wrong code, Log out (light) */
+  --kit-error-dark:   #e57373; /* the same in dark */
+  --kit-ready:        #177245; /* ready / success (light) */
+  --kit-ready-dark:   #34b36b; /* the same in dark */
+  --kit-preparing:    #e3b505; /* preparing, both themes */
 
   /* Semantic aliases */
   --color-bg:          var(--kit-white);
@@ -42,12 +56,14 @@
   --color-cta:         var(--kit-blue);
   --color-cta-text:    var(--kit-white);
   --color-focus-ring:  var(--kit-blue);
+  --color-error:       var(--kit-error);
+  --color-success:     var(--kit-ready);
 }
 
 html.dark {
   --color-bg:          var(--kit-dark-bg);
   --color-surface:     var(--kit-dark-surface);
-  --color-surface-alt: #0f1629;
+  --color-surface-alt: var(--kit-dark-surface-alt);
   --color-border:      var(--kit-dark-border);
   --color-text-primary:   var(--kit-dark-text1);
   --color-text-secondary: var(--kit-dark-text2);
@@ -55,6 +71,8 @@ html.dark {
   --color-cta:         var(--kit-sky);
   --color-cta-text:    var(--kit-dark-bg);
   --color-focus-ring:  var(--kit-sky);
+  --color-error:       var(--kit-error-dark);
+  --color-success:     var(--kit-ready-dark);
 }
 
 /* ─── Typography ─────────────────────────────────────────── */

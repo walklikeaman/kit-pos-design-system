@@ -37,7 +37,7 @@ Each token has a live example in [`project/preview/`](project/preview/).
 
 - **Font** — Plus Jakarta Sans, across web and apps.
 - **Primary** — Blue `#1d3557` for text, buttons and anchors; Slate `#5f6b7a` for secondary text.
-- **Surfaces** — Light `#ffffff` / `#f4f7fb`, dark `#020617` / `#0f172a`; Sky `#0ea5e9` is the dark-mode call to action.
+- **Surfaces** — Light `#ffffff` / `#f4f7fb`, dark graphite `#12161c` / `#1b2129`; Sky `#0ea5e9` is the dark-mode main button. One palette for every app and the website.
 - **No icon libraries** (Lucide only if needed) and **no emoji** in product UI or copy.
 - **Tone** — calm, direct, professional. No hype language.
 

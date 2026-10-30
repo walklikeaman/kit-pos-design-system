@@ -96,8 +96,8 @@
 
 /* ── Screen surfaces for login, header, menu and settings ───────────────
    One palette for every app (Nikita 2026-10-27): the values Monitor, Kitchen
-   and Label already ship. Dark is graphite #12161C, never the website's
-   slate #020617. */
+   and Label already ship. Dark is graphite #12161C, the same values as
+   ../colors_and_type.css --kit-dark-* (one palette, Nikita 2026-10-30). */
 :root {
   --kit-app-bg: #F0F2F5;  --kit-app-surface: #FFFFFF; --kit-app-raised: #F4F7FB;
   --kit-app-line: #E4E9F0; --kit-app-text: #1D3557;  --kit-app-muted: #5F6B7A;

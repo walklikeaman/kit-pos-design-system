@@ -63,9 +63,18 @@
 | `--kit-mist` | `#f4f7fb` | Section backgrounds, hover states, card fills |
 | `--kit-border` | `#e4e9f0` | All borders, dividers |
 | `--kit-white` | `#ffffff` | Card surfaces, page background |
-| Dark `--kit-dark-bg` | `#020617` (slate-950) | Page bg in dark mode |
-| Dark `--kit-dark-surface` | `#0f172a` (slate-900) | Card surfaces in dark mode |
-| Dark `--kit-sky` | `#0ea5e9` (sky-500) | Primary accent in dark mode |
+| `--kit-canvas` | `#f0f2f5` | App boards behind white cards |
+| Dark `--kit-dark-bg` | `#12161c` (graphite) | Page bg in dark mode |
+| Dark `--kit-dark-surface` | `#1b2129` | Card surfaces in dark mode |
+| Dark `--kit-dark-border` | `#2c3540` | Borders in dark mode |
+| Dark `--kit-sky` | `#0ea5e9` (sky-500) | Main button and accent in dark mode |
+| `--kit-error` / dark | `#dc2626` / `#e57373` | Mistakes: wrong code, Log out |
+| `--kit-ready` / dark | `#177245` / `#34b36b` | Ready, success |
+| `--kit-preparing` | `#e3b505` | Preparing |
+
+One palette for every KIT product, the apps and the website alike (Nikita
+2026-10-27/30). The full table with every role is in `apps/README.md`, "One
+palette"; the slate dark set (`#020617` / `#0f172a`) is retired.
 
 **Color vibe:** Monochromatic navy-blue anchor, near-white canvas. No gradients on primary surfaces. Subtle radial gradient on body (see globals.css) for depth without distraction. Cool, calm, corporate-boutique.
 
@@ -139,9 +148,9 @@ All animations respect `prefers-reduced-motion`. Easing is always smooth/ease-in
 
 ### Dark Mode
 - Triggered by `html.dark` class, stored in `localStorage` under key `kit-pos-theme`
-- Background: `slate-950` (#020617), surfaces: `slate-900` (#0f172a)
-- Text: `slate-100` primary, `slate-300` secondary, `slate-400` muted
-- Borders: `slate-700` / `slate-800`
+- Background: graphite `#12161c`, surfaces: `#1b2129`
+- Text: `#e6eaf0` primary, `#c9d2dc` secondary, `#9aa6b4` muted
+- Borders: `#2c3540` / `#3a4552`
 - Primary CTA switches to `sky-500` background with dark text in dark mode
 - Radial gradients shift to sky/blue tones
 

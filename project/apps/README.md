@@ -25,8 +25,9 @@ Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html
 
 Every app uses the same surface and status colours, light and dark. They are
 the `--kit-app-*` tokens in `kit-apps.css`; an app maps its theme onto them
-and adds no colour of its own. The website keeps its slate dark palette from
-`colors_and_type.css`; the apps don't use it.
+and adds no colour of its own. The website uses the same palette: since
+2026-10-30 `colors_and_type.css` carries these values as `--kit-dark-*`,
+`--kit-canvas`, `--kit-error`, `--kit-ready` and `--kit-preparing`.
 
 | Role | Light | Dark |
 | --- | --- | --- |
