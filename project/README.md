@@ -60,7 +60,7 @@
 |---|---|---|
 | `--kit-blue` | `#1d3557` | Primary text, buttons, CTAs, brand anchor |
 | `--kit-slate` | `#5f6b7a` | Secondary text, captions, eyebrows |
-| `--kit-mist` | `#f4f7fb` | Section backgrounds, hover states, card fills |
+| `--kit-mist` | `#f0f2f5` | Section backgrounds, hover states, card fills |
 | `--kit-border` | `#e4e9f0` | All borders, dividers |
 | `--kit-white` | `#ffffff` | Card surfaces, page background |
 | `--kit-canvas` | `#f0f2f5` | App boards behind white cards |
