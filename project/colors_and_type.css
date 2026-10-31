@@ -13,14 +13,14 @@
   /* Brand */
   --kit-blue:      #1d3557;   /* Primary text, buttons, anchor color */
   --kit-slate:     #5f6b7a;   /* Secondary text, captions, eyebrows */
-  --kit-mist:      #f4f7fb;   /* Section backgrounds, hover fills */
+  --kit-mist:      #f0f2f5;   /* Section backgrounds, hover fills */
   --kit-border:    #e4e9f0;   /* All borders and dividers */
   --kit-white:     #ffffff;   /* Page background, card surfaces */
 
   /* Extended tints */
   --kit-blue-90:   #1d355799; /* kit-blue at 60% opacity */
   --kit-blue-10:   #1d35570d; /* kit-blue at 5% — subtle tint */
-  --kit-mist-50:   #f4f7fb80; /* mist at 50% — alternate section bg */
+  --kit-mist-50:   #f0f2f580; /* mist at 50% — alternate section bg */
 
   /* The app canvas: a board of white cards on a white page has no edges. */
   --kit-canvas:    #f0f2f5;

@@ -104,7 +104,7 @@ function KitHeader({ page, setPage }) {
                     fontSize: 13, fontWeight: 500, fontFamily: 'inherit',
                     border: 'none', cursor: 'pointer', transition: 'all 150ms',
                     background: isActive(link)
-                      ? (dark ? '#2c3540' : '#f4f7fb')
+                      ? (dark ? '#2c3540' : '#f0f2f5')
                       : 'transparent',
                     color: isActive(link)
                       ? (dark ? '#e6eaf0' : '#1d3557')
@@ -133,7 +133,7 @@ function KitHeader({ page, setPage }) {
                             background: 'transparent', transition: 'all 150ms',
                             color: dark ? '#cbd5e1' : '#5f6b7a',
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.background = dark ? '#2c3540' : '#f4f7fb'; e.currentTarget.style.color = dark ? '#e6eaf0' : '#1d3557'; }}
+                          onMouseEnter={e => { e.currentTarget.style.background = dark ? '#2c3540' : '#f0f2f5'; e.currentTarget.style.color = dark ? '#e6eaf0' : '#1d3557'; }}
                           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = dark ? '#cbd5e1' : '#5f6b7a'; }}>
                           {child}
                         </button>
@@ -191,7 +191,7 @@ function KitHeader({ page, setPage }) {
                 style={{
                   textAlign: 'left', borderRadius: 16, padding: '10px 16px',
                   fontSize: 14, fontWeight: 500, fontFamily: 'inherit', border: 'none', cursor: 'pointer',
-                  background: isActive(link) ? (dark ? '#2c3540' : '#f4f7fb') : 'transparent',
+                  background: isActive(link) ? (dark ? '#2c3540' : '#f0f2f5') : 'transparent',
                   color: isActive(link) ? (dark ? '#e6eaf0' : '#1d3557') : (dark ? '#94a3b8' : '#5f6b7a'),
                 }}>
                 {link.label}

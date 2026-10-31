@@ -15,7 +15,7 @@ If the user invokes this skill without any other guidance, ask them what they wa
 **Brand colors:**
 - Primary: `#1d3557` (kit-blue)
 - Secondary text: `#5f6b7a` (kit-slate)
-- Background tint: `#f4f7fb` (kit-mist)
+- Background tint: `#f0f2f5` (kit-mist)
 - Border: `#e4e9f0` (kit-border)
 - Dark CTA: `#e6eaf0` with `#12161c` text (sky `#0ea5e9` is accent only)
 
