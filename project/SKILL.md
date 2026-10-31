@@ -17,7 +17,7 @@ If the user invokes this skill without any other guidance, ask them what they wa
 - Secondary text: `#5f6b7a` (kit-slate)
 - Background tint: `#f4f7fb` (kit-mist)
 - Border: `#e4e9f0` (kit-border)
-- Dark CTA: `#0ea5e9` (sky-500)
+- Dark CTA: `#e6eaf0` with `#12161c` text (sky `#0ea5e9` is accent only)
 
 **Font:** Inter (Google Fonts) — variable, opsz 14..32
 

@@ -67,10 +67,12 @@
 | Dark `--kit-dark-bg` | `#12161c` (graphite) | Page bg in dark mode |
 | Dark `--kit-dark-surface` | `#1b2129` | Card surfaces in dark mode |
 | Dark `--kit-dark-border` | `#2c3540` | Borders in dark mode |
-| Dark `--kit-sky` | `#0ea5e9` (sky-500) | Main button and accent in dark mode |
-| `--kit-error` / dark | `#dc2626` / `#e57373` | Mistakes: wrong code, Log out |
-| `--kit-ready` / dark | `#177245` / `#34b36b` | Ready, success |
-| `--kit-preparing` | `#e3b505` | Preparing |
+| Dark `--kit-dark-text1` | `#e6eaf0` | Main button in dark mode (graphite text); sky `#0ea5e9` is accent and focus only |
+| `--kit-error` / dark | `#dc2626` / `#ff5a4e` | Mistakes: wrong code, Log out |
+| `--kit-late` | `#dc2626` | Late, New header: a fill with white text |
+| `--kit-ready` / dark | `#3d7a30` / `#6fae52` | Ready, success (atom green) |
+| `--kit-preparing` | `#f2c230` | Preparing (atom yellow) |
+| `--kit-push` | `#e8891c` | A ticket getting old (atom orange) |
 
 One palette for every KIT product, the apps and the website alike (Nikita
 2026-10-27/30). The full table with every role is in `apps/README.md`, "One

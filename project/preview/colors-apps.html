@@ -22,18 +22,20 @@ const rows = [
   ['Line', '--kit-border', '--kit-dark-border'],
   ['Text', '--kit-blue', '--kit-dark-text1'],
   ['Second text', '--kit-slate', '--kit-dark-text3'],
-  ['Main button', '--kit-blue', '--kit-sky', 'Done', 'Done'],
-  ['Accent', '--kit-sky', '--kit-sky'],
-  ['Error', '--kit-error', '--kit-error-dark'],
+  ['Main button', '--kit-blue', '--kit-dark-text1', 'Done', 'Done'],
+  ['Accent, focus', '--kit-sky', '--kit-sky'],
+  ['Error text', '--kit-error', '--kit-error-dark'],
+  ['Late', '--kit-late', '--kit-late'],
   ['Ready', '--kit-ready', '--kit-ready-dark'],
   ['Preparing', '--kit-preparing', '--kit-preparing'],
+  ['Getting old', '--kit-push', '--kit-push'],
 ];
 const lum = (h) => { const c = [1,3,5].map(i => parseInt(h.slice(i,i+2),16)/255).map(x => x <= .03928 ? x/12.92 : ((x+.055)/1.055)**2.4); return .2126*c[0]+.7152*c[1]+.0722*c[2]; };
 const g = document.getElementById('g');
 for (const [name, l, d, tl, td] of rows) {
   g.insertAdjacentHTML('beforeend', `<div class="role">${name}</div>`);
   for (const [tok, dark, word] of [[l, false, tl], [d, true, td]]) {
-    const hex = v(tok); const ink = lum(hex) > .4 ? '#1d3557' : (dark && tok === '--kit-sky' ? '#12161c' : '#fff');
+    const hex = v(tok); const ink = lum(hex) > .4 ? '#12161c' : (dark && tok === '--kit-ready-dark' ? '#12161c' : '#fff');
     g.insertAdjacentHTML('beforeend', `<div class="sw${dark ? ' d' : ''}" style="background:${hex};color:${ink}">${hex}${word ? `<span>${word}</span>` : ''}</div>`);
   }
 }

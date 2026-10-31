@@ -37,7 +37,7 @@ Each token has a live example in [`project/preview/`](project/preview/).
 
 - **Font** — Plus Jakarta Sans, across web and apps.
 - **Primary** — Blue `#1d3557` for text, buttons and anchors; Slate `#5f6b7a` for secondary text.
-- **Surfaces** — Light `#ffffff` / `#f4f7fb`, dark graphite `#12161c` / `#1b2129`; Sky `#0ea5e9` is the dark-mode main button. One palette for every app and the website.
+- **Surfaces** — Light `#ffffff` / `#f4f7fb`, dark graphite `#12161c` / `#1b2129`; the dark-mode main button is near-white `#e6eaf0`, sky `#0ea5e9` is accent only. One palette for every app and the website.
 - **No icon libraries** (Lucide only if needed) and **no emoji** in product UI or copy.
 - **Tone** — calm, direct, professional. No hype language.
 
@@ -54,7 +54,7 @@ rationale — and the options that were turned down — lives in
 
 - **The mark** — the KIT atom, with a soft sheen running along each orbit. Never redrawn ([`kit-mark.js`](project/apps/kit-mark.js)).
 - **Icons** — the atom plus the app's object on a dark shelf: a bell (Monitor), a cloche (Kitchen), a price tag (Label), a receipt (Invoice).
-- **Status** — New `#B03434`, Preparing `#E2B714`, Ready `#34B36B`.
+- **Status** — the logo atom's colours: Preparing `#F2C230`, getting old `#E8891C`, Ready `#6FAE52` / `#3D7A30`; Late and New `#DC2626`.
 - **Monitor order card** — a tear-off stub for where the order goes, and an R2 + O1 "ready" move ([`kit-ready.js`](project/apps/kit-ready.js)).
 - **Corners** — squircles: Monitor card radius 28, Kitchen `superellipse(1.5)`.
 

@@ -5,14 +5,15 @@
    only the colour change. */
 
 :root {
-  /* Status colours: unchanged from the shipping apps. */
-  --kit-app-new:       #B03434;
-  --kit-app-preparing: #E3B505;
-  --kit-app-ready:     #34B36B;  /* Kitchen, Monitor dark */
-  --kit-app-ready-light: #177245; /* Monitor light */
-  --kit-app-age-ok:    #34B36B;
-  --kit-app-age-warn:  #D9A21B;
-  --kit-app-age-late:  #C2413F;
+  /* Status colours: the logo atom's yellow, orange and green, and one red
+     (Nikita 2026-10-31). */
+  --kit-app-new:       #DC2626;
+  --kit-app-preparing: #F2C230;
+  --kit-app-ready:     #6FAE52;  /* dark, dark text */
+  --kit-app-ready-light: #3D7A30; /* light, white text */
+  --kit-app-age-ok:    #6FAE52;
+  --kit-app-age-warn:  #E8891C;
+  --kit-app-age-late:  #DC2626;
 
   /* Corners, picked by Nikita 2026-10-26. A squircle at the same radius looks
      sharper than plain rounding, so the radii grow. Old WebViews without
@@ -102,15 +103,15 @@
   --kit-app-bg: #F0F2F5;  --kit-app-surface: #FFFFFF; --kit-app-raised: #F4F7FB;
   --kit-app-line: #E4E9F0; --kit-app-text: #1D3557;  --kit-app-muted: #5F6B7A;
   --kit-app-primary: #1D3557; --kit-app-on-primary: #FFFFFF;
-  --kit-app-focus: #0EA5E9; --kit-app-error: #DC2626; --kit-app-ok: #177245;
+  --kit-app-focus: #0EA5E9; --kit-app-error: #DC2626; --kit-app-ok: #3D7A30;
   /* Corners follow the app: Monitor, Label, Invoice squircle; Kitchen superellipse(1.5). */
   --kit-app-shape: squircle; --kit-app-radius-card: 28px; --kit-app-radius-field: 16px;
 }
 .kit-dark {
   --kit-app-bg: #12161C;  --kit-app-surface: #1B2129; --kit-app-raised: #232B35;
   --kit-app-line: #2C3540; --kit-app-text: #E6EAF0;  --kit-app-muted: #9AA6B4;
-  --kit-app-primary: #0EA5E9; --kit-app-on-primary: #06121C;
-  --kit-app-error: #E57373; --kit-app-ok: #34B36B;
+  --kit-app-primary: #E6EAF0; --kit-app-on-primary: #12161C;
+  --kit-app-error: #FF5A4E; --kit-app-ok: #6FAE52;
 }
 .kit-app-kitchen { --kit-app-shape: superellipse(1.5); --kit-app-radius-card: 26px; --kit-app-radius-field: 13px; }
 
