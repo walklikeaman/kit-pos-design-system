@@ -104,10 +104,10 @@ function KitHeader({ page, setPage }) {
                     fontSize: 13, fontWeight: 500, fontFamily: 'inherit',
                     border: 'none', cursor: 'pointer', transition: 'all 150ms',
                     background: isActive(link)
-                      ? (dark ? '#1e293b' : '#f4f7fb')
+                      ? (dark ? '#2c3540' : '#f4f7fb')
                       : 'transparent',
                     color: isActive(link)
-                      ? (dark ? '#f1f5f9' : '#1d3557')
+                      ? (dark ? '#e6eaf0' : '#1d3557')
                       : (dark ? '#94a3b8' : '#5f6b7a'),
                   }}>
                   {link.label}
@@ -119,8 +119,8 @@ function KitHeader({ page, setPage }) {
                     position: 'absolute', left: 0, top: '100%', width: 200, paddingTop: 8, zIndex: 50
                   }}>
                     <div style={{
-                      borderRadius: 20, border: `1px solid ${dark ? '#1e293b' : '#e4e9f0'}`,
-                      background: dark ? '#0f172a' : '#fff',
+                      borderRadius: 20, border: `1px solid ${dark ? '#2c3540' : '#e4e9f0'}`,
+                      background: dark ? '#1b2129' : '#fff',
                       boxShadow: '0 8px 30px rgba(29,53,87,0.12)', padding: 8
                     }}>
                       {link.children.map(child => (
@@ -133,7 +133,7 @@ function KitHeader({ page, setPage }) {
                             background: 'transparent', transition: 'all 150ms',
                             color: dark ? '#cbd5e1' : '#5f6b7a',
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.background = dark ? '#1e293b' : '#f4f7fb'; e.currentTarget.style.color = dark ? '#f1f5f9' : '#1d3557'; }}
+                          onMouseEnter={e => { e.currentTarget.style.background = dark ? '#2c3540' : '#f4f7fb'; e.currentTarget.style.color = dark ? '#e6eaf0' : '#1d3557'; }}
                           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = dark ? '#cbd5e1' : '#5f6b7a'; }}>
                           {child}
                         </button>
@@ -149,8 +149,8 @@ function KitHeader({ page, setPage }) {
           <button onClick={() => setDark(d => !d)}
             style={{
               width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              border: `1px solid ${dark ? '#1e293b' : '#e4e9f0'}`,
-              background: dark ? '#0f172a' : '#fff',
+              border: `1px solid ${dark ? '#2c3540' : '#e4e9f0'}`,
+              background: dark ? '#1b2129' : '#fff',
               color: dark ? '#94a3b8' : '#5f6b7a',
               cursor: 'pointer', transition: 'all 150ms', flexShrink: 0
             }}>
@@ -163,8 +163,8 @@ function KitHeader({ page, setPage }) {
           onClick={() => setMenuOpen(o => !o)}
           style={{
             width: 36, height: 36, borderRadius: '50%', display: 'none', alignItems: 'center', justifyContent: 'center',
-            border: `1px solid ${dark ? '#1e293b' : '#e4e9f0'}`,
-            background: dark ? '#0f172a' : '#fff',
+            border: `1px solid ${dark ? '#2c3540' : '#e4e9f0'}`,
+            background: dark ? '#1b2129' : '#fff',
             color: dark ? '#94a3b8' : '#1d3557',
             cursor: 'pointer', flexShrink: 0
           }}
@@ -180,8 +180,8 @@ function KitHeader({ page, setPage }) {
       {/* Mobile menu */}
       {menuOpen && (
         <div style={{
-          borderTop: `1px solid ${dark ? '#1e293b' : 'rgba(228,233,240,0.7)'}`,
-          background: dark ? '#020617' : '#fff',
+          borderTop: `1px solid ${dark ? '#2c3540' : 'rgba(228,233,240,0.7)'}`,
+          background: dark ? '#12161c' : '#fff',
           padding: '12px 24px 16px'
         }}>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -191,8 +191,8 @@ function KitHeader({ page, setPage }) {
                 style={{
                   textAlign: 'left', borderRadius: 16, padding: '10px 16px',
                   fontSize: 14, fontWeight: 500, fontFamily: 'inherit', border: 'none', cursor: 'pointer',
-                  background: isActive(link) ? (dark ? '#1e293b' : '#f4f7fb') : 'transparent',
-                  color: isActive(link) ? (dark ? '#f1f5f9' : '#1d3557') : (dark ? '#94a3b8' : '#5f6b7a'),
+                  background: isActive(link) ? (dark ? '#2c3540' : '#f4f7fb') : 'transparent',
+                  color: isActive(link) ? (dark ? '#e6eaf0' : '#1d3557') : (dark ? '#94a3b8' : '#5f6b7a'),
                 }}>
                 {link.label}
               </button>

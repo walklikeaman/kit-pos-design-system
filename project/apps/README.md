@@ -25,8 +25,9 @@ Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html
 
 Every app uses the same surface and status colours, light and dark. They are
 the `--kit-app-*` tokens in `kit-apps.css`; an app maps its theme onto them
-and adds no colour of its own. The website keeps its slate dark palette from
-`colors_and_type.css`; the apps don't use it.
+and adds no colour of its own. The website uses the same palette: since
+2026-10-30 `colors_and_type.css` carries these values as `--kit-dark-*`,
+`--kit-canvas`, `--kit-error`, `--kit-ready` and `--kit-preparing`.
 
 | Role | Light | Dark |
 | --- | --- | --- |
@@ -35,16 +36,21 @@ and adds no colour of its own. The website keeps its slate dark palette from
 | Line | `#E4E9F0` | `#2C3540` |
 | Text | `#1D3557` | `#E6EAF0` |
 | Second text | `#5F6B7A` | `#9AA6B4` |
-| Main button | `#1D3557` | `#0EA5E9` |
-| Error | `#DC2626` | `#E57373` |
-| Ready | `#177245` | `#34B36B` |
-| Preparing | `#E3B505` | `#E3B505` |
+| Main button | `#1D3557`, white text | `#E6EAF0`, `#12161C` text |
+| Error text | `#DC2626` | `#FF5A4E` |
+| Late, New header | `#DC2626`, white text | `#DC2626`, white text |
+| Ready | `#3D7A30`, white text | `#6FAE52`, dark text |
+| Preparing | `#F2C230` | `#F2C230` |
+| Getting old (PUSH IT) | `#E8891C` | `#E8891C` |
 
-Sky `#0EA5E9` is the accent and the focus ring in light, the main button in
-dark. White text never sits on plain sky (2.77:1); in light a filled button is
-navy. Error red `#DC2626` in light is Nikita's pick (2026-10-27): 4.83:1 on white,
-4.31:1 on the grey background, so error text there is bold. It is for
-mistakes only; a late order keeps its own status red.
+Round 2, Nikita 2026-10-31. The main button is the colour of the text: navy in
+light, near-white in dark (15:1). Sky `#0EA5E9` stays the accent and the focus
+ring and is never a filled button; as the dark button it made the apps look
+like every other AI product. The states take the colours of the logo's atom
+(yellow, orange, green), so colour on screen always means a state. Red is
+`#DC2626` everywhere as a fill (4.83:1 with white); red text on the dark card is
+`#FF5A4E` (5.3:1), because `#E57373` read as pink. Options and ratings:
+https://claude.ai/artifact/B8JeXyMr6vRVkgTbqzD3Tc
 
 ## The mark
 

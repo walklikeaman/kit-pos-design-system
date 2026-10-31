@@ -63,9 +63,20 @@
 | `--kit-mist` | `#f4f7fb` | Section backgrounds, hover states, card fills |
 | `--kit-border` | `#e4e9f0` | All borders, dividers |
 | `--kit-white` | `#ffffff` | Card surfaces, page background |
-| Dark `--kit-dark-bg` | `#020617` (slate-950) | Page bg in dark mode |
-| Dark `--kit-dark-surface` | `#0f172a` (slate-900) | Card surfaces in dark mode |
-| Dark `--kit-sky` | `#0ea5e9` (sky-500) | Primary accent in dark mode |
+| `--kit-canvas` | `#f0f2f5` | App boards behind white cards |
+| Dark `--kit-dark-bg` | `#12161c` (graphite) | Page bg in dark mode |
+| Dark `--kit-dark-surface` | `#1b2129` | Card surfaces in dark mode |
+| Dark `--kit-dark-border` | `#2c3540` | Borders in dark mode |
+| Dark `--kit-dark-text1` | `#e6eaf0` | Main button in dark mode (graphite text); sky `#0ea5e9` is accent and focus only |
+| `--kit-error` / dark | `#dc2626` / `#ff5a4e` | Mistakes: wrong code, Log out |
+| `--kit-late` | `#dc2626` | Late, New header: a fill with white text |
+| `--kit-ready` / dark | `#3d7a30` / `#6fae52` | Ready, success (atom green) |
+| `--kit-preparing` | `#f2c230` | Preparing (atom yellow) |
+| `--kit-push` | `#e8891c` | A ticket getting old (atom orange) |
+
+One palette for every KIT product, the apps and the website alike (Nikita
+2026-10-27/30). The full table with every role is in `apps/README.md`, "One
+palette"; the slate dark set (`#020617` / `#0f172a`) is retired.
 
 **Color vibe:** Monochromatic navy-blue anchor, near-white canvas. No gradients on primary surfaces. Subtle radial gradient on body (see globals.css) for depth without distraction. Cool, calm, corporate-boutique.
 
@@ -139,9 +150,9 @@ All animations respect `prefers-reduced-motion`. Easing is always smooth/ease-in
 
 ### Dark Mode
 - Triggered by `html.dark` class, stored in `localStorage` under key `kit-pos-theme`
-- Background: `slate-950` (#020617), surfaces: `slate-900` (#0f172a)
-- Text: `slate-100` primary, `slate-300` secondary, `slate-400` muted
-- Borders: `slate-700` / `slate-800`
+- Background: graphite `#12161c`, surfaces: `#1b2129`
+- Text: `#e6eaf0` primary, `#c9d2dc` secondary, `#9aa6b4` muted
+- Borders: `#2c3540` / `#3a4552`
 - Primary CTA switches to `sky-500` background with dark text in dark mode
 - Radial gradients shift to sky/blue tones
 
