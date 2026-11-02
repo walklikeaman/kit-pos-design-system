@@ -80,6 +80,23 @@ app's object standing on a dark shelf at the bottom right, drawn in one style
 - **Kitchen**: a cloche with steam.
 - **Label**: a price tag, which replaces the old printer.
 - **Invoice**: a receipt.
+- **Waiter**: a bow tie.
+- **Kiosk**: a kiosk screen on its stand.
+- **POS Bench** (the printer test till): a receipt printer.
+
+### One size on Android (Nikita 2026-11-02)
+
+The 1024 px files are the part of the icon a launcher shows. On Android that is
+the centre 72 dp of the 108 dp adaptive layer, so the art goes there and
+nowhere else; then the atom spans the same 21.5 to 84.2 dp in every app.
+
+- Either the XML insets the foreground (`<inset android:inset="16.7%">`, Kitchen,
+  Monitor, Label, Waiter) and the PNG is the 1024 file scaled down as it is,
+- or the XML uses the PNG as the whole layer (Kiosk, Bench, Invoice) and the PNG
+  has the 1024 file in its centre two thirds.
+
+Never both, never neither: both made KIT Monitor a third smaller, neither made
+KIT Kiosk spill past its tile. The iOS app icon is the full 1024 file as it is.
 
 The object sits slightly inward so Android's round mask does not clip it.
 Launcher icons are static. Only the Android 12+ splash screen can animate.
