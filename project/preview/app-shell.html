@@ -15,22 +15,20 @@
   .scrim { position: fixed; inset: 0; background: #1d355740; }
   .kit-dark .scrim { background: #0009; }
   .kit-menu { position: fixed; top: 64px; right: 14px; }
-  .kit-menu svg, .kit-settings__section svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .kit-menu svg, .kit-settings svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .kit-menu__item svg { color: var(--kit-app-muted); }
   .kit-menu__item--danger svg { color: inherit; }
   .kit-menu__item small { margin-left: auto; color: var(--kit-app-muted); font-size: 13px; font-weight: 600; }
   .kit-menu__store b { display: block; font-size: 17px; }
   .kit-menu__store span { font-size: 13px; color: var(--kit-app-muted); font-weight: 600; }
   .kit-settings { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); }
-  .appid { display: flex; align-items: center; gap: 10px; margin: 0 8px 18px; }
-  .appid img { width: 40px; height: 40px; border-radius: 11px; corner-shape: squircle; }
-  .bh { display: flex; align-items: center; margin-bottom: 8px; }
-  .bh h2 { margin: 0; flex: 1; font-size: 28px; font-weight: 800; }
+  .kit-settings__app img { width: 40px; height: 40px; border-radius: 11px; corner-shape: squircle; }
   .done { height: 46px; padding: 0 20px; display: grid; place-items: center; border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); background: var(--kit-app-primary); color: var(--kit-app-on-primary); font-weight: 800; }
   .gt { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--kit-app-muted); margin: 18px 4px 8px; }
   .row { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
   .group .row:first-child { border-top: 0; }
-  .row .l { flex: 1; min-width: 0; }
+  .row { flex-wrap: wrap; }
+  .row .l { flex: 1 1 200px; min-width: 0; }
   .row .l b { display: block; font-size: 17px; font-weight: 700; }
   .row .l span { display: block; font-size: 14px; color: var(--kit-app-muted); line-height: 1.4; margin-top: 2px; }
   .row .v { font-size: 16px; font-weight: 700; text-align: right; max-width: 62%; }
@@ -61,7 +59,6 @@
     .clock, .tabs { display: none; }
     .kit-menu { left: 10px; right: 10px; width: auto; top: 58px; }
     .kit-settings { left: 0; top: 0; transform: none; }
-    .appid { width: 100%; margin: 0 4px 6px; }
     .row .seg { width: 100%; }
     .row .seg span { flex: 1; }
   }
@@ -69,8 +66,9 @@
 </head>
 <body>
 <!--
-  Header, ⋮ menu and settings S-B (Nikita 2026-10-26). Params:
-  app=monitor|kitchen|label|invoice, screen=board|menu|settings, scheme=dark.
+  Header, ⋮ menu and settings S-B (Nikita 2026-10-26; one plain list 2026-11-02). Params:
+  app=monitor|kitchen|label|invoice, screen=board|menu|settings|section, scheme=dark.
+  settings = the list of sections; section = one section's page with the back arrow.
 -->
 <div class="app" id="app"></div>
 <script src="../apps/kit-mark.js"></script>
@@ -158,12 +156,18 @@ const menu = `<div class="scrim" style="background:transparent"></div><nav class
   <div class="kit-menu__item">${ic.help}Help</div>
   <div class="kit-menu__item kit-menu__item--danger">${ic.out}Log out</div>
 </nav>`;
-const settings = `<div class="scrim"></div><section class="kit-settings"><nav class="kit-settings__stub">
-  <div class="appid"><img src="${icon}" alt=""><b>${A.name}</b></div>
-  ${A.secs.map((s, i) => `<div class="kit-settings__section" aria-selected="${i === 0}">${s[1]}${s[0]}</div>`).join('')}
-  <div class="kit-settings__section kit-settings__logout">${ic.out}Log out</div></nav>
-  <div class="kit-settings__body"><div class="bh"><h2>${A.title}</h2><span class="done">Done</span></div>${A.body.replace(/<div class="gt">[^<]*<\/div>/, '')}</div></section>`;
-document.getElementById('app').innerHTML = head + content + (screen === 'menu' ? menu : screen === 'settings' ? settings : '');
+const chev = '<svg class="kit-settings__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
+const back = '<span class="kit-settings__back"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></span>';
+const settings = `<div class="scrim"></div><section class="kit-settings">
+  <div class="kit-settings__head"><h2>Settings</h2><span class="done">Done</span></div>
+  <nav class="kit-settings__list">
+  <div class="kit-settings__app"><img src="${icon}" alt=""><b>${A.name}</b></div>
+  ${A.secs.map((s) => `<div class="kit-settings__section">${s[1]}<span>${s[0]}</span>${chev}</div>`).join('')}
+  <div class="kit-settings__section kit-settings__logout">${ic.out}<span>Log out</span></div></nav></section>`;
+const section = `<div class="scrim"></div><section class="kit-settings">
+  <div class="kit-settings__head">${back}<h2>${A.title}</h2><span class="done">Done</span></div>
+  <div class="kit-settings__body">${A.body.replace(/<div class="gt">[^<]*<\/div>/, '')}</div></section>`;
+document.getElementById('app').innerHTML = head + content + (screen === 'menu' ? menu : screen === 'settings' ? settings : screen === 'section' ? section : '');
 </script>
 </body>
 </html>
