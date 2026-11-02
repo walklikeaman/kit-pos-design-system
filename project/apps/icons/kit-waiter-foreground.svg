@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024" width="1024" height="1024"><defs><linearGradient id="dm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#72BE55"/><stop offset="1" stop-color="#3E8F3F"/></linearGradient></defs><image href="../kit-atom.png" xlink:href="../kit-atom.png" x="55" y="46" width="830" height="902"/><g transform="translate(-50 -40)"><rect x="577" y="853" width="360" height="38" rx="19" fill="#14171C"/> <path d="M757,740 L620,660 Q600,650 600,672 L600,808 Q600,830 620,820 L757,740 Z" fill="url(#dm)"/>
+ <path d="M757,740 L894,660 Q914,650 914,672 L914,808 Q914,830 894,820 L757,740 Z" fill="url(#dm)"/>
+ <rect x="722" y="700" width="70" height="80" rx="20" fill="#3E8F3F"/>
+ <path d="M640,690 l60,40 M640,790 l60,-40 M874,690 l-60,40 M874,790 l-60,-40" stroke="#E8F3E2" stroke-width="8" stroke-linecap="round" opacity=".55"/></g></svg>

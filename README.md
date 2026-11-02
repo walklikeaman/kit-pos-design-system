@@ -53,7 +53,7 @@ rationale — and the options that were turned down — lives in
 [`project/apps/README.md`](project/apps/README.md).
 
 - **The mark** — the KIT atom, with a soft sheen running along each orbit. Never redrawn ([`kit-mark.js`](project/apps/kit-mark.js)).
-- **Icons** — the atom plus the app's object on a dark shelf: a bell (Monitor), a cloche (Kitchen), a price tag (Label), a receipt (Invoice).
+- **Icons** — the atom plus the app's object on a dark shelf: a bell (Monitor), a cloche (Kitchen), a price tag (Label), a receipt (Invoice), a bow tie (Waiter).
 - **Status** — the logo atom's colours: Preparing `#F2C230`, getting old `#E8891C`, Ready `#6FAE52` / `#3D7A30`; Late and New `#DC2626`.
 - **Monitor order card** — a tear-off stub for where the order goes, and an R2 + O1 "ready" move ([`kit-ready.js`](project/apps/kit-ready.js)).
 - **Corners** — squircles: Monitor card radius 28, Kitchen `superellipse(1.5)`.
