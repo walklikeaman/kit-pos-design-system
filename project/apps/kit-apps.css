@@ -170,30 +170,34 @@
 .kit-menu__item:hover, .kit-menu__item:focus-visible { background: var(--kit-app-raised); }
 .kit-menu__item--danger { color: var(--kit-app-error); }
 
-/* ── Settings S-B: a ticket with a section stub (Nikita 2026-10-26) ────────
-   Sections on the stub, a dashed tear, rows on the right, Log out at the
-   foot of the stub. Under 700 px the stub becomes a strip of chips on top
-   and the tear runs across. */
-.kit-settings { display: flex; width: min(1000px, calc(100vw - 48px)); height: min(640px, calc(100vh - 48px)); overflow: hidden;
+/* ── Settings S-B: one plain list (Nikita 2026-10-26 look; 2026-11-02 list) ──
+   Never tabs, never a left column, on any width. The sheet holds the title
+   and Done, the app's name over a dashed tear, then one row per section
+   (icon, name, chevron) and Log out last. A row opens that section's page:
+   back arrow, the section's name, Done, then its rows. Centred, at most
+   720 px wide; under 700 px it fills the screen. */
+.kit-settings { display: flex; flex-direction: column; width: min(720px, calc(100vw - 32px)); height: min(720px, calc(100vh - 32px)); overflow: hidden;
   background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); box-shadow: 0 30px 80px #0004; color: var(--kit-app-text); font-family: var(--font-sans);
   border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-shape); }
-.kit-settings__stub { flex: none; width: 250px; padding: 26px 18px; display: flex; flex-direction: column; gap: 4px; position: relative; }
-.kit-settings__stub::after { content: ""; position: absolute; top: 22px; bottom: 22px; right: 0; border-right: 2px dashed var(--kit-app-muted); opacity: .6; }
-.kit-settings__section { height: 50px; display: flex; align-items: center; gap: 12px; padding: 0 12px; font-size: 16px; font-weight: 700; color: var(--kit-app-muted);
-  border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
-.kit-settings__section[aria-selected="true"] { background: var(--kit-app-raised); color: var(--kit-app-text); }
-.kit-settings__logout { margin-top: auto; color: var(--kit-app-error); }
-.kit-settings__body { flex: 1; padding: 26px 30px; overflow: auto; }
-.kit-settings__row { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
+.kit-settings__head { flex: none; display: flex; align-items: center; gap: 8px; padding: 20px 16px 8px 24px; }
+.kit-settings__head h2 { flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 28px; font-weight: 800; }
+.kit-settings__back { flex: none; width: 48px; height: 48px; margin-left: -12px; display: grid; place-items: center; color: var(--kit-app-text); }
+.kit-settings__list { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 16px; display: flex; flex-direction: column; }
+.kit-settings__app { display: flex; align-items: center; gap: 12px; margin: 0 8px; padding: 4px 0 16px;
+  border-bottom: 2px dashed color-mix(in srgb, var(--kit-app-muted) 60%, transparent); }
+.kit-settings__section { min-height: 64px; display: flex; align-items: center; gap: 12px; padding: 0 12px; font-size: 17px; font-weight: 700;
+  color: var(--kit-app-text); border-bottom: 1px solid var(--kit-app-line); }
+.kit-settings__section > span { flex: 1; min-width: 0; }
+.kit-settings__section > svg:first-child { color: var(--kit-app-muted); }
+.kit-settings__chev { color: var(--kit-app-muted); }
+.kit-settings__logout { border-bottom: 0; color: var(--kit-app-error); }
+.kit-settings__logout > svg:first-child { color: inherit; }
+.kit-settings__body { flex: 1; min-height: 0; padding: 8px 24px 24px; overflow: auto; }
+.kit-settings__row { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
 .kit-settings__row:first-child { border-top: 0; }
 @media (max-width: 700px) {
-  .kit-settings { width: 100%; height: 100%; flex-direction: column; border: 0; border-radius: 0; }
-  .kit-settings__stub { width: auto; flex-direction: row; flex-wrap: wrap; gap: 6px; padding: 14px 14px 12px; }
-  .kit-settings__stub::after { top: auto; bottom: 0; left: 14px; right: 14px; border-right: 0; border-bottom: 2px dashed var(--kit-app-muted); }
-  .kit-settings__section { height: 40px; font-size: 14px; }
-  .kit-settings__section svg, .kit-settings__logout { display: none; }
-  .kit-settings__body { padding: 16px; }
-  .kit-settings__row { flex-wrap: wrap; }
+  .kit-settings { width: 100%; height: 100%; border: 0; border-radius: 0; }
+  .kit-settings__head h2 { font-size: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

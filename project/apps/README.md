@@ -199,12 +199,39 @@ Preview: `../preview/app-shell.html?app=kitchen&screen=settings` (`screen=menu`,
 - **⋮ menu** (`.kit-menu`): a store card on top (app icon, store name, app and
   version) above a dashed tear, then Settings, Store and clerk, Help, and Log out
   in the error colour. On a phone it spans the width under the header.
-- **Settings S-B** (`.kit-settings`): a ticket. The stub on the left holds the app
-  icon and name, the sections, and Log out at the foot. A dashed tear separates it
-  from the rows. The body has the section title and a Done button. Controls are
-  switches, segmented choices and steppers in the app's corners. Under 700 px the
-  ticket fills the screen, the sections become chips in a strip on top, the tear
-  runs across, and Log out stays in the ⋮ menu.
+- **Settings S-B** (`.kit-settings`): one plain list, on every width (Nikita
+  2026-11-02). The sheet has the title and Done, the app's name over a dashed
+  tear, then one row per section (icon, name, chevron) and Log out last, in the
+  error colour. A row opens that section's page: back arrow, the section's
+  name, Done, then its rows. Controls are switches, segmented choices and
+  steppers in the app's corners. Centred, at most 720 px wide; under 700 px it
+  fills the screen. Preview `screen=settings` is the list, `screen=section` a page.
+- **Never tabs, never a left column.** Up to 2026-11-02 this section said the
+  sections sat on a stub on the left and became a strip of chips under 700 px.
+  That narrow version was written here without being shown to Nikita, then
+  copied into KIT Kitchen, KIT Monitor and KIT Label; he never approved it
+  («У нас нигде не должно быть такое меню со вкладками»). All three went back
+  to the list on 2026-11-02 (Kitchen #93, Monitor #46, Label #271).
+
+## One design for every app (Nikita 2026-11-02)
+
+Every KIT app follows the same principle for the same kind of screen. Rules
+drawn from the tabs mistake:
+
+1. **Every width is a design.** A pattern here is approved only for the widths
+   Nikita was shown. Before a pattern lands here, render it on a small phone
+   (360), a normal phone (390), a tablet in portrait and in landscape, light and
+   dark, and show him all of them. A width nobody showed him is not approved.
+2. **No invented variants.** An app, or a breakpoint in this file, never
+   changes how a screen is navigated (list, tabs, columns, rail) on its own.
+   A new layout is a new design: render it, show it, wait for his word.
+3. **Change the pattern, then every app.** A fix to a shared screen goes here
+   first, then into each app in the same pass; one app fixed and the rest
+   left behind is a divergence.
+4. **Design check.** Before showing a build, compare the screens this file
+   covers (login, header, ⋮ menu, Settings, scan bar, number fields) with the
+   preview and with the sibling apps. Any difference without a reason written
+   here is a bug: fix it in the app, or record the reason here.
 
 ## Icons inside a screen: no emoji (Nikita 2026-11-02)
 
