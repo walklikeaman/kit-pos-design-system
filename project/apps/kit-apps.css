@@ -200,3 +200,24 @@
   .kit-order, .kit-order *, .kit-flap i, .kit-order.is-moving, .kit-tabs__pill, .kit-tabs__pill::after,
   .kit-login.is-leaving, .kit-login.is-leaving * { animation: none !important; transition: none !important; }
 }
+
+/* ── Scan bar, as in KIT Label (Gahl 2026-07-24, every app 2026-11-02) ──
+   One row: scanner icon, the field ("Scan or enter product barcode"), a clear
+   button while there is text, and the camera at the end. Enter looks the code
+   up; there is no Find button; an empty bar is not an error.
+   Icons: icons/ui/scan.svg, camera.svg, close.svg. Flutter: _ScanBar in
+   KIT Label lib/screens/home/studio_widgets.dart. */
+.kit-scanbar { display: flex; align-items: center; gap: 4px; min-height: 48px; padding: 4px 4px 4px 12px;
+  background: var(--kit-app-surface); color: var(--kit-app-text); border: 1px solid var(--kit-app-line);
+  border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-scanbar:focus-within { border-color: var(--kit-app-focus); }
+.kit-scanbar__icon { flex: none; width: 20px; height: 20px; color: var(--kit-app-muted); margin-right: 4px; }
+.kit-scanbar__field { flex: 1; min-width: 0; height: 40px; border: 0; padding: 0; background: none; color: inherit; outline: none;
+  font: 600 16px/1 var(--font-sans, inherit); letter-spacing: .03em; } /* 16 px: iOS zooms into anything smaller */
+.kit-scanbar__field::placeholder { color: var(--kit-app-muted); font-weight: 400; letter-spacing: 0; }
+.kit-scanbar__btn { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none;
+  color: var(--kit-app-muted); border-radius: 12px; cursor: pointer; }
+.kit-scanbar__btn svg { width: 18px; height: 18px; }
+.kit-scanbar__btn--camera { color: var(--kit-app-focus); }
+.kit-scanbar__btn--camera svg { width: 24px; height: 24px; }
+.kit-scanbar__btn:focus-visible { outline: 2px solid var(--kit-app-focus); outline-offset: 1px; }
