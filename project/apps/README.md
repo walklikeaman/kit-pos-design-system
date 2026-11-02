@@ -19,7 +19,21 @@ and 2026-10-26.
 | `icons/` | Launcher icons, 1024 px: full (`kit-<app>.png`) and adaptive foreground (`kit-<app>-foreground.png`), with SVG sources |
 
 Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html`, `app-icons.html`,
-`app-login.html` (L1, with a looping demo at `?auto=1`) and `app-shell.html` (header, menu, settings).
+`app-login.html` (L1, with a looping demo at `?auto=1`), `app-shell.html` (header, menu, settings)
+and `app-scanbar.html` (the scan bar).
+
+## Look here before you build a screen (Nikita 2026-11-02)
+
+We already have answers for most screens. Before you draw a login, a header, a
+menu, Settings, a barcode field, a number field or an icon, find the pattern on
+this page and copy it, words included. Only when nothing here fits do you design
+something new, and then it comes here first, so the next app copies it too.
+When one app's version gets better, the change lands here and in every app that
+shows the same thing, not in one app alone.
+
+KIT Invoice is why: its barcode entry was built from scratch (an emoji camera
+button, an "Or type it" field and a Find button) while KIT Label had shipped the
+right one since July. Gahl had to point it out.
 
 ## One palette (Nikita 2026-10-27)
 
@@ -97,6 +111,14 @@ nowhere else; then the atom spans the same 21.5 to 84.2 dp in every app.
 
 Never both, never neither: both made KIT Monitor a third smaller, neither made
 KIT Kiosk spill past its tile. The iOS app icon is the full 1024 file as it is.
+
+**Sharp on every density.** With the XML inset, Android stretches the PNG to
+fill 72 dp. So each `mipmap-*` foreground PNG is cut at 72 dp for its density
+(mdpi 72, hdpi 108, xhdpi 144, xxhdpi 216, xxxhdpi 288 px), not at the 48 dp
+legacy size (192 px at xxxhdpi), or the icon comes out 1.5 times blown up and
+soft. KIT Waiter's icon looked smeared that way (Nikita 2026-11-02, fixed in
+Waiter, Kitchen #92 and Monitor #45). Check: the xxxhdpi foreground is 288 px wide
+with the XML inset, 432 px without it.
 
 The object sits slightly inward so Android's round mask does not clip it.
 Launcher icons are static. Only the Android 12+ splash screen can animate.
@@ -183,3 +205,54 @@ Preview: `../preview/app-shell.html?app=kitchen&screen=settings` (`screen=menu`,
   switches, segmented choices and steppers in the app's corners. Under 700 px the
   ticket fills the screen, the sections become chips in a strip on top, the tear
   runs across, and Log out stays in the ⋮ menu.
+
+## Icons inside a screen: no emoji (Nikita 2026-11-02)
+
+Buttons and rows use the line icons in `icons/ui/` (Material Symbols, the same
+shapes KIT Label draws with Flutter's `Icons.*`), in the text or muted colour.
+No emoji anywhere in the UI: 📷 looks different on every phone, cannot take
+our colours and reads as a toy. KIT Invoice swapped its 📷 for these on
+2026-11-02 (kit-stock 267c74e).
+
+## Scan bar (Gahl 2026-07-24, every app 2026-11-02)
+
+Class `.kit-scanbar`, preview `../preview/app-scanbar.html`. Flutter original:
+`_ScanBar` in KIT Label `lib/screens/home/studio_widgets.dart`.
+
+- **One row:** the scanner icon (`icons/ui/scan.svg`, a hand scanner, not barcode
+  stripes), the field, a clear ✕ only while there is text, and the camera button
+  last, in the accent colour.
+- **Words:** the placeholder is "Scan or enter product barcode". No label above,
+  no "Or type it".
+- **No Find button.** Enter looks the code up (`enterkeyhint="search"` on web);
+  a hardware scanner ends its code with Enter, so it works the same way.
+- **An empty bar is not an error.** Nothing turns red until a real code is not found.
+- **The field** is `inputmode="numeric"` text, 16 px or larger (iOS zooms into
+  smaller fields), never `type="number"`, which drops leading zeros.
+
+## Header on every width (Nikita 2026-11-02)
+
+One top bar on phone and tablet, in both orientations: atom, app name with the
+store under it, the app's own tabs, then ⋮ (see S-B above and kitpos
+KIT-SHARED-RULES §13.12). No left rail: on a tablet it takes a whole column for
+three links. From about 760 px the bar only gets roomier. KIT Invoice moved from
+its rail to the top bar on 2026-11-02 (kit-stock cb32e3a). A list that is the
+screen's content (KIT Waiter's tables) is not a navigation rail and may stay.
+
+## Number fields (Nikita 2026-11-02)
+
+Prices, costs, percents and counts:
+
+- **Keep what is typed while the field has focus.** Show it as $0.00 or 30% only
+  on blur. A field bound straight to the formatted value rewrites "1" as "1.00"
+  and the next digit lands after the cents. That bug hit KIT Invoice on the
+  iPhone (kit-stock 769695e).
+- **Tapping selects the whole value,** so a new number replaces the old one.
+- **Rows do not jump while typing.** A row that hides on a value (a case of 1)
+  stays until the field loses focus: "12" starts with "1".
+- **Text with `inputmode="decimal"`** (or `numeric` for counts), 16 px or larger;
+  accept a comma as the decimal point.
+- **Tests type one character at a time,** redrawing after each, for every number
+  field on the screen, plus wrong input and an empty field. KIT Invoice's
+  `src/app/invoice/invoice-fields.spec.ts` (33 cases, kit-stock b2f6535) is the model.
+
