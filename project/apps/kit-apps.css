@@ -205,7 +205,7 @@
    One row: scanner icon, the field ("Scan or enter product barcode"), a clear
    button while there is text, and the camera at the end. Enter looks the code
    up; there is no Find button; an empty bar is not an error.
-   Icons: icons/ui/scan.svg, camera.svg, close.svg. Flutter: _ScanBar in
+   Icons: icons/ui/barcode.svg (Nikita 2026-11-02), camera.svg, close.svg. Flutter: _ScanBar in
    KIT Label lib/screens/home/studio_widgets.dart. */
 .kit-scanbar { display: flex; align-items: center; gap: 4px; min-height: 48px; padding: 4px 4px 4px 12px;
   background: var(--kit-app-surface); color: var(--kit-app-text); border: 1px solid var(--kit-app-line);

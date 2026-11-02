@@ -219,8 +219,8 @@ our colours and reads as a toy. KIT Invoice swapped its 📷 for these on
 Class `.kit-scanbar`, preview `../preview/app-scanbar.html`. Flutter original:
 `_ScanBar` in KIT Label `lib/screens/home/studio_widgets.dart`.
 
-- **One row:** the scanner icon (`icons/ui/scan.svg`, a hand scanner, not barcode
-  stripes), the field, a clear ✕ only while there is text, and the camera button
+- **One row:** the barcode icon (`icons/ui/barcode.svg`, six stripes, not a hand
+  scanner: Nikita chose it 2026-11-02 after seeing both), the field, a clear ✕ only while there is text, and the camera button
   last, in the accent colour.
 - **Words:** the placeholder is "Scan or enter product barcode". No label above,
   no "Or type it".
