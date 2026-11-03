@@ -20,7 +20,7 @@ and 2026-10-26.
 
 Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html`, `app-icons.html`,
 `app-login.html` (L1, with a looping demo at `?auto=1`), `app-shell.html` (header, menu, settings)
-and `app-scanbar.html` (the scan bar).
+`app-scanbar.html` (the scan bar) and `app-motion.html` (menu, Settings, toast, pills, icons).
 
 ## Look here before you build a screen (Nikita 2026-11-02)
 
@@ -229,9 +229,30 @@ drawn from the tabs mistake:
    first, then into each app in the same pass; one app fixed and the rest
    left behind is a divergence.
 4. **Design check.** Before showing a build, compare the screens this file
-   covers (login, header, ⋮ menu, Settings, scan bar, number fields) with the
+   covers (login, header, ⋮ menu, Settings, toast, pills, icons, motion, scan bar, number fields) with the
    preview and with the sibling apps. Any difference without a reason written
    here is a bug: fix it in the app, or record the reason here.
+
+## Motion, toasts, pills and icons: one set (Nikita 2026-11-03)
+
+The design check of 2026-11-03 found that this file defined no motion, toast or
+badge, so every app made its own: menus that appeared instantly or slid up,
+Settings from the right, toasts from the top, seven badge shapes, text ✕ ✓ ←
+instead of icons. Nikita saw them side by side (page «Сейчас и Станет») and said
+«да». From now on, in every app, the website included:
+
+| What | Class | How it moves | Notes |
+| --- | --- | --- | --- |
+| Timing | `--kit-enter`, `--kit-exit` | in 220 ms `cubic-bezier(0.16,1,0.3,1)`, out 160 ms `cubic-bezier(0.4,0,1,1)` | Flutter: the same numbers as `Cubic`. Nothing pops up without it, nothing vanishes in one frame. |
+| ⋮ menu (website: phone menu, dropdowns) | `.kit-menu` | from the ⋮ corner, scale .96 → 1, 4 px down | No dimmer behind it; tap outside closes. Settings and Log out have icons; Log out in the error colour. |
+| Settings, dialog, sheet | `.kit-scrim` + `.kit-settings` / `.kit-dialog` | rises 16 px and fades in | One dimmer `--kit-scrim` in both themes. Settings closes with **Done**, a section page goes back with `back.svg`. Never slides in from a side, never a whole new page. |
+| Toast | `.kit-toast` | from the bottom, rises 12 px, stays 3 s | Main-button colours, an icon first. One at a time. Never from the top. |
+| Status badge | `.kit-pill` (`--ok`, `--bad`, `--warn`, `--info`), count `--solid` | none | Round, 12 px bold, status colour on a pale fill of itself. |
+| Icons | `icons/ui/*.svg` | none | close, back, chevron, check, plus, minus, warning, up, sun, moon, logout, settings. No text characters as icons. |
+| Colours | the palette above | none | Nothing outside it: no Android `Colors.red/green/orange`, no app's own palette. |
+
+`prefers-reduced-motion` shortens every one of these to an instant change.
+Preview: `../preview/app-motion.html` plays each one in both themes.
 
 ## Icons inside a screen: no emoji (Nikita 2026-11-02)
 

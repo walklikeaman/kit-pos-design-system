@@ -31,6 +31,17 @@
   --kit-kitchen-radius-tab: 19px;    /* tab pill (was 12) */
 
   --kit-app-ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+
+  /* Motion, one set for every app (Nikita 2026-11-03; Kitchen's KitMotion).
+     Anything that pops up (⋮ menu, Settings, a sheet, a dialog, a toast) comes
+     in with --kit-enter and leaves with --kit-exit. Flutter: Duration(ms: 220)
+     + Cubic(0.16, 1, 0.3, 1) in, Duration(ms: 160) + Cubic(0.4, 0, 1, 1) out. */
+  --kit-enter-ms: 220ms; --kit-enter-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --kit-exit-ms: 160ms;  --kit-exit-ease: cubic-bezier(0.4, 0, 1, 1);
+  --kit-enter: var(--kit-enter-ms) var(--kit-enter-ease);
+  --kit-exit: var(--kit-exit-ms) var(--kit-exit-ease);
+  /* One dimmer behind a window, both themes. A menu has none. */
+  --kit-scrim: rgb(18 22 28 / .45);
 }
 
 /* ── Monitor order card with a tear-off stub ─────────────────────────────
@@ -169,6 +180,15 @@
 .kit-menu__item { display: flex; align-items: center; gap: 14px; height: 54px; padding: 0 12px; font-size: 17px; font-weight: 700; border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
 .kit-menu__item:hover, .kit-menu__item:focus-visible { background: var(--kit-app-raised); }
 .kit-menu__item--danger { color: var(--kit-app-error); }
+.kit-menu__item svg { width: 22px; height: 22px; flex: none; color: var(--kit-app-muted); }
+.kit-menu__item--danger svg { color: inherit; }
+/* Opens from the ⋮ corner: scale .96 → 1 and 4 px down, 220 ms; closes in
+   160 ms. No dimmer behind a menu; a tap outside closes it.
+   Put .is-open on to show, .is-closing while it leaves, then remove it. */
+.kit-menu { transform-origin: top right; animation: kit-menu-in var(--kit-enter) both; }
+.kit-menu.is-closing { animation: kit-menu-out var(--kit-exit) both; }
+@keyframes kit-menu-in { from { opacity: 0; transform: translateY(-4px) scale(.96); } }
+@keyframes kit-menu-out { to { opacity: 0; transform: translateY(-4px) scale(.96); } }
 
 /* ── Settings S-B: one plain list (Nikita 2026-10-26 look; 2026-11-02 list) ──
    Never tabs, never a left column, on any width. The sheet holds the title
@@ -195,12 +215,53 @@
 .kit-settings__body { flex: 1; min-height: 0; padding: 8px 24px 24px; overflow: auto; }
 .kit-settings__row { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
 .kit-settings__row:first-child { border-top: 0; }
+/* Settings, dialogs and sheets rise 16 px and fade in over --kit-scrim, 220 ms;
+   leave in 160 ms. Settings closes with Done (a text button), not ✕. */
+.kit-scrim { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: var(--kit-scrim); animation: kit-fade-in var(--kit-enter) both; }
+.kit-scrim.is-closing { animation: kit-fade-out var(--kit-exit) both; }
+.kit-settings, .kit-dialog { animation: kit-rise-in var(--kit-enter) both; }
+.is-closing .kit-settings, .is-closing .kit-dialog { animation: kit-rise-out var(--kit-exit) both; }
+@keyframes kit-fade-in { from { opacity: 0; } }
+@keyframes kit-fade-out { to { opacity: 0; } }
+@keyframes kit-rise-in { from { opacity: 0; transform: translateY(16px) scale(.99); } }
+@keyframes kit-rise-out { to { opacity: 0; transform: translateY(16px) scale(.99); } }
 @media (max-width: 700px) {
   .kit-settings { width: 100%; height: 100%; border: 0; border-radius: 0; }
   .kit-settings__head h2 { font-size: 22px; }
 }
 
+/* ── Toast: one bar at the bottom (Nikita 2026-11-03) ───────────────────
+   Centred above the bottom edge, rises 12 px in 220 ms, stays 3 s, leaves in
+   160 ms. Main-button colours; an icon from icons/ui first (check.svg for done,
+   warning.svg for a problem). One at a time: a new one replaces the old.
+   Never from the top, never an Android green/orange snackbar. */
+.kit-toast { position: fixed; left: 16px; right: 16px; margin-inline: auto; width: fit-content; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+  display: flex; align-items: center; gap: 10px; max-width: min(560px, calc(100vw - 32px)); padding: 12px 18px;
+  background: var(--kit-app-primary); color: var(--kit-app-on-primary); box-shadow: 0 12px 32px #0003;
+  border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); font: 700 16px/1.35 var(--font-sans);
+  animation: kit-toast-in var(--kit-enter) both; }
+.kit-toast.is-closing { animation: kit-toast-out var(--kit-exit) both; }
+.kit-toast svg { flex: none; width: 20px; height: 20px; }
+.kit-toast--error svg { color: var(--kit-app-error); }
+@keyframes kit-toast-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes kit-toast-out { to { opacity: 0; transform: translateY(12px); } }
+
+/* ── Pill: one shape for every status badge (Nikita 2026-11-03) ──────────
+   Fully round, 12 px bold, the status colour as text on a pale fill of itself.
+   A count (unread, items) is the solid version: .kit-pill--solid.
+   Colours only from the palette above; no Android reds/greens/oranges. */
+.kit-pill { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 9px; border-radius: 999px; white-space: nowrap;
+  font: 800 12px/1 var(--font-sans); letter-spacing: .02em; --pill: var(--kit-app-muted);
+  color: var(--pill); background: color-mix(in srgb, var(--pill) 14%, transparent); }
+.kit-pill--ok { --pill: var(--kit-app-ok); }
+.kit-pill--bad { --pill: var(--kit-app-error); }
+.kit-pill--warn { --pill: var(--kit-app-age-warn); }
+.kit-pill--info { --pill: var(--kit-app-text); }
+.kit-pill--solid { color: #fff; background: var(--pill); min-width: 22px; justify-content: center; padding: 0 7px; }
+.kit-pill svg { width: 14px; height: 14px; }
+
 @media (prefers-reduced-motion: reduce) {
+  .kit-menu, .kit-scrim, .kit-settings, .kit-dialog, .kit-toast, .is-closing * { animation-duration: 1ms !important; }
   .kit-order, .kit-order *, .kit-flap i, .kit-order.is-moving, .kit-tabs__pill, .kit-tabs__pill::after,
   .kit-login.is-leaving, .kit-login.is-leaving * { animation: none !important; transition: none !important; }
 }
