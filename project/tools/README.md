@@ -39,8 +39,13 @@ on the emulator or a device by eye: Android fonts are wider.
   titles overlap and the ⋮ menu opens off the screen.
 - Website (main): from 1024 px the software section's grid (56% + 44% columns plus a 32 px
   gap) ran 32 px past its container. Fixed in KIT-POS-Website #20 with fraction columns.
+- KIT Waiter (2026-11-03, 14 screens x 8 sizes x 2 themes): 0 problems after two fixes to the
+  check itself: anything inside a box that scrolls or pans (the floor plan on a phone) is
+  reached by scrolling, not "cut" or "off the screen"; and icons (`svg`, `<i>` mask icons) now
+  count in the overlap test, since an icon on top of a label is as bad as two labels.
 
 ## Not counted as a problem
 
 Screen-reader-only text (`sr-only`, 1 px and clipped on purpose), the body of a closed
-`<details>`, and a link that wraps inside a sentence (compared line by line, not as one box).
+`<details>`, a link that wraps inside a sentence (compared line by line, not as one box), and
+anything inside a box that scrolls or pans: it is reached by scrolling.

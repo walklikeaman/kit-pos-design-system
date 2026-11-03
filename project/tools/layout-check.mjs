@@ -77,6 +77,14 @@ function findProblems(ignore = []) {
       if (s.overflowX === 'hidden' && s.textOverflow === 'ellipsis' && cs.display !== 'inline' && c.getBoundingClientRect().right > el.getBoundingClientRect().right + 2) out.push(`text cut off without "…": ${label(c)}`);
     }
   }
+  // Is there a box that scrolls (a pannable floor plan, a chip strip) between el and `upTo`?
+  const inScroller = (el, upTo) => {
+    for (let e = el.parentElement; e && e !== upTo && e !== document.body; e = e.parentElement) {
+      const st = getComputedStyle(e);
+      if (['auto', 'scroll'].includes(st.overflowX) || ['auto', 'scroll'].includes(st.overflowY)) return true;
+    }
+    return false;
+  };
   // Text cut by a box that hides what does not fit (a card with overflow: hidden), with no "…".
   for (const box of document.querySelectorAll('body *')) {
     const bs = getComputedStyle(box);
@@ -85,6 +93,7 @@ function findProblems(ignore = []) {
     for (const el of box.querySelectorAll('*')) {
       if (!visible(el) || ![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
       if (getComputedStyle(el).textOverflow === 'ellipsis') continue;
+      if (inScroller(el, box)) continue; // a pan or scroll area between them shows it when scrolled
       const range = document.createRange(); range.selectNodeContents(el);
       const t = range.getBoundingClientRect();
       if (t.width > 0 && (t.right > c.right + 2 || t.left < c.left - 2) && t.left < c.right) out.push(`text cut off without "…": ${label(el)}`);
@@ -105,10 +114,8 @@ function findProblems(ignore = []) {
     const fixed = (() => { for (let e = el; e; e = e.parentElement) if (getComputedStyle(e).position === 'fixed') { const f = e.getBoundingClientRect(); return f.height < vh - 1 || f.width < vw - 1; } return false; })();
     // Inside a box that scrolls sideways (a row of columns, a chip strip), off-screen is just "scroll to see".
     const scroller = (() => { for (let e = el.parentElement; e && e !== document.body; e = e.parentElement) { const o = getComputedStyle(e).overflowX; if (o === 'auto' || o === 'scroll') return e; } return null; })();
-    if (scroller) {
-      const c = scroller.getBoundingClientRect();
-      if (r.right <= c.left + 1 || r.left >= c.right - 1) continue; // scrolled out of view, fine
-    }
+    // Half-visible at the scroller's edge is just as fine (a floor plan panned on a phone).
+    if (scroller) continue;
     if (r.left < -1 || r.right > vw + 1 || (fixed && (r.top < -1 || r.bottom > vh + 1))) { out.push(`off the screen: ${label(el)} (${Math.round(r.left)}..${Math.round(r.right)} of ${vw}px)`); continue; }
     for (let e = el.parentElement; e && e !== document.body; e = e.parentElement) {
       const s = getComputedStyle(e);
@@ -120,11 +127,20 @@ function findProblems(ignore = []) {
     }
   }
   // Text, buttons and fields on top of each other.
+  const skip = ['.scrim', '.menu-scrim', '.ask-scrim', ...ignore].join(', ');
   const leaves = [...document.querySelectorAll('button, a, input, select, label, b, small, em, span, p, h1, h2, h3, dt, dd')]
-    .filter((el) => visible(el) && !el.closest(['[aria-hidden="true"]', '.scrim', '.menu-scrim', '.ask-scrim', ...ignore].join(', ')))
+    .filter((el) => visible(el) && !el.closest(['[aria-hidden="true"]', skip].join(', ')))
     .filter((el) => (el.matches('button, a, input, select') || [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())));
+  // Icons count too (an icon over a label is as bad as two labels), though they are aria-hidden:
+  // a standalone <svg> or an icon-font/mask <i>, not a layer that is hidden as a whole.
+  for (const el of document.querySelectorAll('svg, i')) {
+    if (el.matches('svg svg, svg *') || !visible(el) || (el.tagName === 'I' && (el.innerText || '').trim())) continue;
+    if (el.parentElement?.closest(['[aria-hidden="true"]', skip].join(', '))) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width >= 8 && r.width <= 48 && r.height >= 8 && r.height <= 48) leaves.push(el);
+  }
   const textRect = (el) => {
-    if (el.matches('button, a, input, select')) return el.getBoundingClientRect();
+    if (el.matches('button, a, input, select, svg, i')) return el.getBoundingClientRect();
     const range = document.createRange();
     range.selectNodeContents(el);
     return range.getBoundingClientRect();
