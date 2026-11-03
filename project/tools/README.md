@@ -44,6 +44,11 @@ on the emulator or a device by eye: Android fonts are wider.
 Serve the production build first (for example `npx http-server dist/... -p 4200 &`), and keep
 the job's `timeout-minutes` set (CI thrift rule).
 
+A page with a third-party widget that keeps polling (Cloudflare Turnstile, analytics) never
+goes network-idle, so every screen waits out the 30 s load timeout (the website's CI hung for
+23 minutes, 2026-11-03). Block those hosts in the config's `theme` hook:
+`context.route(/challenges\.cloudflare\.com|googletagmanager/, (r) => r.abort())`.
+
 ## First runs (2026-11-03, before any fix)
 
 - KIT Kitchen (dev): phones 320–430 overflow the header (⋮ off screen, column bands wrap
