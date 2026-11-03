@@ -31,6 +31,18 @@ overlapping text or buttons. The model is kit-kiosk `app/test/layout_test.dart` 
 it caught 3 real overflows). It runs with `flutter test` in CI. Then check the Android build
 on the emulator or a device by eye: Android fonts are wider.
 
+## Bigger text and speed
+
+- **Font size.** Many merchants run their phone at 130 % text. Phone apps add
+  `sizes: [...SIZES, ...LARGE_TEXT]` (import both from the script): each such size lays the
+  page out at the screen width divided by the scale (360 at 130 % is 277 px of layout) and
+  draws it at that scale, which is what Android and iOS do. **Never fake it with CSS `zoom`**:
+  the page then lays out at full width and is only drawn bigger, so text running past the
+  edge is never seen (KIT Invoice, 2026-11-03: zoom passed, the honest scale found 3 bugs).
+- **Speed.** Screens run 4 at a time, each in its own browser context (`workers` in the config
+  or `LAYOUT_WORKERS=6`). The report keeps the same order. Raise it on a big machine; lower it
+  if the app server is slow to answer.
+
 ## In CI (GitHub Actions)
 
 `ubuntu-latest` is Ubuntu 26.04 now, and `npx playwright install chromium` fails there

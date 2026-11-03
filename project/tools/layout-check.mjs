@@ -40,6 +40,9 @@ export const SIZES = [
   ['320x640', 320, 640], ['360x780', 360, 780], ['390x844', 390, 844], ['430x932', 430, 932],
   ['768x1024', 768, 1024], ['800x1280', 800, 1280], ['1280x800', 1280, 800], ['1440x900', 1440, 900],
 ];
+/** The same small phones with the font at 130 % (a common setting): add for phone apps,
+ *  `sizes: [...SIZES, ...LARGE_TEXT]`. The 4th value is the font scale. */
+export const LARGE_TEXT = [['360x780@130', 360, 780, 1.3], ['390x844@130', 390, 844, 1.3]];
 
 /** Runs in the page: what overflows or overlaps. */
 function findProblems(ignore = []) {
@@ -194,43 +197,60 @@ export async function run(config, base = config.base) {
   const out = resolve(config.out ?? 'tools/layout-shots');
   mkdirSync(out, { recursive: true });
   const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
-  const report = [];
-  let problems = 0;
-  for (const theme of config.themes ?? ['light', 'dark']) {
-    for (const [size, w, h] of config.sizes ?? SIZES) {
-      for (const screen of config.screens) {
-        const context = await browser.newContext({ viewport: { width: w, height: h }, colorScheme: theme, hasTouch: w < 1000 });
-        if (config.theme) await config.theme(context, theme);
-        const page = await context.newPage();
-        const name = `${screen.name}-${size}-${theme}`;
-        try {
-          await page.goto(base + (screen.path ?? '/'), { waitUntil: 'networkidle' }).catch(() => page.waitForLoadState('load'));
-          if (screen.open) await screen.open(page, { width: w, height: h, theme });
-          await page.waitForTimeout(screen.settle ?? 500); // let entrance animations finish (220 ms)
-          let found;
-          for (let i = 0; ; i++) {
-            try { found = await page.evaluate(findProblems, [...(config.ignore ?? []), ...(screen.ignore ?? [])]); break; }
-            catch (e) { if (i >= 2) throw e; await page.waitForTimeout(800); }
-          }
-          await page.screenshot({ path: join(out, `${name}.png`), fullPage: true });
-          if (found.length) { problems += found.length; report.push(`✗ ${name}\n  - ${found.join('\n  - ')}`); }
-          else report.push(`✓ ${name}`);
-        } catch (e) {
-          problems++; report.push(`✗ ${name}\n  - could not open the screen: ${String(e.message ?? e).split('\n')[0]}`);
-        }
-        await context.close();
+  // Every (theme, size, screen) is one job; jobs run a few at a time in their own contexts.
+  const jobs = [];
+  for (const theme of config.themes ?? ['light', 'dark'])
+    for (const entry of config.sizes ?? SIZES)
+      for (const screen of config.screens) jobs.push({ theme, entry, screen });
+  const workers = Math.max(1, Number(process.env.LAYOUT_WORKERS) || config.workers || 4);
+  const results = new Array(jobs.length);
+  let next = 0;
+
+  async function one({ theme, entry, screen }) {
+    // [name, width, height, scale?]: scale is the phone's font size (Settings → Display → Font
+    // size, 1.3 = 130 %). The page gets the screen's width divided by it, the way Android and
+    // iOS lay out with bigger text, and is drawn at that scale. Never use CSS zoom for this: the
+    // page then lays out at full width and is only drawn bigger, so overflow goes unseen.
+    const [size, w, h, scale = 1] = entry;
+    const vw = Math.round(w / scale), vh = Math.round(h / scale);
+    const context = await browser.newContext({ viewport: { width: vw, height: vh }, deviceScaleFactor: scale, colorScheme: theme, hasTouch: w < 1000 });
+    if (config.theme) await config.theme(context, theme);
+    const page = await context.newPage();
+    const name = `${screen.name}-${size}-${theme}`;
+    try {
+      await page.goto(base + (screen.path ?? '/'), { waitUntil: 'networkidle' }).catch(() => page.waitForLoadState('load'));
+      if (screen.open) await screen.open(page, { width: vw, height: vh, scale, theme });
+      await page.waitForTimeout(screen.settle ?? 500); // let entrance animations finish (220 ms)
+      let found;
+      for (let i = 0; ; i++) {
+        try { found = await page.evaluate(findProblems, [...(config.ignore ?? []), ...(screen.ignore ?? [])]); break; }
+        catch (e) { if (i >= 2) throw e; await page.waitForTimeout(800); }
       }
+      await page.screenshot({ path: join(out, `${name}.png`), fullPage: true });
+      return found.length ? { n: found.length, text: `✗ ${name}\n  - ${found.join('\n  - ')}` } : { n: 0, text: `✓ ${name}` };
+    } catch (e) {
+      return { n: 1, text: `✗ ${name}\n  - could not open the screen: ${String(e.message ?? e).split('\n')[0]}` };
+    } finally {
+      await context.close();
     }
   }
+
+  await Promise.all(Array.from({ length: Math.min(workers, jobs.length) }, async () => {
+    while (next < jobs.length) { const i = next++; results[i] = await one(jobs[i]); }
+  }));
   await browser.close();
-  console.log(report.join('\n'));
+  const problems = results.reduce((sum, r) => sum + r.n, 0);
+  console.log(results.map((r) => r.text).join('\n'));
   console.log(problems ? `\n${problems} layout problem(s). Screenshots: ${out}` : `\nNo layout problems. Screenshots: ${out}`);
   return problems;
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
+  // No top-level await: a config may import SIZES / LARGE_TEXT from this file, and awaiting it
+  // here would wait on itself.
   const [cfgPath, base] = process.argv.slice(2);
   if (!cfgPath) { console.error('usage: node layout-check.mjs layout.config.mjs [base-url]'); process.exit(2); }
-  const config = (await import(pathToFileURL(resolve(cfgPath)).href)).default;
-  process.exit((await run(config, base ?? config.base)) ? 1 : 0);
+  import(pathToFileURL(resolve(cfgPath)).href)
+    .then(({ default: config }) => run(config, base ?? config.base))
+    .then((problems) => process.exit(problems ? 1 : 0), (e) => { console.error(e); process.exit(2); });
 }
