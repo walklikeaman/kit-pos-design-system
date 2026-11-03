@@ -147,10 +147,12 @@ const head = `<header class="kit-header">
   ${wall ? '<span class="clock">19:25</span><span class="live">LIVE</span>' : ''}
   <span class="kit-header__more" aria-expanded="${screen === 'menu'}"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></span>
 </header>`;
+// Store card version line: "<App> · <version> (<build>)", KIT Label's format.
+const ver = { monitor: '0.7.5 (75)', kitchen: '0.11.5 (115)', invoice: '0.4.0 (40)', label: '4.4.0 (412)' }[app];
 const crop = { monitor: 72, kitchen: 68, invoice: 140, label: 80 }[app];
 const content = `<div class="content" style="background-image:url(img/app-next/${app}.jpg);background-position:center -${crop}px"></div>`;
 const menu = `<div class="scrim" style="background:transparent"></div><nav class="kit-menu">
-  <div class="kit-menu__store"><img src="${icon}" alt=""><div><b>${A.store.split(' · ')[0]}</b><span>${A.name} · v0.11</span></div></div>
+  <div class="kit-menu__store"><img src="${icon}" alt=""><div><b>${A.store.split(' · ')[0]}</b><span>${A.name} · ${ver}</span></div></div>
   <div class="kit-menu__item">${ic.gear}Settings</div>
   <div class="kit-menu__item">${ic.store}Store and clerk<small>Demo Owner</small></div>
   <div class="kit-menu__item">${ic.help}Help</div>
