@@ -23,8 +23,13 @@ It saves every screen as a PNG for a look by eye. Grown from KIT Invoice's check
 4. Run it before every build shown to Nikita or Gahl, and in CI after the production build
    (serve the build, then `npm run layout`). Zero problems, or a reason in the config's `ignore`.
 
-Flutter apps (KIT Label, Kiosk) run it on `flutter build web` output, then check the
-Android build on the emulator or a device by eye: Android fonts are wider.
+**Flutter apps (KIT Label, Kiosk) do not use this script.** Flutter web paints on a canvas,
+so the page has no text elements and the script passes anything. Their check is a widget test
+that pumps every screen at the same eight sizes, light and dark, with the longest real text,
+and walks the render tree for overflow (`RenderFlex overflowed`, text cut without "…") and
+overlapping text or buttons. The model is kit-kiosk `app/test/layout_test.dart` (2026-11-03;
+it caught 3 real overflows). It runs with `flutter test` in CI. Then check the Android build
+on the emulator or a device by eye: Android fonts are wider.
 
 ## First runs (2026-11-03, before any fix)
 
@@ -32,7 +37,15 @@ Android build on the emulator or a device by eye: Android fonts are wider.
   "NE W"), tablets 768 cut the "Check all +N below" button.
 - KIT Monitor (main): at 320 and 360 customers' names are squeezed to one letter, the column
   titles overlap and the ⋮ menu opens off the screen.
+- Website (main): from 1024 px the software section's grid (56% + 44% columns plus a 32 px
+  gap) ran 32 px past its container. Fixed in KIT-POS-Website #20 with fraction columns.
 - KIT Waiter (2026-11-03, 14 screens x 8 sizes x 2 themes): 0 problems after two fixes to the
   check itself: anything inside a box that scrolls or pans (the floor plan on a phone) is
   reached by scrolling, not "cut" or "off the screen"; and icons (`svg`, `<i>` mask icons) now
   count in the overlap test, since an icon on top of a label is as bad as two labels.
+
+## Not counted as a problem
+
+Screen-reader-only text (`sr-only`, 1 px and clipped on purpose), the body of a closed
+`<details>`, a link that wraps inside a sentence (compared line by line, not as one box), and
+anything inside a box that scrolls or pans: it is reached by scrolling.

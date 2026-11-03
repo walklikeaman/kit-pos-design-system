@@ -46,9 +46,12 @@ function findProblems(ignore = []) {
   const out = [];
   const vw = document.documentElement.clientWidth;
   if (document.documentElement.scrollWidth > vw + 1) out.push(`page is ${document.documentElement.scrollWidth}px wide on a ${vw}px screen`);
+  // Not seen: screen-reader-only text (1 px, clipped on purpose) and the body of a closed <details>.
+  const srOnly = (el) => { const s = getComputedStyle(el); return s.position === 'absolute' && (s.clip === 'rect(0px, 0px, 0px, 0px)' || /inset\(50%\)/.test(s.clipPath)) && el.getBoundingClientRect().width <= 1; };
   const visible = (el) => {
     const r = el.getBoundingClientRect();
     const s = getComputedStyle(el);
+    if (srOnly(el) || (el.closest('details:not([open])') && !el.closest('summary'))) return false;
     return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none' && Number(s.opacity) > 0.05;
   };
   const label = (el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''} "${(el.innerText || el.value || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 40)}"`;
@@ -154,11 +157,13 @@ function findProblems(ignore = []) {
     }
     return { left: l, top: t, right: rt, bottom: bt };
   };
-  const rects = leaves.map((el) => ({ el, r: seen(el, textRect(el)) })).filter(({ r }) => r.right - r.left > 1 && r.bottom - r.top > 1);
+  // A link that wraps inside a sentence is two line boxes, not one big box over its neighbours.
+  const lineRects = (el) => { const parts = el.getClientRects(); return getComputedStyle(el).display === 'inline' && parts.length > 1 ? [...parts] : [textRect(el)]; };
+  const rects = leaves.flatMap((el) => lineRects(el).map((r) => ({ el, r: seen(el, r) }))).filter(({ r }) => r.right - r.left > 1 && r.bottom - r.top > 1);
   for (let i = 0; i < rects.length; i++) {
     for (let j = i + 1; j < rects.length; j++) {
       const a = rects[i], b = rects[j];
-      if (a.el.contains(b.el) || b.el.contains(a.el)) continue;
+      if (a.el === b.el || a.el.contains(b.el) || b.el.contains(a.el)) continue;
       const x = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left);
       const y = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
       // Stacked lines (a caption over a big value) touch through their line boxes: count a real overlap only.
