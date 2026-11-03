@@ -232,6 +232,10 @@ drawn from the tabs mistake:
    covers (login, header, ⋮ menu, Settings, toast, pills, icons, motion, scan bar, number fields) with the
    preview and with the sibling apps. Any difference without a reason written
    here is a bug: fix it in the app, or record the reason here.
+5. **Layout check on every size** (Nikita 2026-11-03). Every app and the website runs
+   `../tools/layout-check.mjs` over all its screens at eight sizes, light and dark, before
+   a build is shown and in CI: no sideways scroll, nothing off the screen, nothing cut or
+   on top of something else. See `../tools/README.md`.
 
 ## Motion, toasts, pills and icons: one set (Nikita 2026-11-03)
 
