@@ -199,6 +199,15 @@ Preview: `../preview/app-shell.html?app=kitchen&screen=settings` (`screen=menu`,
 - **⋮ menu** (`.kit-menu`): a store card on top (app icon, store name, app and
   version) above a dashed tear, then Settings, Store and clerk, Help, and Log out
   in the error colour. On a phone it spans the width under the header.
+- **Version on the store card** (Nikita 2026-11-03). The line under the store
+  name is the app, its version and its build number, in KIT Label's format:
+  `KIT Label · 4.4.0 (412)`, that is `<app name> · <version> (<build>)`. The
+  version and build come from the installed package at run time (Flutter
+  `PackageInfo`, Capacitor `App.getInfo()` → `version` and `build`), never a
+  string typed into the code, so the card always names the build that is
+  running. No `v` prefix. In a browser preview with no native layer, show the
+  version from `package.json` without the build. KIT Label had this since its
+  drawer was built; the other apps did not, which is why it is written here.
 - **Settings S-B** (`.kit-settings`): one plain list, on every width (Nikita
   2026-11-02). The sheet has the title and Done, the app's name over a dashed
   tear, then one row per section (icon, name, chevron) and Log out last, in the
