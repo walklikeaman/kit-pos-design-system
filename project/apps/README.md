@@ -254,6 +254,11 @@ background colour. Only the container changes with the screen.
 | Phone upright (< 700 px wide) and phone on its side (< 500 px tall) | Fills the screen, `--kit-app-bg`. The head and the cards keep to a 720 px column in the middle. No sheet edge, no shadow. |
 | Tablet upright and on its side, wall screens (Kitchen, Monitor) | A sheet over `--kit-scrim`, centred: `min(720 px, 100vw − 48)` wide, as tall as its content up to `min(760 px, 100vh − 48)`, so 24 px or more of the screen shows round it. `--kit-app-bg`, 1 px `--kit-app-line`, radius 28 squircle, shadow `0 30px 80px #0004`. It scrolls inside. |
 
+**The sheet on every tablet** (Nikita chose it 2026-11-03 over KIT Label's
+full page). KIT Label still opens Settings on a tablet as a full page with the
+card centred (shot `label-settings-tablet1280-landscape-light.png`); it moves
+to the sheet in its own thread.
+
 | Part | Value |
 | --- | --- |
 | Head | At least 68 px; padding 12 16 12 22. Title 22/800, one line. **Done** on the right: the main button (`--kit-app-primary`, white text in light, dark text in dark), at least 88 × 44, 16/800, radius `--kit-app-radius-field`. A section page puts the back arrow (`back.svg`, 44 px target) before its title. Never a ✕. |
