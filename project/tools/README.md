@@ -23,8 +23,13 @@ It saves every screen as a PNG for a look by eye. Grown from KIT Invoice's check
 4. Run it before every build shown to Nikita or Gahl, and in CI after the production build
    (serve the build, then `npm run layout`). Zero problems, or a reason in the config's `ignore`.
 
-Flutter apps (KIT Label, Kiosk) run it on `flutter build web` output, then check the
-Android build on the emulator or a device by eye: Android fonts are wider.
+**Flutter apps (KIT Label, Kiosk) do not use this script.** Flutter web paints on a canvas,
+so the page has no text elements and the script passes anything. Their check is a widget test
+that pumps every screen at the same eight sizes, light and dark, with the longest real text,
+and walks the render tree for overflow (`RenderFlex overflowed`, text cut without "…") and
+overlapping text or buttons. The model is kit-kiosk `app/test/layout_test.dart` (2026-11-03;
+it caught 3 real overflows). It runs with `flutter test` in CI. Then check the Android build
+on the emulator or a device by eye: Android fonts are wider.
 
 ## First runs (2026-11-03, before any fix)
 
