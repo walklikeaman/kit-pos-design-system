@@ -45,16 +45,30 @@ on the emulator or a device by eye: Android fonts are wider.
 
 ## In CI (GitHub Actions)
 
-`ubuntu-latest` is Ubuntu 26.04 now, and `npx playwright install chromium` fails there
-(found by the KIT Waiter thread, 2026-11-03). Use the Chrome the runner already has:
+CI minutes are limited (3,000 a month for every KIT repo together; KIT-SHARED-RULES CI thrift).
+The full check (8+ sizes x 2 themes x every screen) took up to 27 minutes per run, so CI runs a
+short one and only when the screens change:
+
+- **Its own job**, `timeout-minutes: 10`, after the build, skipped on draft PRs.
+- **Only when screen files change**: a `paths` filter on the workflow, or a changed-files step,
+  covering `src/**/*.{html,css,scss,ts}`, `public/**`, the layout config and the script.
+- **Short list**: `LAYOUT_SIZES=ci` runs `CI_SIZES` (320, 360 at 130 % text, tablet portrait and
+  landscape), light and dark. The full list runs locally before every build shown to Nikita.
+- **No reruns by hand** (`workflow_dispatch`) on every push of a draft.
+
+`ubuntu-latest` is Ubuntu 26.04, where `npx playwright install chromium` fails (KIT Waiter
+thread). Use the runner's Chrome:
 
 ```yaml
-- run: npm i --no-save playwright-core@1.56.1
-- run: CHROMIUM="$(command -v google-chrome)" npm run layout
+layout:
+  needs: build
+  if: github.event.pull_request.draft == false
+  timeout-minutes: 10
+  steps:
+    # checkout, setup-node, npm ci, download the build, serve it on :4200 in the background
+    - run: npm i --no-save playwright-core@1.56.1
+    - run: LAYOUT_SIZES=ci CHROMIUM="$(command -v google-chrome)" npm run layout
 ```
-
-Serve the production build first (for example `npx http-server dist/... -p 4200 &`), and keep
-the job's `timeout-minutes` set (CI thrift rule).
 
 A page with a third-party widget that keeps polling (Cloudflare Turnstile, analytics) never
 goes network-idle, so every screen waits out the 30 s load timeout (the website's CI hung for
