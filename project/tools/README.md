@@ -37,3 +37,10 @@ on the emulator or a device by eye: Android fonts are wider.
   "NE W"), tablets 768 cut the "Check all +N below" button.
 - KIT Monitor (main): at 320 and 360 customers' names are squeezed to one letter, the column
   titles overlap and the ⋮ menu opens off the screen.
+- Website (main): from 1024 px the software section's grid (56% + 44% columns plus a 32 px
+  gap) ran 32 px past its container. Fixed in KIT-POS-Website #20 with fraction columns.
+
+## Not counted as a problem
+
+Screen-reader-only text (`sr-only`, 1 px and clipped on purpose), the body of a closed
+`<details>`, and a link that wraps inside a sentence (compared line by line, not as one box).
