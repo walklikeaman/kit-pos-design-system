@@ -22,6 +22,7 @@
  *     theme: async (context, theme) => { ... }, // how this app picks light/dark before it starts
  *     ignore: ['.ticker'],                       // things allowed to overlap on purpose (optional)
  *     sizes: [...],                              // optional, defaults to SIZES below
+ *     ciSizes: [...],                            // optional, what LAYOUT_SIZES=ci runs (default CI_SIZES)
  *     screens: [{ name: 'login', path: '/login', open: async (page) => { ... } }],
  *   };
  * A screen's `open` runs after the page loads: log in, open the ⋮ menu, fill long text.
@@ -203,7 +204,7 @@ export async function run(config, base = config.base) {
   // Every (theme, size, screen) is one job; jobs run a few at a time in their own contexts.
   const jobs = [];
   for (const theme of config.themes ?? ['light', 'dark'])
-    for (const entry of process.env.LAYOUT_SIZES === 'ci' ? CI_SIZES : config.sizes ?? SIZES)
+    for (const entry of process.env.LAYOUT_SIZES === 'ci' ? config.ciSizes ?? CI_SIZES : config.sizes ?? SIZES)
       for (const screen of config.screens) jobs.push({ theme, entry, screen });
   const workers = Math.max(1, Number(process.env.LAYOUT_WORKERS) || config.workers || 4);
   const results = new Array(jobs.length);
