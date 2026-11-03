@@ -43,6 +43,9 @@ export const SIZES = [
 /** The same small phones with the font at 130 % (a common setting): add for phone apps,
  *  `sizes: [...SIZES, ...LARGE_TEXT]`. The 4th value is the font scale. */
 export const LARGE_TEXT = [['360x780@130', 360, 780, 1.3], ['390x844@130', 390, 844, 1.3]];
+/** CI's short list (CI minutes thrift, 2026-11-03): the narrowest phone, a phone at 130 % text,
+ *  a tablet each way. LAYOUT_SIZES=ci picks it; the full list runs before showing a build. */
+export const CI_SIZES = [['320x640', 320, 640], ['360x780@130', 360, 780, 1.3], ['800x1280', 800, 1280], ['1280x800', 1280, 800]];
 
 /** Runs in the page: what overflows or overlaps. */
 function findProblems(ignore = []) {
@@ -200,7 +203,7 @@ export async function run(config, base = config.base) {
   // Every (theme, size, screen) is one job; jobs run a few at a time in their own contexts.
   const jobs = [];
   for (const theme of config.themes ?? ['light', 'dark'])
-    for (const entry of config.sizes ?? SIZES)
+    for (const entry of process.env.LAYOUT_SIZES === 'ci' ? CI_SIZES : config.sizes ?? SIZES)
       for (const screen of config.screens) jobs.push({ theme, entry, screen });
   const workers = Math.max(1, Number(process.env.LAYOUT_WORKERS) || config.workers || 4);
   const results = new Array(jobs.length);
