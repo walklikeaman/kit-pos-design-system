@@ -32,3 +32,7 @@ Android build on the emulator or a device by eye: Android fonts are wider.
   "NE W"), tablets 768 cut the "Check all +N below" button.
 - KIT Monitor (main): at 320 and 360 customers' names are squeezed to one letter, the column
   titles overlap and the ⋮ menu opens off the screen.
+- KIT Waiter (2026-11-03, 14 screens x 8 sizes x 2 themes): 0 problems after two fixes to the
+  check itself: anything inside a box that scrolls or pans (the floor plan on a phone) is
+  reached by scrolling, not "cut" or "off the screen"; and icons (`svg`, `<i>` mask icons) now
+  count in the overlap test, since an icon on top of a label is as bad as two labels.
