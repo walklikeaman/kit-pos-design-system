@@ -21,7 +21,6 @@
   .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
   .ic { display: grid; justify-items: center; gap: 4px; padding: 10px 4px; background: var(--kit-app-surface); border-radius: 12px; color: var(--kit-app-text); }
   .ic svg { width: 24px; height: 24px; } .ic small { font-size: 11px; color: var(--kit-app-muted); }
-  .kit-settings .done { border: 0; background: none; color: var(--kit-app-text); font: 800 17px var(--font-sans); padding: 8px 12px; cursor: pointer; }
   .kit-settings__section svg { width: 22px; height: 22px; flex: none; }
   .kit-menu__item { cursor: pointer; }
 </style>
@@ -63,9 +62,9 @@ function menu(btn) {
 }
 function settings(btn) {
   const s = document.createElement('div'); s.className = 'kit-scrim';
-  s.innerHTML = `<div class="kit-settings"><div class="kit-settings__head"><h2>Settings</h2><button class="done">Done</button></div>
-    <div class="kit-settings__list"><div class="kit-settings__section">${I.settings}<span>General</span>${I.chevron.replace('<svg ','<svg class="kit-settings__chev" ')}</div>
-    <div class="kit-settings__section kit-settings__logout">${I.logout}<span>Log out</span></div></div></div>`;
+  s.innerHTML = `<div class="kit-settings"><div class="kit-settings__head"><h2>Settings</h2><button class="kit-settings__done done">Done</button></div>
+    <div class="kit-settings__list"><div class="kit-settings__group"><div class="kit-settings__section">${I.settings}<span class="kit-settings__text"><b>General</b></span>${I.chevron.replace('<svg ','<svg class="kit-settings__chev" ')}</div>
+    <div class="kit-settings__section kit-settings__logout">${I.logout}<span class="kit-settings__text"><b>Log out</b></span></div></div></div></div>`;
   s.querySelector('.done').onclick = () => close(s);
   s.onclick = (e) => { if (e.target === s) close(s); };
   btn.closest('.theme').appendChild(s);
