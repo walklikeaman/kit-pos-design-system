@@ -54,6 +54,7 @@ short one and only when the screens change:
   covering `src/**/*.{html,css,scss,ts}`, `public/**`, the layout config and the script.
 - **Short list**: `LAYOUT_SIZES=ci` runs `CI_SIZES` (320, 360 at 130 % text, tablet portrait and
   landscape), light and dark. The full list runs locally before every build shown to Nikita.
+  An app that only runs one way (Bench, a landscape till) sets its own `ciSizes` in the config.
 - **No reruns by hand** (`workflow_dispatch`) on every push of a draft.
 
 `ubuntu-latest` is Ubuntu 26.04, where `npx playwright install chromium` fails (KIT Waiter
