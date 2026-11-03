@@ -23,6 +23,25 @@ Source: google/material-design-icons, Apache License 2.0.
 | `moon.svg` | `Icons.dark_mode` | dark theme |
 | `logout.svg` | `Icons.logout` | Log out, last row of the ⋮ menu and of Settings |
 | `settings.svg` | `Icons.settings_outlined` | Settings row of the ⋮ menu |
+| `help.svg` | `Icons.help_outline` | Help row (⋮ menu, Settings) |
+| `home.svg` | `Icons.home_outlined` | Home row of the ⋮ menu |
+| `history.svg` | `Icons.history` | Print history and other history rows |
+| `person.svg` | `Icons.person_outline` | Store and clerk row of the ⋮ menu |
+| `store.svg` | `Icons.storefront_outlined` | Store / My store section |
+| `print.svg` | `Icons.print_outlined` | Printers section |
+| `scanner.svg` | `Icons.qr_code_scanner` | Scanner section |
+| `bell.svg` | `Icons.notifications_none` | Notifications, Sound |
+| `palette.svg` | `Icons.palette_outlined` | Appearance section |
+| `theme.svg` | `Icons.contrast` | Theme row |
+| `language.svg` | `Icons.language` | Language row, website row |
+| `units.svg` | `Icons.straighten` | Units row |
+| `price.svg` | `Icons.sell_outlined` | Prices / markup section |
+| `board.svg` | `Icons.view_column_outlined` | Board section (Kitchen, Monitor) |
+| `storage.svg` | `Icons.cleaning_services_outlined` | Storage section |
+| `info.svg` | `Icons.info_outline` | About section, version row |
+| `whats-new.svg` | `Icons.auto_awesome_outlined` | What's new row |
+| `feedback.svg` | `Icons.feedback_outlined` | Send feedback row |
+| `external.svg` | `Icons.open_in_new` | end of a row that opens outside the app |
 
 Text characters never stand in for these (Nikita 2026-11-03): no ✕ × ✓ › ‹ ← → ＋ − ⚠ ▲ ★ ☀ ☾ in a
 screen. A digit or a word inside a pill is text; a shape is an icon.

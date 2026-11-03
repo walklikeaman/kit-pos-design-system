@@ -20,7 +20,8 @@ and 2026-10-26.
 
 Previews: `../preview/app-monitor-card.html`, `app-mark.html`, `app-kitchen.html`, `app-icons.html`,
 `app-login.html` (L1, with a looping demo at `?auto=1`), `app-shell.html` (header, menu, settings)
-`app-scanbar.html` (the scan bar) and `app-motion.html` (menu, Settings, toast, pills, icons).
+`app-scanbar.html` (the scan bar), `app-motion.html` (menu, Settings, toast, pills, icons) and
+`app-settings.html` (the ⋮ menu and Settings, exact, KIT Label as the model).
 
 ## Look here before you build a screen (Nikita 2026-11-02)
 
@@ -197,8 +198,8 @@ Preview: `../preview/app-shell.html?app=kitchen&screen=settings` (`screen=menu`,
   the wall screens (Monitor, Kitchen) the clock and LIVE sit on the right, and the
   atom's sheen is the connection indicator. A ⋮ button closes the row.
 - **⋮ menu** (`.kit-menu`): a store card on top (app icon, store name, app and
-  version) above a dashed tear, then Settings, Store and clerk, Help, and Log out
-  in the error colour. On a phone it spans the width under the header.
+  version) above a dashed tear, then the rows, Log out last in the error colour.
+  Exact sizes: [⋮ menu, exact](#-menu-exact-nikita-2026-11-03) below.
 - **Version on the store card** (Nikita 2026-11-03). The line under the store
   name is the app, its version and its build number, in KIT Label's format:
   `KIT Label · 4.4.0 (412)`, that is `<app name> · <version> (<build>)`. The
@@ -208,19 +209,133 @@ Preview: `../preview/app-shell.html?app=kitchen&screen=settings` (`screen=menu`,
   running. No `v` prefix. In a browser preview with no native layer, show the
   version from `package.json` without the build. KIT Label had this since its
   drawer was built; the other apps did not, which is why it is written here.
-- **Settings S-B** (`.kit-settings`): one plain list, on every width (Nikita
-  2026-11-02). The sheet has the title and Done, the app's name over a dashed
-  tear, then one row per section (icon, name, chevron) and Log out last, in the
-  error colour. A row opens that section's page: back arrow, the section's
-  name, Done, then its rows. Controls are switches, segmented choices and
-  steppers in the app's corners. Centred, at most 720 px wide; under 700 px it
-  fills the screen. Preview `screen=settings` is the list, `screen=section` a page.
+- **Settings** (`.kit-settings`): one plain list on every width. Exact
+  container, rows and icons: [Settings, exact](#settings-exact-nikita-2026-11-03) below.
 - **Never tabs, never a left column.** Up to 2026-11-02 this section said the
   sections sat on a stub on the left and became a strip of chips under 700 px.
   That narrow version was written here without being shown to Nikita, then
   copied into KIT Kitchen, KIT Monitor and KIT Label; he never approved it
   («У нас нигде не должно быть такое меню со вкладками»). All three went back
   to the list on 2026-11-02 (Kitchen #93, Monitor #46, Label #271).
+
+## Reference: KIT Label's menu and Settings (Nikita 2026-11-03)
+
+Nikita opened KIT Invoice's Settings on his phone and found it drifting: it
+filled the screen with bare rows, while KIT Label shows the rows on a framed
+card with a margin from the screen's edges. «Такие вещи должны быть в
+дизайн-системе прописаны»: how the menu, Settings and their icons look. The
+numbers below are measured from KIT Label 4.4.0 (`lib/screens/settings_screen.dart`,
+`lib/screens/app_menu_drawer.dart`), rendered for real and put next to this
+file's CSS. Every app copies them; a difference is a bug.
+
+Preview: `../preview/app-settings.html` (`screen=menu|settings|section|about`,
+`app=label|invoice|kitchen|monitor`, `scheme=dark`; the window size picks phone
+or tablet). Reference shots: `../preview/img/reference/`, KIT Label beside the
+preview, each labelled with device, orientation and theme.
+
+### ⋮ menu, exact (Nikita 2026-11-03)
+
+| Part | Value |
+| --- | --- |
+| Where | Under the header: top = header bottom + 6 px. Phone (< 600 px wide): 8 px from both sides. Wider: 320 px wide, right edge 8 px from the screen's. Taller than the window: stops 8 px above the bottom and scrolls, so Log out stays reachable. |
+| Card | `--kit-app-surface`, 1 px `--kit-app-line`, radius `--kit-app-radius-card` (28, squircle), shadow `0 24px 60px #0003`, padding 8. No dimmer behind it; a tap outside closes it. |
+| Store card | Padding 12 12 14. App icon 44 px, squircle radius 10. Store name 17/800, one line, ellipsis. Under it `<App> · <version> (<build>)` 12/600 muted, then the clerk 12/400 muted (left out when unknown). |
+| Tear | 2 px dashed `--kit-app-line`, then 6 px. |
+| Row | 52 px tall, padding 0 12, icon 22 px in `--kit-app-muted`, 14 px gap, label 16/700 in `--kit-app-text`, one line. Hover/press: `--kit-app-raised`, radius `--kit-app-radius-field`. |
+| Rows, in order | The app's own rows first (KIT Label: Home, Print history; Kitchen and Monitor: Store and clerk), then **Help**, **Settings**, and **Log out** last: label and icon in `--kit-app-error`. |
+
+### Settings, exact (Nikita 2026-11-03)
+
+The inside is the same on every width: a head, then framed group cards on the
+background colour. Only the container changes with the screen.
+
+| Screen | Container |
+| --- | --- |
+| Phone upright (< 700 px wide) and phone on its side (< 500 px tall) | Fills the screen, `--kit-app-bg`. The head and the cards keep to a 720 px column in the middle. No sheet edge, no shadow. |
+| Tablet upright and on its side, wall screens (Kitchen, Monitor) | A sheet over `--kit-scrim`, centred: `min(720 px, 100vw − 48)` wide, as tall as its content up to `min(760 px, 100vh − 48)`, so 24 px or more of the screen shows round it. `--kit-app-bg`, 1 px `--kit-app-line`, radius 28 squircle, shadow `0 30px 80px #0004`. It scrolls inside. |
+
+| Part | Value |
+| --- | --- |
+| Head | At least 68 px; padding 12 16 12 22. Title 22/800, one line. **Done** on the right: the main button (`--kit-app-primary`, white text in light, dark text in dark), at least 88 × 44, 16/800, radius `--kit-app-radius-field`. A section page puts the back arrow (`back.svg`, 44 px target) before its title. Never a ✕. |
+| List | Scrolls; padding 0 16 16, so every card is 16 px from the screen (or sheet) edge. |
+| Group card | `--kit-app-surface`, 1 px `--kit-app-line`, radius 28 squircle. 12 px between two cards. The Settings list is one card with Log out as its last row. |
+| Group title | Only over a second card that needs a name ("About us"): 12/700, letter-spacing 0.3 px, `--kit-app-muted`, 14 px above, 6 px below, 6 px in from the card. No title over a page's only card. |
+| Section row (opens a page) | At least 60 px; padding 10 12 10 16. Icon 24 px in the text colour, 16 px gap, name 16/700, one muted line under it 13/500 that says what is inside (≤ 32 characters, so it stays on one line on a 360 px phone), chevron 24 px muted at the end. |
+| Setting row (has a control) | The same row; the control (switch, segmented choice, stepper, picker) sits **on the same line** at the right. It drops under the text only when it does not fit there. No line under the name unless it tells the merchant something the name does not. |
+| Value row | Name on the left, the value right-aligned 15/600 muted (version, store name). |
+| Divider | 1 px `--kit-app-line` between rows, starting 56 px in (under the text, not under the icon). |
+| Log out | Last row of the Settings card: `logout.svg` and "Log out" in `--kit-app-error`, no chevron, no line under it. |
+| What is not there | No app-name block above the list (the ⋮ menu and About carry the app and version), no tabs, no left column, no full-width bare rows on a phone. |
+| Motion | Opens rising 16 px and fading in, 220 ms; leaves in 160 ms (see Motion below). A section page opens the same way inside the same container. |
+
+### Icons in the menu and in Settings
+
+Material Symbols Outlined, files in `icons/ui/` (Flutter: the `Icons.*` named).
+Rows use 24 px in the text colour; the ⋮ menu uses 22 px muted.
+
+| Row | File | Flutter |
+| --- | --- | --- |
+| Settings | `settings.svg` | `Icons.settings_outlined` |
+| Help | `help.svg` | `Icons.help_outline` |
+| Log out | `logout.svg` | `Icons.logout` |
+| Home | `home.svg` | `Icons.home_outlined` |
+| Print history, history | `history.svg` | `Icons.history` |
+| Store and clerk | `person.svg` | `Icons.person_outline` |
+| Store, My store | `store.svg` | `Icons.storefront_outlined` |
+| Printers | `print.svg` | `Icons.print_outlined` |
+| Scanner | `scanner.svg` | `Icons.qr_code_scanner` |
+| Notifications, Sound | `bell.svg` | `Icons.notifications_none` |
+| Appearance | `palette.svg` | `Icons.palette_outlined` |
+| Theme | `theme.svg` | `Icons.contrast` |
+| Language, website | `language.svg` | `Icons.language` |
+| Units | `units.svg` | `Icons.straighten` |
+| Prices, markup | `price.svg` | `Icons.sell_outlined` |
+| Board (Kitchen, Monitor) | `board.svg` | `Icons.view_column_outlined` |
+| Storage | `storage.svg` | `Icons.cleaning_services_outlined` |
+| About | `info.svg` | `Icons.info_outline` |
+| What's new | `whats-new.svg` | `Icons.auto_awesome_outlined` |
+| Send feedback | `feedback.svg` | `Icons.feedback_outlined` |
+| Opens outside the app | `external.svg` | `Icons.open_in_new` |
+| Opens a page | `chevron.svg` | `Icons.chevron_right` |
+| Back | `back.svg` | `Icons.arrow_back` |
+
+A new row needs an icon from this list or a new Material Symbol added here
+first. Never an emoji, never a text character.
+
+## Save screen space (Nikita 2026-11-03)
+
+«Не нужно растягивать, не нужно делать длинные скроллинги по экрану.» What the
+merchant came for has to be on the screen without scrolling, on every device.
+KIT Invoice's item sheet is why: a banner "Not in your store yet, fill in what
+is marked required to edit" wrapped and left the word "it" alone on a line, the
+"New product" badge took a row of its own, and cost, markup, margin and price
+were pushed below the fold, as if adding a product mattered more than its price.
+
+1. **The main data first.** Each screen names its main data (item sheet: cost,
+   markup, margin, price, stock; board: the tickets; Settings: the sections). On
+   a 360 × 640 phone it is visible without scrolling. Everything else goes under it.
+2. **One line for a banner or hint.** At most about 40 characters, so it fits a
+   360 px phone in one line. Say it short ("New product: fill the required
+   fields"), or move the explanation behind a help icon. A wrapped banner with
+   one word on the last line is a bug.
+3. **Badges and pills on the title row.** "New product", "Changed", status pills
+   sit at the end of the title line, never on a row of their own.
+4. **Controls beside their label.** A switch, segmented choice or stepper sits
+   on the label's line when it fits; it drops under only when it doesn't.
+5. **Compact heads.** A header is 60 px on a phone (68 on a tablet); one title per
+   screen, never an app bar title and the same title again below it.
+6. **Phone padding.** 16 px from the screen edge, 12 px between cards, 8 to 12 px
+   inside dense rows. Nothing ≥ 24 px of empty space on a phone unless it
+   separates two different things.
+7. **No obvious text.** A line that repeats the label, explains how the app
+   works inside, or says what every merchant already knows is cut (rule of
+   2026-10-31: the UI shows only what the merchant needs).
+8. **Adapt, don't stretch.** A tablet uses its width for more content side by
+   side (two columns of fields, a wider list), not for bigger gaps. A phone on
+   its side keeps the main data and the main button on screen.
+9. **Check it.** The design check (rule 4 below) measures the main data on a
+   360 × 640 phone, a 393 × 852 phone and a tablet both ways. Below the fold on
+   any of them is a bug.
 
 ## One design for every app (Nikita 2026-11-02)
 
@@ -258,10 +373,10 @@ instead of icons. Nikita saw them side by side (page «Сейчас и Стан�
 | --- | --- | --- | --- |
 | Timing | `--kit-enter`, `--kit-exit` | in 220 ms `cubic-bezier(0.16,1,0.3,1)`, out 160 ms `cubic-bezier(0.4,0,1,1)` | Flutter: the same numbers as `Cubic`. Nothing pops up without it, nothing vanishes in one frame. |
 | ⋮ menu (website: phone menu, dropdowns) | `.kit-menu` | from the ⋮ corner, scale .96 → 1, 4 px down | No dimmer behind it; tap outside closes. Settings and Log out have icons; Log out in the error colour. |
-| Settings, dialog, sheet | `.kit-scrim` + `.kit-settings` / `.kit-dialog` | rises 16 px and fades in | One dimmer `--kit-scrim` in both themes. Settings closes with **Done**, a section page goes back with `back.svg`. Never slides in from a side, never a whole new page. |
+| Settings, dialog, sheet | `.kit-scrim` + `.kit-settings` / `.kit-dialog` | rises 16 px and fades in | One dimmer `--kit-scrim` in both themes. Settings closes with **Done** (the main button, see Settings, exact), a section page goes back with `back.svg`. Never slides in from a side. On a phone Settings fills the screen; on a tablet it is a sheet. |
 | Toast | `.kit-toast` | from the bottom, rises 12 px, stays 3 s | Main-button colours, an icon first. One at a time. Never from the top. |
 | Status badge | `.kit-pill` (`--ok`, `--bad`, `--warn`, `--info`), count `--solid` | none | Round, 12 px bold, status colour on a pale fill of itself. |
-| Icons | `icons/ui/*.svg` | none | close, back, chevron, check, plus, minus, warning, up, sun, moon, logout, settings. No text characters as icons. |
+| Icons | `icons/ui/*.svg` | none | close, back, chevron, check, plus, minus, warning, up, sun, moon, logout, settings, and the menu and Settings set above. No text characters as icons. |
 | Colours | the palette above | none | Nothing outside it: no Android `Colors.red/green/orange`, no app's own palette. |
 
 `prefers-reduced-motion` shortens every one of these to an instant change.

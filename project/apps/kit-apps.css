@@ -172,16 +172,27 @@
 .kit-header__more { width: 48px; height: 48px; display: grid; place-items: center; color: var(--kit-app-muted); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
 .kit-header__more[aria-expanded="true"] { background: var(--kit-app-raised); color: var(--kit-app-text); }
 
-/* ── ⋮ menu: store card on top, then Settings, Store and clerk, Help, Log out */
-.kit-menu { width: 300px; padding: 8px; background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); box-shadow: 0 24px 60px #0003;
+/* ── ⋮ menu (Nikita 2026-11-03: KIT Label's menu is the reference) ──────
+   A card under the header. Phone (< 600 px): 8 px from both sides, 6 px under
+   the header. Wider: 320 px, its right edge 8 px from the screen's. Store card
+   (app icon, store, "<App> · <version> (<build>)", clerk), a dashed tear, then
+   the app's own rows, Help, Settings, and Log out last in the error colour.
+   Taller than the window: it stops 8 px above the bottom and scrolls. */
+.kit-menu { width: 320px; max-width: calc(100vw - 16px); max-height: calc(100dvh - 80px); overflow: auto; padding: 8px; box-sizing: border-box;
+  background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); box-shadow: 0 24px 60px #0003;
   border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-shape); color: var(--kit-app-text); font-family: var(--font-sans); }
 .kit-menu__store { display: flex; align-items: center; gap: 12px; padding: 12px 12px 14px; margin-bottom: 6px; border-bottom: 2px dashed var(--kit-app-line); }
-.kit-menu__store img { width: 44px; height: 44px; border-radius: 12px; corner-shape: squircle; }
-.kit-menu__item { display: flex; align-items: center; gap: 14px; height: 54px; padding: 0 12px; font-size: 17px; font-weight: 700; border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-menu__store img { width: 44px; height: 44px; flex: none; border-radius: 10px; corner-shape: squircle; }
+.kit-menu__store div { min-width: 0; display: flex; flex-direction: column; }
+.kit-menu__store b { font-size: 17px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kit-menu__store span { font-size: 12px; font-weight: 600; color: var(--kit-app-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kit-menu__store span + span { font-weight: 400; }
+.kit-menu__item { display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 12px; font-size: 16px; font-weight: 700; border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
 .kit-menu__item:hover, .kit-menu__item:focus-visible { background: var(--kit-app-raised); }
 .kit-menu__item--danger { color: var(--kit-app-error); }
 .kit-menu__item svg { width: 22px; height: 22px; flex: none; color: var(--kit-app-muted); }
 .kit-menu__item--danger svg { color: inherit; }
+@media (max-width: 599px) { .kit-menu { width: auto; left: 8px; right: 8px; max-width: none; } }
 /* Opens from the ⋮ corner: scale .96 → 1 and 4 px down, 220 ms; closes in
    160 ms. No dimmer behind a menu; a tap outside closes it.
    Put .is-open on to show, .is-closing while it leaves, then remove it. */
@@ -190,33 +201,47 @@
 @keyframes kit-menu-in { from { opacity: 0; transform: translateY(-4px) scale(.96); } }
 @keyframes kit-menu-out { to { opacity: 0; transform: translateY(-4px) scale(.96); } }
 
-/* ── Settings S-B: one plain list (Nikita 2026-10-26 look; 2026-11-02 list) ──
-   Never tabs, never a left column, on any width. The sheet holds the title
-   and Done, the app's name over a dashed tear, then one row per section
-   (icon, name, chevron) and Log out last. A row opens that section's page:
-   back arrow, the section's name, Done, then its rows. Centred, at most
-   720 px wide; under 700 px it fills the screen. */
-.kit-settings { display: flex; flex-direction: column; width: min(720px, calc(100vw - 32px)); height: min(720px, calc(100vh - 32px)); overflow: hidden;
-  background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); box-shadow: 0 30px 80px #0004; color: var(--kit-app-text); font-family: var(--font-sans);
+/* ── Settings (Nikita 2026-11-03: KIT Label's Settings is the reference) ──
+   The same inside on every width: a head (title, Done), then framed group
+   cards on the background colour. Only the container changes:
+   phone (< 700 px wide): it fills the screen; tablet and wall screens: a sheet
+   over --kit-scrim, centred, at most 720 px wide and 760 px tall, 24 px clear
+   of every edge. Never tabs, never a left column (Nikita 2026-11-02).
+   A section row opens its page in the same container: back arrow, the
+   section's name, Done, then its own group cards. */
+.kit-settings { display: flex; flex-direction: column; box-sizing: border-box; width: min(720px, calc(100vw - 48px)); max-height: min(760px, calc(100dvh - 48px)); overflow: hidden;
+  background: var(--kit-app-bg); border: 1px solid var(--kit-app-line); box-shadow: 0 30px 80px #0004; color: var(--kit-app-text); font-family: var(--font-sans);
   border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-shape); }
-.kit-settings__head { flex: none; display: flex; align-items: center; gap: 8px; padding: 20px 16px 8px 24px; }
-.kit-settings__head h2 { flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 28px; font-weight: 800; }
-.kit-settings__back { flex: none; width: 48px; height: 48px; margin-left: -12px; display: grid; place-items: center; color: var(--kit-app-text); }
-.kit-settings__list { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 16px; display: flex; flex-direction: column; }
-.kit-settings__app { display: flex; align-items: center; gap: 12px; margin: 0 8px; padding: 4px 0 16px;
-  border-bottom: 2px dashed color-mix(in srgb, var(--kit-app-muted) 60%, transparent); }
-.kit-settings__section { min-height: 64px; display: flex; align-items: center; gap: 12px; padding: 0 12px; font-size: 17px; font-weight: 700;
-  color: var(--kit-app-text); border-bottom: 1px solid var(--kit-app-line); }
-.kit-settings__section > span { flex: 1; min-width: 0; }
-.kit-settings__section > svg:first-child { color: var(--kit-app-muted); }
-.kit-settings__chev { color: var(--kit-app-muted); }
-.kit-settings__logout { border-bottom: 0; color: var(--kit-app-error); }
-.kit-settings__logout > svg:first-child { color: inherit; }
-.kit-settings__body { flex: 1; min-height: 0; padding: 8px 24px 24px; overflow: auto; }
-.kit-settings__row { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; min-height: 64px; padding: 12px 0; border-top: 1px solid var(--kit-app-line); }
-.kit-settings__row:first-child { border-top: 0; }
+.kit-settings__head { flex: none; display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 12px 16px 12px 22px; box-sizing: border-box; }
+.kit-settings__head h2 { flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 22px; font-weight: 800; }
+.kit-settings__back { flex: none; width: 44px; height: 44px; margin-left: -12px; display: grid; place-items: center; color: var(--kit-app-text); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-settings__back + h2 { margin-left: -8px; }
+.kit-settings__done { flex: none; min-width: 88px; height: 44px; padding: 0 20px; box-sizing: border-box; display: grid; place-items: center; border: 0;
+  background: var(--kit-app-primary); color: var(--kit-app-on-primary); font: 800 16px/1 var(--font-sans); border-radius: var(--kit-app-radius-field); corner-shape: var(--kit-app-shape); }
+.kit-settings__list { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 0 16px 16px; box-sizing: border-box; }
+.kit-settings__group-title { margin: 14px 6px 6px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--kit-app-muted); }
+.kit-settings__group-title:first-child { margin-top: 2px; }
+.kit-settings__group { background: var(--kit-app-surface); border: 1px solid var(--kit-app-line); overflow: hidden;
+  border-radius: var(--kit-app-radius-card); corner-shape: var(--kit-app-shape); }
+.kit-settings__group + .kit-settings__group { margin-top: 12px; }
+/* One row. A section row: icon, name and one line under it, chevron.
+   A setting row: icon, name (and a line under it only when it says
+   something), its control on the same line. */
+.kit-settings__section, .kit-settings__row { position: relative; display: flex; align-items: center; gap: 16px; min-height: 60px; padding: 10px 12px 10px 16px; box-sizing: border-box; color: var(--kit-app-text); text-decoration: none; }
+.kit-settings__section + .kit-settings__section::before, .kit-settings__row + .kit-settings__row::before,
+.kit-settings__section + .kit-settings__row::before, .kit-settings__row + .kit-settings__section::before {
+  content: ''; position: absolute; top: 0; left: 56px; right: 0; border-top: 1px solid var(--kit-app-line); }
+.kit-settings__section > svg:first-child, .kit-settings__row > svg:first-child { width: 24px; height: 24px; flex: none; }
+.kit-settings__text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.kit-settings__text b { font-size: 16px; font-weight: 700; }
+.kit-settings__text small { margin-top: 2px; font-size: 13px; font-weight: 500; line-height: 1.35; color: var(--kit-app-muted); }
+.kit-settings__value { flex: none; max-width: 55%; text-align: right; font-size: 15px; font-weight: 600; color: var(--kit-app-muted); }
+.kit-settings__chev { width: 24px; height: 24px; flex: none; color: var(--kit-app-muted); }
+.kit-settings__logout { color: var(--kit-app-error); }
+.kit-settings__row { flex-wrap: wrap; }
+.kit-settings__row > :last-child:not(.kit-settings__text) { margin-left: auto; }
 /* Settings, dialogs and sheets rise 16 px and fade in over --kit-scrim, 220 ms;
-   leave in 160 ms. Settings closes with Done (a text button), not ✕. */
+   leave in 160 ms. Settings closes with Done (the main button), not ✕. */
 .kit-scrim { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: var(--kit-scrim); animation: kit-fade-in var(--kit-enter) both; }
 .kit-scrim.is-closing { animation: kit-fade-out var(--kit-exit) both; }
 .kit-settings, .kit-dialog { animation: kit-rise-in var(--kit-enter) both; }
@@ -225,9 +250,11 @@
 @keyframes kit-fade-out { to { opacity: 0; } }
 @keyframes kit-rise-in { from { opacity: 0; transform: translateY(16px) scale(.99); } }
 @keyframes kit-rise-out { to { opacity: 0; transform: translateY(16px) scale(.99); } }
-@media (max-width: 700px) {
-  .kit-settings { width: 100%; height: 100%; border: 0; border-radius: 0; }
-  .kit-settings__head h2 { font-size: 22px; }
+/* Phone, upright or on its side: Settings fills the screen; the head and the
+   cards keep to a 720 px column in the middle. */
+@media (max-width: 699px), (max-height: 500px) {
+  .kit-settings { width: 100%; height: 100%; max-height: none; border: 0; border-radius: 0; box-shadow: none; }
+  .kit-settings > * { width: 100%; max-width: 720px; align-self: center; }
 }
 
 /* ── Toast: one bar at the bottom (Nikita 2026-11-03) ───────────────────
