@@ -31,6 +31,19 @@ overlapping text or buttons. The model is kit-kiosk `app/test/layout_test.dart` 
 it caught 3 real overflows). It runs with `flutter test` in CI. Then check the Android build
 on the emulator or a device by eye: Android fonts are wider.
 
+## In CI (GitHub Actions)
+
+`ubuntu-latest` is Ubuntu 26.04 now, and `npx playwright install chromium` fails there
+(found by the KIT Waiter thread, 2026-11-03). Use the Chrome the runner already has:
+
+```yaml
+- run: npm i --no-save playwright-core@1.56.1
+- run: CHROMIUM="$(command -v google-chrome)" npm run layout
+```
+
+Serve the production build first (for example `npx http-server dist/... -p 4200 &`), and keep
+the job's `timeout-minutes` set (CI thrift rule).
+
 ## First runs (2026-11-03, before any fix)
 
 - KIT Kitchen (dev): phones 320–430 overflow the header (⋮ off screen, column bands wrap
