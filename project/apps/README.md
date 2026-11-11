@@ -93,7 +93,7 @@ app's object standing on a dark shelf at the bottom right, drawn in one style
 
 - **Monitor**: a service bell ringing "ready".
 - **Kitchen**: a cloche with steam.
-- **Label**: a price tag, which replaces the old printer.
+- **Label**: an electronic shelf label showing a price ($4.99). It replaced the price tag on a string, which read as a clothing tag (Nikita 2026-11-11).
 - **Invoice**: a receipt.
 - **Waiter**: a bow tie.
 - **Kiosk**: a kiosk screen on its stand.
