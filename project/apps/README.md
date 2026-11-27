@@ -98,6 +98,7 @@ app's object standing on a dark shelf at the bottom right, drawn in one style
 - **Waiter**: a bow tie.
 - **Kiosk**: a kiosk screen on its stand.
 - **POS Bench** (the printer test till): a receipt printer.
+- **Pay** (tap to pay on the phone): a phone with the contactless mark.
 
 ### One size on Android (Nikita 2026-11-02)
 
@@ -106,7 +107,7 @@ the centre 72 dp of the 108 dp adaptive layer, so the art goes there and
 nowhere else; then the atom spans the same 21.5 to 84.2 dp in every app.
 
 - Either the XML insets the foreground (`<inset android:inset="16.7%">`, Kitchen,
-  Monitor, Label, Waiter) and the PNG is the 1024 file scaled down as it is,
+  Monitor, Label, Waiter, Pay) and the PNG is the 1024 file scaled down as it is,
 - or the XML uses the PNG as the whole layer (Kiosk, Bench, Invoice) and the PNG
   has the 1024 file in its centre two thirds.
 
@@ -123,6 +124,15 @@ with the XML inset, 432 px without it.
 
 The object sits slightly inward so Android's round mask does not clip it.
 Launcher icons are static. Only the Android 12+ splash screen can animate.
+
+**Launch screen, never a full-screen picture.** Up to Android 11 the launch theme's
+`android:background` is a `layer-list`: the app background colour (`--kit-app-bg`)
+with the icon and the app name as one centred `bitmap`, cut per density. A
+full-screen `splash.png` gets stretched on any phone whose shape differs from the
+picture (KIT Pay on a 21:9 Sony, Nikita 2026-11-27). On dark the icon sits on its
+white tile, or its dark shelf disappears. Android 12+ takes
+`windowSplashScreenAnimatedIcon` (the launcher foreground, same inset) and
+`windowSplashScreenBackground`. KIT Pay is the working example.
 
 ## Monitor order card
 
