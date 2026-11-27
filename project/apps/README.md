@@ -98,7 +98,7 @@ app's object standing on a dark shelf at the bottom right, drawn in one style
 - **Waiter**: a bow tie.
 - **Kiosk**: a kiosk screen on its stand.
 - **POS Bench** (the printer test till): a receipt printer.
-- **Pay** (tap to pay on the phone): a phone with the contactless mark.
+- **Pay** (tap to pay on the phone): a bank card with the contactless mark.
 
 ### One size on Android (Nikita 2026-11-02)
 
